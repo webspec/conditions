@@ -23,6 +23,28 @@ use Cartalyst\Cart\Cart;
 class Condition {
 
 	/**
+	 * The condition name.
+	 *
+	 * @var string
+	 */
+	protected $name = null;
+
+	/**
+	 * The condition value, in case we don't need to provide
+	 * condition actions.
+	 *
+	 * @var  mixed
+	 */
+	protected $value = null;
+
+	/**
+	 * The condition type.
+	 *
+	 * @var string
+	 */
+	protected $type = null;
+
+	/**
 	 * Holds all the condition rules.
 	 *
 	 * @var array
@@ -35,6 +57,69 @@ class Condition {
 	 * @var array
 	 */
 	protected $actions = array();
+
+	/**
+	 * Return the condition name.
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Set the condition name.
+	 *
+	 * @param  string  $name
+	 * @return void
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * Return the condition value.
+	 *
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		return $this->value;
+	}
+
+	/**
+	 * Set the condition value.
+	 *
+	 * @param  mixed  $value
+	 * @return void
+	 */
+	public function setValue($value)
+	{
+		$this->value = $value;
+	}
+
+	/**
+	 * Return the condition type.
+	 *
+	 * @return string
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	/**
+	 * Set the condition type.
+	 *
+	 * @param  string  $type
+	 * @return void
+	 */
+	public function setType($type)
+	{
+		$this->type = $type;
+	}
 
 	/**
 	 * Return the condition rules.
@@ -127,34 +212,35 @@ class Condition {
 	{
 		$item = null;
 
-		$find = false;
+		$found = false;
 
 		foreach ($rules as $rule)
 		{
 			$target = $rule['target'];
 
+			// Check if the target is an item
 			if (strpos($target, 'item-') !== false)
 			{
 				$target = str_replace('item-', '', $target);
 
+				$operator = ! empty($rule['operator']) ? $rule['operator'] : '=';
+
+				// Check if we have the item information
 				if (is_null($item))
 				{
-					$find = $item = $cart->find(array(
+					$found = $item = $cart->find(array(
 						$target => $rule['value'],
 					));
 				}
-				else
+
+				// Loop through the items we did found
+				foreach ($item as $i)
 				{
-					foreach ($item as $i)
-					{
-						$find = $this->operatorCheck($i->{$target}, $rule['operator'], $rule['value']);
-					}
+					$found = $this->operatorCheck($i->{$target}, $operator, $rule['value']);
 				}
 
-
-
 				# this is because, the condition failed to be asserted
-				if ( ! $find)
+				if ( ! $found)
 				{
 					return false;
 				}
@@ -166,35 +252,46 @@ class Condition {
 
 	protected function operatorCheck($value, $operator, $check)
 	{
-		$find = false;
+		$found = false;
 
 		switch ($operator)
 		{
 			case '=':
 			default:
-				$find = $value == $check;
+				$found = $value == $check;
 
 				break;
 
 			case '<=':
 
-				$find = $value <= $check;
+				$found = $value <= $check;
 
 				break;
 
 			case '>=':
-				$find = $value >= $check;
+				$found = $value >= $check;
 
 				break;
 
 			case '!=':
 
-				$find = $value != $check;
+				$found = $value != $check;
 
 				break;
 		}
 
-		return $find;
+		return $found;
+	}
+
+
+	public function __get($arg)
+	{
+		$method = 'get'.ucwords($arg);
+
+		if (method_exists($this, $method))
+		{
+			return $this->{$method}();
+		}
 	}
 
 /*

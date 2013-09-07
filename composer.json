@@ -1,0 +1,20 @@
+{
+    "name": "cartalyst/conditions",
+    "description": "",
+    "authors": [
+        {
+            "name": "Cartalyst",
+            "email": "help@cartalyst.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Cartalyst\\Conditions": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

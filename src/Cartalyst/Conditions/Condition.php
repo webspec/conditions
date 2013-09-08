@@ -189,10 +189,22 @@ class Condition {
 
 		$actions = $this->getActions();
 
-			if ($this->validateConditionRules($cart, $rules))
+		$valid = true;
+
+		foreach ($rules as $rule)
+		{
+			if ( ! $this->validateRule($cart, $rule))
 			{
-				echo 'valido';
+				$valid = false;
+
+				break;
 			}
+		}
+
+		if ($valid)
+		{
+			echo 'condition rules are valid';
+		}
 	}
 
 	/**
@@ -207,80 +219,71 @@ class Condition {
 
 		return is_array($array);
 	}
+
 	## need to rethink the foreach
-	protected function validateConditionRules(Cart $cart, $rules)
+	protected $tem = null;
+	protected function validateRule(Cart $cart, $rule)
 	{
-		$item = null;
+		// Get the target of the rule
+		$target = $rule['target'];
 
-		$found = false;
-
-		foreach ($rules as $rule)
+		// Check if the target is an item
+		if (strpos($target, 'item-') !== false)
 		{
-			$target = $rule['target'];
+			// Prepare the target
+			$target = str_replace('item-', '', $target);
 
-			// Check if the target is an item
-			if (strpos($target, 'item-') !== false)
+			// Prepare the operator
+			$operator = ! empty($rule['operator']) ? $rule['operator'] : '=';
+
+			// Check if we have the item information
+			if (is_null($this->item))
 			{
-				$target = str_replace('item-', '', $target);
+				$this->item = $cart->find(array(
+					$target => $rule['value'],
+				));
+			}
 
-				$operator = ! empty($rule['operator']) ? $rule['operator'] : '=';
-
-				// Check if we have the item information
-				if (is_null($item))
+			// Loop through the items we did found
+			foreach ($this->item as $i)
+			{
+				if ($this->operatorCheck($i->{$target}, $operator, $rule['value']))
 				{
-					$found = $item = $cart->find(array(
-						$target => $rule['value'],
-					));
-				}
-
-				// Loop through the items we did found
-				foreach ($item as $i)
-				{
-					$found = $this->operatorCheck($i->{$target}, $operator, $rule['value']);
-				}
-
-				# this is because, the condition failed to be asserted
-				if ( ! $found)
-				{
-					return false;
+					return true;
 				}
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	protected function operatorCheck($value, $operator, $check)
 	{
-		$found = false;
-
 		switch ($operator)
 		{
 			case '=':
 			default:
-				$found = $value == $check;
+				return $value == $check;
 
 				break;
 
 			case '<=':
 
-				$found = $value <= $check;
+				return $value <= $check;
 
 				break;
 
 			case '>=':
-				$found = $value >= $check;
+				return $value >= $check;
 
 				break;
 
 			case '!=':
 
-				$found = $value != $check;
+				return $value != $check;
 
 				break;
 		}
-
-		return $found;
 	}
 
 

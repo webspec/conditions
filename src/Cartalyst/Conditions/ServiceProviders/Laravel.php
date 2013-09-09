@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Conditions\Conditions;
+use Cartalyst\Conditions\Condition;
 use Illuminate\Support\ServiceProvider;
 
 class Laravel extends ServiceProvider {
@@ -56,7 +56,7 @@ class Laravel extends ServiceProvider {
 		{
 			$app['conditions.loaded'] = true;
 
-			return new Conditions;
+			return new Condition;
 		});
 	}
 

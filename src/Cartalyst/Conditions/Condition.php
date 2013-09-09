@@ -20,174 +20,80 @@
 
 use Cartalyst\Cart\Cart;
 
-class Condition {
+use Illuminate\Support\Collection;
+
+class Condition extends Collection {
 
 	/**
-	 * The condition name.
+	 * Set the condition rules
 	 *
-	 * @var string
-	 */
-	protected $name = null;
-
-	/**
-	 * The condition value, in case we don't need to provide
-	 * condition actions.
-	 *
-	 * @var  mixed
-	 */
-	protected $value = null;
-
-	/**
-	 * The condition type.
-	 *
-	 * @var string
-	 */
-	protected $type = null;
-
-	/**
-	 * Holds all the condition rules.
-	 *
-	 * @var array
-	 */
-	protected $rules = array();
-
-	/**
-	 * Holds all the condition actions.
-	 *
-	 * @var array
-	 */
-	protected $actions = array();
-
-	/**
-	 * Return the condition name.
-	 *
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-	/**
-	 * Set the condition name.
-	 *
-	 * @param  string  $name
+	 * @param  array  $rule
 	 * @return void
 	 */
-	public function setName($name)
+	public function setRules($rule)
 	{
-		$this->name = $name;
-	}
-
-	/**
-	 * Return the condition value.
-	 *
-	 * @return mixed
-	 */
-	public function getValue()
-	{
-		return $this->value;
-	}
-
-	/**
-	 * Set the condition value.
-	 *
-	 * @param  mixed  $value
-	 * @return void
-	 */
-	public function setValue($value)
-	{
-		$this->value = $value;
-	}
-
-	/**
-	 * Return the condition type.
-	 *
-	 * @return string
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	/**
-	 * Set the condition type.
-	 *
-	 * @param  string  $type
-	 * @return void
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
-	}
-
-	/**
-	 * Return the condition rules.
-	 *
-	 * @return array
-	 */
-	public function getRules()
-	{
-		return $this->rules;
-	}
-
-	/**
-	 * Set the condition rules.
-	 *
-	 * @param  array  $rules
-	 * @return void.
-	 */
-	public function setRules(array $rules)
-	{
-		if ($this->isMulti($rules))
+		if ($this->isMulti($rule))
 		{
-			foreach ($rules as $rule)
+			foreach ($rule as $r)
 			{
-				$this->setRules($rule);
+				$this->setRules($r);
 			}
 
 			return;
 		}
 
-		$this->rules[] = $rules;
-	}
+		$rules = array();
 
-	/**
-	 * Return the condition rules.
-	 *
-	 * @return array
-	 */
-	public function getActions()
-	{
-		return $this->actions;
+		foreach ($this->get('rules', array()) as $r)
+		{
+			$rules[] = $r;
+		}
+
+		$rules[] = new Collection($rule);
+
+		$this->put('rules', $rules);
 	}
 
 	/**
 	 * Set the condition actions.
 	 *
-	 * @param  array  $actions
-	 * @return void.
+	 * @param  array  $action
+	 * @return void
 	 */
-	public function setActions(array $actions)
+	public function setActions($action)
 	{
-		if ($this->isMulti($actions))
+		if ($this->isMulti($action))
 		{
-			foreach ($actions as $action)
+			foreach ($action as $a)
 			{
-				$this->setActions($action);
+				$this->setActions($a);
 			}
 
 			return;
 		}
-		$this->actions[] = $actions;
+
+		$actions = array();
+
+		foreach ($this->get('actions', array()) as $a)
+		{
+			$actions[] = $a;
+		}
+
+		$actions[] = new Collection($action);
+
+		$this->put('actions', $actions);
 	}
 
-
+	/**
+	 *
+	 *
+	 *
+	 */
 	public function validate(Cart $cart)
 	{
-		$rules = $this->getRules();
+		$rules = $this->get('rules', array());
 
-		$actions = $this->getActions();
+		$actions = $this->get('actions', array());
 
 		$valid = true;
 
@@ -203,7 +109,9 @@ class Condition {
 
 		if ($valid)
 		{
-			echo 'condition rules are valid';
+			$this->put('valid', true);
+
+			return true;
 		}
 	}
 
@@ -221,11 +129,11 @@ class Condition {
 	}
 
 	## need to rethink the foreach
-	protected $tem = null;
+	protected $item = null;
 	protected function validateRule(Cart $cart, $rule)
 	{
 		// Get the target of the rule
-		$target = $rule['target'];
+		$target = $rule->get('target');
 
 		// Check if the target is an item
 		if (strpos($target, 'item-') !== false)
@@ -234,20 +142,20 @@ class Condition {
 			$target = str_replace('item-', '', $target);
 
 			// Prepare the operator
-			$operator = ! empty($rule['operator']) ? $rule['operator'] : '=';
+			$operator = $rule->get('operator', '=');
 
 			// Check if we have the item information
 			if (is_null($this->item))
 			{
 				$this->item = $cart->find(array(
-					$target => $rule['value'],
+					$target => $rule->get('value'),
 				));
 			}
 
 			// Loop through the items we did found
 			foreach ($this->item as $i)
 			{
-				if ($this->operatorCheck($i->{$target}, $operator, $rule['value']))
+				if ($this->operatorCheck($i->{$target}, $operator, $rule->get('value')))
 				{
 					return true;
 				}
@@ -285,39 +193,5 @@ class Condition {
 				break;
 		}
 	}
-
-
-	public function __get($arg)
-	{
-		$method = 'get'.ucwords($arg);
-
-		if (method_exists($this, $method))
-		{
-			return $this->{$method}();
-		}
-	}
-
-/*
-	## this method will return the value with the discount applied
-	public function discount()
-	{
-		$value = $this->getValue();
-
-		$discount = $this->discount;
-
-		if ($this->type === 'percent')
-		{
-		    #$value = ($value * ((100-$discount) / 100));
-		    $value = $value - ($value * $discount);
-		}
-		else
-		{
-		    $value = $value - $discount;
-		}
-
-		return $value;
-	}
-
-*/
 
 }

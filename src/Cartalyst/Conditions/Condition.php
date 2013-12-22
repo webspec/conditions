@@ -18,21 +18,19 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Cart;
-
 use Illuminate\Support\Collection;
 
 class Condition extends Collection {
 
 	/**
-	 * Set the condition rules
+	 * Set the condition rules.
 	 *
-	 * @param  array  $rule
+	 * @param array $rule
 	 * @return void
 	 */
 	public function setRules($rule)
 	{
-		if ($this->isMulti($rule))
+		if (is_array($rule))
 		{
 			foreach ($rule as $r)
 			{
@@ -49,7 +47,7 @@ class Condition extends Collection {
 			$rules[] = $r;
 		}
 
-		$rules[] = new Collection($rule);
+		$rules[] = $rule;
 
 		$this->put('rules', $rules);
 	}
@@ -57,7 +55,7 @@ class Condition extends Collection {
 	/**
 	 * Set the condition actions.
 	 *
-	 * @param  array  $action
+	 * @param array $action
 	 * @return void
 	 */
 	public function setActions($action)
@@ -85,21 +83,81 @@ class Condition extends Collection {
 	}
 
 	/**
+	 * Apply conditions
 	 *
-	 *
-	 *
+	 * @param \Illuminate\Support\Collection $collection
+	 * @return \Illuminate\Support\Collection
 	 */
-	public function validate(Cart $cart)
+	public function apply(Collection $collection)
+	{
+		if ($this->isMulti($collection->all()))
+		{
+			foreach ($collection as $key => $value)
+			{
+				$collection[$key] = $this->apply(new Collection($value));
+			}
+
+			return;
+		}
+
+		if ($this->validate($collection))
+		{
+			foreach ($this->get('actions') as $action)
+			{
+				$result = $this->applyAction($collection, $action);
+				$collection->put($action->get('result'), $result);
+			}
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * Apply an action
+	 *
+	 * @param \Illuminate\Support\Collection $collection
+	 * @param \Illuminate\Support\Collection $action
+	 * @return float
+	 */
+	protected function applyAction(Collection $collection, Collection $action)
+	{
+		$operation = $action->get('value');
+		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
+		$target = $collection->get($action->get('target')) * $multiplier;
+
+		// Match operator
+		preg_match('/[+\-\*\/]/', $operation, $operator);
+		$operator = implode($operator);
+
+		// Match value
+		preg_match('/[0-9\.]+/', $operation, $value);
+		$value = implode($value);
+
+		// Match percentage
+		preg_match('/[%]/', $operation, $percentage);
+
+		// Apply percentage to value
+		$value = implode($percentage) ? ($target * ($value) / 100) : $value * $multiplier;
+
+		// Calculate values
+		return $this->calculate($target, $operator, $value);
+	}
+
+	/**
+	 * Validate a set of rules
+	 *
+	 * @param \Illuminate\Support\Collection $collection
+	 * @return bool
+	 */
+	protected function validate(Collection $collection)
 	{
 		$rules = $this->get('rules', array());
-
-		$actions = $this->get('actions', array());
 
 		$valid = true;
 
 		foreach ($rules as $rule)
 		{
-			if ( ! $this->validateRule($cart, $rule))
+			if ( ! $this->validateRule($collection, $rule))
 			{
 				$valid = false;
 
@@ -107,18 +165,121 @@ class Condition extends Collection {
 			}
 		}
 
-		if ($valid)
-		{
-			$this->put('valid', true);
+		return $valid;
+	}
 
+	/**
+	 * Validate a single rule
+	 *
+	 * @param \Illuminate\Support\Collection $collection
+	 * @param string $rule
+	 * @return bool
+	 */
+	protected function validateRule(Collection $collection, $rule)
+	{
+		// Match operator
+		preg_match('/[=\<\>\!]+/', $rule, $operator);
+		$operator = !implode($operator) ?: implode($operator);
+
+		// Values
+		$values = array_map('trim', preg_split('/[=\<\>\!]+/', $rule));
+
+		if ($this->operatorCheck($collection->get($values[0]), $operator, $values[1]))
+		{
 			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Perform arithmetic calculations
+	 *
+	 * @param string $operator
+	 * @param string $target
+	 * @param string $value
+	 * @return float
+	 */
+	protected function calculate($target, $operator, $value)
+	{
+		switch ($operator)
+		{
+			case '+':
+			default:
+
+				return $target + $value;
+
+				break;
+
+			case '*':
+
+				return $target * $value;
+
+				break;
+
+			case '-':
+
+				return $target - $value;
+
+				break;
+		}
+	}
+
+	/**
+	 * Operator Check
+	 *
+	 * @param string $target
+	 * @param string $operator
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function operatorCheck($target, $operator, $value)
+	{
+		switch ($operator)
+		{
+			case '=':
+			default:
+
+				return $target == $value;
+
+				break;
+
+			case '<':
+
+				return $target < $value;
+
+				break;
+
+			case '<=':
+
+				return $target <= $value;
+
+				break;
+
+			case '>':
+
+				return $target > $value;
+
+				break;
+
+			case '>=':
+
+				return $target >= $value;
+
+				break;
+
+			case '!=':
+
+				return $target != $value;
+
+				break;
 		}
 	}
 
 	/**
 	 * Checks if the provided array is a multidimensional array.
 	 *
-	 * @param  array  $array
+	 * @param array $array
 	 * @return bool
 	 */
 	protected function isMulti($array)
@@ -126,72 +287,6 @@ class Condition extends Collection {
 		$array = array_shift($array);
 
 		return is_array($array);
-	}
-
-	## need to rethink the foreach
-	protected $item = null;
-	protected function validateRule(Cart $cart, $rule)
-	{
-		// Get the target of the rule
-		$target = $rule->get('target');
-
-		// Check if the target is an item
-		if (strpos($target, 'item-') !== false)
-		{
-			// Prepare the target
-			$target = str_replace('item-', '', $target);
-
-			// Prepare the operator
-			$operator = $rule->get('operator', '=');
-
-			// Check if we have the item information
-			if (is_null($this->item))
-			{
-				$this->item = $cart->find(array(
-					$target => $rule->get('value'),
-				));
-			}
-
-			// Loop through the items we did found
-			foreach ($this->item as $i)
-			{
-				if ($this->operatorCheck($i->{$target}, $operator, $rule->get('value')))
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	protected function operatorCheck($value, $operator, $check)
-	{
-		switch ($operator)
-		{
-			case '=':
-			default:
-				return $value == $check;
-
-				break;
-
-			case '<=':
-
-				return $value <= $check;
-
-				break;
-
-			case '>=':
-				return $value >= $check;
-
-				break;
-
-			case '!=':
-
-				return $value != $check;
-
-				break;
-		}
 	}
 
 }

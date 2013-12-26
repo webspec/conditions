@@ -23,6 +23,13 @@ use Illuminate\Support\Collection;
 class Condition extends Collection {
 
 	/**
+	 * Holds the condition result.
+	 *
+	 * @var float
+	 */
+	protected $result;
+
+	/**
 	 * Set the condition rules.
 	 *
 	 * @param array $rule
@@ -86,30 +93,43 @@ class Condition extends Collection {
 	 * Apply conditions
 	 *
 	 * @param \Illuminate\Support\Collection $collection
-	 * @return \Illuminate\Support\Collection
+	 * @param float $target
+	 * @return float
 	 */
-	public function apply(Collection $collection)
+	public function apply(Collection $collection, $target = 0)
 	{
+		// Reset result
+		$this->result = 0;
+
+		// Override target if provided
+		$target = $target ? $target : $collection->get($this->get('target'));
+
 		if ($this->isMulti($collection->all()))
 		{
 			foreach ($collection as $key => $value)
 			{
-				$collection[$key] = $this->apply(new Collection($value));
+				$results[] = $this->apply(new Collection($value));
 			}
 
-			return;
+			return $results;
 		}
 
 		if ($this->validate($collection))
 		{
 			foreach ($this->get('actions') as $action)
 			{
-				$result = $this->applyAction($collection, $action);
-				$collection->put($action->get('result'), $result);
+				// If result was previously set, use that
+				$target = $this->result ? $this->result : $target;
+
+				// Apply condition
+				$result = $this->applyAction($collection, $action, $target);
+
+				// Set result
+				$this->result = $result;
 			}
 		}
 
-		return $collection;
+		return $this->result ? $this->result : false;
 	}
 
 	/**
@@ -117,13 +137,13 @@ class Condition extends Collection {
 	 *
 	 * @param \Illuminate\Support\Collection $collection
 	 * @param \Illuminate\Support\Collection $action
+	 * @param float $target
 	 * @return float
 	 */
-	protected function applyAction(Collection $collection, Collection $action)
+	protected function applyAction(Collection $collection, Collection $action, $target)
 	{
 		$operation = $action->get('value');
 		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
-		$target = $collection->get($action->get('target')) * $multiplier;
 
 		// Match operator
 		preg_match('/[+\-\*\/]/', $operation, $operator);
@@ -136,11 +156,11 @@ class Condition extends Collection {
 		// Match percentage
 		preg_match('/[%]/', $operation, $percentage);
 
-		// Apply percentage to value
-		$value = implode($percentage) ? ($target * ($value) / 100) : $value * $multiplier;
+		// Apply percentage if specified
+		$value = implode($percentage) ? ($target * ($value) / 100) : $value;
 
 		// Calculate values
-		return $this->calculate($target, $operator, $value);
+		return $this->calculate($target, $operator, $value) * $multiplier;
 	}
 
 	/**
@@ -149,7 +169,7 @@ class Condition extends Collection {
 	 * @param \Illuminate\Support\Collection $collection
 	 * @return bool
 	 */
-	protected function validate(Collection $collection)
+	public function validate(Collection $collection)
 	{
 		$rules = $this->get('rules', array());
 

@@ -32,29 +32,22 @@ class Condition extends Collection {
 	/**
 	 * Set the condition rules.
 	 *
-	 * @param array $rule
+	 * @param  array  $rules
 	 * @return void
 	 */
-	public function setRules($rule)
+	public function setRules($rules)
 	{
-		if (is_array($rule))
+		if (is_array($rules))
 		{
-			foreach ($rule as $r)
+			foreach ($rules as $rule)
 			{
-				$this->setRules($r);
+				$this->setRules($rule);
 			}
 
 			return;
 		}
 
-		$rules = array();
-
-		foreach ($this->get('rules', array()) as $r)
-		{
-			$rules[] = $r;
-		}
-
-		$rules[] = $rule;
+		$rules = $this->get('rules', array()) + (array) $rules;
 
 		$this->put('rules', $rules);
 	}
@@ -62,38 +55,33 @@ class Condition extends Collection {
 	/**
 	 * Set the condition actions.
 	 *
-	 * @param array $action
+	 * @param  array  $actions
 	 * @return void
 	 */
-	public function setActions($action)
+	public function setActions($actions)
 	{
-		if ($this->isMulti($action))
+		if ($this->isMulti($actions))
 		{
-			foreach ($action as $a)
+			foreach ($actions as $action)
 			{
-				$this->setActions($a);
+				$this->setActions($action);
 			}
 
 			return;
 		}
 
-		$actions = array();
+		$_actions = $this->get('actions', array());
 
-		foreach ($this->get('actions', array()) as $a)
-		{
-			$actions[] = $a;
-		}
+		$_actions[] = new Collection($actions);
 
-		$actions[] = new Collection($action);
-
-		$this->put('actions', $actions);
+		$this->put('actions', $_actions);
 	}
 
 	/**
 	 * Apply conditions
 	 *
-	 * @param \Illuminate\Support\Collection $collection
-	 * @param float $target
+	 * @param  \Illuminate\Support\Collection  $collection
+	 * @param  float  $target
 	 * @return float
 	 */
 	public function apply(Collection $collection, $target = 0)
@@ -102,7 +90,7 @@ class Condition extends Collection {
 		$this->result = 0;
 
 		// Override target if provided
-		$target = $target ? $target : $collection->get($this->get('target'));
+		$target = $target ?: $collection->get($this->get('target'));
 
 		if ($this->isMulti($collection->all()))
 		{
@@ -119,7 +107,7 @@ class Condition extends Collection {
 			foreach ($this->get('actions') as $action)
 			{
 				// If result was previously set, use that
-				$target = $this->result ? $this->result : $target;
+				$target = $this->result ?: $target;
 
 				// Apply condition
 				$result = $this->applyAction($collection, $action, $target);
@@ -129,20 +117,21 @@ class Condition extends Collection {
 			}
 		}
 
-		return $this->result ? $this->result : false;
+		return $this->result ?: false;
 	}
 
 	/**
 	 * Apply an action
 	 *
-	 * @param \Illuminate\Support\Collection $collection
-	 * @param \Illuminate\Support\Collection $action
-	 * @param float $target
+	 * @param  \Illuminate\Support\Collection  $collection
+	 * @param  \Illuminate\Support\Collection  $action
+	 * @param  float  $target
 	 * @return float
 	 */
 	protected function applyAction(Collection $collection, Collection $action, $target)
 	{
 		$operation = $action->get('value');
+
 		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
 
 		// Match operator
@@ -191,15 +180,15 @@ class Condition extends Collection {
 	/**
 	 * Validate a single rule
 	 *
-	 * @param \Illuminate\Support\Collection $collection
-	 * @param string $rule
+	 * @param  \Illuminate\Support\Collection  $collection
+	 * @param  string  $rule
 	 * @return bool
 	 */
 	protected function validateRule(Collection $collection, $rule)
 	{
 		// Match operator
 		preg_match('/[=\<\>\!]+/', $rule, $operator);
-		$operator = !implode($operator) ?: implode($operator);
+		$operator = implode($operator) ?: null;
 
 		// Values
 		$values = array_map('trim', preg_split('/[=\<\>\!]+/', $rule));
@@ -213,11 +202,11 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Perform arithmetic calculations
+	 * Perform arithmetic calculations.
 	 *
-	 * @param string $operator
-	 * @param string $target
-	 * @param string $value
+	 * @param  string  $operator
+	 * @param  string  $target
+	 * @param  string  $value
 	 * @return float
 	 */
 	protected function calculate($target, $operator, $value)
@@ -225,32 +214,20 @@ class Condition extends Collection {
 		switch ($operator)
 		{
 			case '+':
-			default:
+			default:  return $target + $value;
 
-				return $target + $value;
+			case '*': return $target * $value;
 
-				break;
-
-			case '*':
-
-				return $target * $value;
-
-				break;
-
-			case '-':
-
-				return $target - $value;
-
-				break;
+			case '-': return $target - $value;
 		}
 	}
 
 	/**
-	 * Operator Check
+	 * Operator Check.
 	 *
-	 * @param string $target
-	 * @param string $operator
-	 * @param string $value
+	 * @param  string  $target
+	 * @param  string  $operator
+	 * @param  string  $value
 	 * @return bool
 	 */
 	protected function operatorCheck($target, $operator, $value)
@@ -258,48 +235,24 @@ class Condition extends Collection {
 		switch ($operator)
 		{
 			case '=':
-			default:
+			default:   return $target == $value;
 
-				return $target == $value;
+			case '<':  return $target < $value;
 
-				break;
+			case '<=': return $target <= $value;
 
-			case '<':
+			case '>':  return $target > $value;
 
-				return $target < $value;
+			case '>=': return $target >= $value;
 
-				break;
-
-			case '<=':
-
-				return $target <= $value;
-
-				break;
-
-			case '>':
-
-				return $target > $value;
-
-				break;
-
-			case '>=':
-
-				return $target >= $value;
-
-				break;
-
-			case '!=':
-
-				return $target != $value;
-
-				break;
+			case '!=': return $target != $value;
 		}
 	}
 
 	/**
 	 * Checks if the provided array is a multidimensional array.
 	 *
-	 * @param array $array
+	 * @param  array  $array
 	 * @return bool
 	 */
 	protected function isMulti($array)

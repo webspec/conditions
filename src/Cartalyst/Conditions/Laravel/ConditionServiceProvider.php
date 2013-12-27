@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Conditions\ServiceProviders;
+<?php namespace Cartalyst\Conditions\Laravel;
 /**
  * Part of the Conditions package.
  *
@@ -21,7 +21,7 @@
 use Cartalyst\Conditions\Condition;
 use Illuminate\Support\ServiceProvider;
 
-class Laravel extends ServiceProvider {
+class ConditionServiceProvider extends ServiceProvider {
 
 	/**
 	 * Boot the service provider.
@@ -40,22 +40,8 @@ class Laravel extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['config']->package('cartalyst/conditions', __DIR__.'/../../config');
-
-		$this->registerConditions();
-	}
-
-	/**
-	 * Register the Conditions.
-	 *
-	 * @return void
-	 */
-	protected function registerConditions()
-	{
 		$this->app['conditions'] = $this->app->share(function($app)
 		{
-			$app['conditions.loaded'] = true;
-
 			return new Condition;
 		});
 	}

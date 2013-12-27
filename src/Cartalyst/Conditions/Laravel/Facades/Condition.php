@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Conditions\Facades;
+<?php namespace Cartalyst\Conditions\Laravel\Facades;
 /**
  * Part of the Conditions package.
  *
@@ -20,7 +20,7 @@
 
 use Illuminate\Support\Facades\Facade;
 
-class Laravel extends Facade {
+class Condition extends Facade {
 
 	/**
 	 * Get the registered name of the component.

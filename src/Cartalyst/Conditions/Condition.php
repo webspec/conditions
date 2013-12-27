@@ -153,18 +153,16 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Validate a set of rules
+	 * Validate a set of rules.
 	 *
-	 * @param \Illuminate\Support\Collection $collection
+	 * @param  \Illuminate\Support\Collection  $collection
 	 * @return bool
 	 */
 	public function validate(Collection $collection)
 	{
-		$rules = $this->get('rules', array());
-
 		$valid = true;
 
-		foreach ($rules as $rule)
+		foreach ($this->get('rules', array()) as $rule)
 		{
 			if ( ! $this->validateRule($collection, $rule))
 			{
@@ -223,7 +221,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Operator Check.
+	 * Perform a comparison between the target and the value.
 	 *
 	 * @param  string  $target
 	 * @param  string  $operator

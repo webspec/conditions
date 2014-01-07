@@ -1,4 +1,4 @@
-# Condition v1.0.0
+# Conditions v1.0.0
 
 .
 

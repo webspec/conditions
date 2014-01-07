@@ -1,26 +1,23 @@
-#Condition v1.0.0-alpha
+# Condition v1.0.0
 
-. 
+.
 
 Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
-##Package Story
+## Package Story
 
 History and future capabilities.
 
-####Incomplete
-- None at the moment.
+### Complete
 
-####Complete
-- *27-Dez-13* - v1.0.0
-	- ```Condition::setRules($rules);``` Can set rules.
-	- ```Condition::setActions($actions);``` Can set actions
-	- ```Condition::apply(Collection $collection, $target);``` Can apply the conditions to a collection.
-	- ```Condition::validate(Collection $collection);``` Can validate a collection against a set of rules.
+#### xx-Jan-14 - v1.0.0
 
+- ```Condition::setRules($rules);``` User can set rules.
+- ```Condition::setActions($actions);``` User can set actions
+- ```Condition::apply(Collection $collection, $target);``` User can apply the conditions to a collection.
+- ```Condition::validate(Collection $collection);``` User can validate a collection against a set of rules.
 
-Versioning
-----------
+## Versioning
 
 We version under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
 
@@ -34,8 +31,7 @@ And constructed with the following guidelines:
 * New additions without breaking backward compatibility bumps the minor (and resets the patch)
 * Bug fixes and misc changes bumps the patch
 
-Support
---------
+## Support
 
 Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
 

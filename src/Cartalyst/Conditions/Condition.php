@@ -30,6 +30,13 @@ class Condition extends Collection {
 	protected $result;
 
 	/**
+	 * Holds the condition subtotal
+	 *
+	 * @var float
+	 */
+	protected $subtotal;
+
+	/**
 	 * Set the condition rules.
 	 *
 	 * @param  array  $rules
@@ -96,7 +103,8 @@ class Condition extends Collection {
 		{
 			foreach ($collection as $key => $value)
 			{
-				$results[] = $this->apply(new Collection($value));
+				$results[$key]['total'] = $this->apply(new Collection($value));
+				$results[$key]['result'] = $this->result();
 			}
 
 			return $results;
@@ -104,6 +112,8 @@ class Condition extends Collection {
 
 		if ($this->validate($collection))
 		{
+			$this->subtotal = $target;
+
 			foreach ($this->get('actions') as $action)
 			{
 				// If result was previously set, use that
@@ -118,6 +128,39 @@ class Condition extends Collection {
 		}
 
 		return $this->result ?: false;
+	}
+
+	/**
+	 * Return net result.
+	 *
+	 * @return float
+	 */
+	public function result()
+	{
+		return $this->result - $this->subtotal;
+	}
+
+	/**
+	 * Validate a set of rules.
+	 *
+	 * @param  \Illuminate\Support\Collection  $collection
+	 * @return bool
+	 */
+	public function validate(Collection $collection)
+	{
+		$valid = true;
+
+		foreach ($this->get('rules', array()) as $rule)
+		{
+			if ( ! $this->validateRule($collection, $rule))
+			{
+				$valid = false;
+
+				break;
+			}
+		}
+
+		return $valid;
 	}
 
 	/**
@@ -150,29 +193,6 @@ class Condition extends Collection {
 
 		// Calculate values
 		return $this->calculate($target, $operator, $value) * $multiplier;
-	}
-
-	/**
-	 * Validate a set of rules.
-	 *
-	 * @param  \Illuminate\Support\Collection  $collection
-	 * @return bool
-	 */
-	public function validate(Collection $collection)
-	{
-		$valid = true;
-
-		foreach ($this->get('rules', array()) as $rule)
-		{
-			if ( ! $this->validateRule($collection, $rule))
-			{
-				$valid = false;
-
-				break;
-			}
-		}
-
-		return $valid;
 	}
 
 	/**

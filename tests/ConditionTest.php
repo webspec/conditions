@@ -97,6 +97,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection), 31.50);
+
+		$this->assertEquals($this->condition->result(), 11.5);
 	}
 
 	public function testCanApplyPercentage()
@@ -118,6 +120,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection), 23.50);
+
+		$this->assertEquals($this->condition->result(), 3.5);
 	}
 
 	public function testCanApplyMultiActions()
@@ -144,6 +148,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection), 33.00);
+
+		$this->assertEquals($this->condition->result(), 13);
 	}
 
 	public function testCanApplyMultiplier()
@@ -169,6 +175,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection), 150.00);
+
+		$this->assertEquals($this->condition->result(), 130);
 	}
 
 	public function testCanApplyMultiRulesMultiActions()
@@ -197,6 +205,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection), 33.00);
+
+		$this->assertEquals($this->condition->result(), 13);
 	}
 
 	public function testCanApplyMultiPercentagesAndRegularArithmetic()
@@ -227,6 +237,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection, 25.00),  159.6875);
+
+		$this->assertEquals($this->condition->result(), 134.6875);
 	}
 
 	public function testCanApplySubtractActions()
@@ -247,6 +259,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection, 25.00), 109.375);
+
+		$this->assertEquals($this->condition->result(), 84.375);
 	}
 
 	public function testCanApplyMultiplyActions()
@@ -267,6 +281,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->condition->apply($testCollection, 25.00), 390.625);
+
+		$this->assertEquals($this->condition->result(), 365.625);
 	}
 
 	public function testNoMatchingRules()
@@ -294,6 +310,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertFalse($this->condition->apply($testCollection));
+
+		$this->assertEquals($this->condition->result(), 0);
 	}
 
 	public function testWithoutRules()
@@ -314,6 +332,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals($this->condition->apply($testCollection), 30.00);
+
+		$this->assertEquals($this->condition->result(), 10);
 	}
 
 	public function testDifferentProperties()
@@ -358,16 +378,29 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		$item1 = $testCollection->first();
 		$this->assertEquals($this->condition->apply(new Collection($item1)), 165);
 
+		$this->assertEquals($this->condition->result(), 145);
+
+
 		// Condition results
 		$results = $this->condition->apply($testCollection);
 
-		$this->assertEquals($results[0], 165);
+		$this->assertEquals($results[0]['total'], 165);
+		$this->assertEquals($results[0]['result'], 145);
 
 		// Not matching
-		$this->assertFalse($results[1]);
+		$this->assertFalse($results[1]['total']);
 
 		// Collection results array
-		$res = array(165, false);
+		$res = array(
+			array(
+				'total' => 165,
+				'result' => 145,
+			),
+			array(
+				'total' => false,
+				'result' => -20,
+			)
+		);
 
 		$this->assertEquals($results, $res);
 

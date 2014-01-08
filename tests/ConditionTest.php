@@ -376,15 +376,16 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$item1 = $testCollection->first();
+
 		$this->assertEquals($this->condition->apply(new Collection($item1)), 165);
 
 		$this->assertEquals($this->condition->result(), 145);
-
 
 		// Condition results
 		$results = $this->condition->apply($testCollection);
 
 		$this->assertEquals($results[0]['total'], 165);
+
 		$this->assertEquals($results[0]['result'], 145);
 
 		// Not matching
@@ -398,12 +399,11 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			),
 			array(
 				'total' => false,
-				'result' => -20,
+				'result' => false,
 			)
 		);
 
 		$this->assertEquals($results, $res);
-
 	}
 
 }

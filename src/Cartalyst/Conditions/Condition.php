@@ -103,8 +103,10 @@ class Condition extends Collection {
 		{
 			foreach ($collection as $key => $value)
 			{
-				$results[$key]['total'] = $this->apply(new Collection($value));
-				$results[$key]['result'] = $this->result();
+				$result = $this->apply(new Collection($value));
+
+				$results[$key]['total'] = $result ?: false;
+				$results[$key]['result'] = $result? $this->result() : false;
 			}
 
 			return $results;

@@ -289,7 +289,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	{
 		$rules = array(
 			'name = test',
-			'price >= 20.00',
+			'price < 20.00',
 		);
 
 		$this->condition->setRules($rules);
@@ -306,6 +306,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		$this->condition->setActions($actions);
 
 		$testCollection = new Collection(array(
+			'name'  => 'test',
 			'price' => 20.00,
 		));
 

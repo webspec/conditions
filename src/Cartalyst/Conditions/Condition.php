@@ -44,18 +44,6 @@ class Condition extends Collection {
 	 */
 	public function setRules($rules)
 	{
-		if (is_array($rules))
-		{
-			foreach ($rules as $rule)
-			{
-				$this->setRules($rule);
-			}
-
-			return;
-		}
-
-		$rules = $this->get('rules', array()) + (array) $rules;
-
 		$this->put('rules', $rules);
 	}
 

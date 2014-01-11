@@ -1,4 +1,4 @@
-# Usage
+## Usage
 
 - [Actions]({url}/usage/actions)
 	- [Define actions](#define-actions)

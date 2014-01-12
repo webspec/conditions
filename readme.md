@@ -17,6 +17,22 @@ History and future capabilities.
 - ```Condition::apply(Collection $collection, $target);``` User can apply the conditions to a collection.
 - ```Condition::validate(Collection $collection);``` User can validate a collection against a set of rules.
 
+## Requirements
+
+- PHP >=5.3
+
+## Installation
+
+Conditions is installable with Composer. Read further information on how to install.
+
+[Installation Guide](http://cartalyst.com/manual/conditions/introduction/installation)
+
+## Documentation
+
+Refer to the following guide on how to use the Conditions package.
+
+[Documentation](http://cartalyst.com/manual/conditions)
+
 ## Versioning
 
 We version under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.

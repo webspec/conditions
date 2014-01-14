@@ -25,9 +25,9 @@ The condition above will only apply if both rules are met.
 
 Operator  | Example
 --------- | ----------------
-=         | 'name = item
-!=        | 'name != item1'
-<         | 'price < 20'
-<=        | 'price <= 10'
->         | 'quantity > 2'
->=        | 'quantity >= 5'
+=         | name = item
+!=        | name != item1
+<         | price < 20
+<=        | price <= 10
+>         | quantity > 2
+>=        | quantity >= 5

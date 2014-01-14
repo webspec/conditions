@@ -1,6 +1,6 @@
 # Conditions v1.0.0
 
-.
+A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
 
 Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 

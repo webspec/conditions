@@ -73,7 +73,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Apply conditions
+	 * Apply the conditions to the given collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  float  $target
@@ -154,7 +154,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Apply an action
+	 * Apply an action to the given collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  \Illuminate\Support\Collection  $action
@@ -186,7 +186,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Validate a single rule
+	 * Validate a single rule.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  string  $rule
@@ -210,7 +210,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Perform arithmetic calculations.
+	 * Performs arithmetic calculations.
 	 *
 	 * @param  string  $operator
 	 * @param  string  $target
@@ -231,7 +231,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Perform a comparison between the target and the value.
+	 * Performs a comparison between the target and the value.
 	 *
 	 * @param  string  $target
 	 * @param  string  $operator

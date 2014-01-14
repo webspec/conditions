@@ -1,6 +1,6 @@
 {
 	"name": "cartalyst/conditions",
-	"description": "Conditions package that allows you to apply different types of conditions on Illuminate Collections.",
+	"description": "A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.",
 	"keywords": [
 		"php",
 		"cartalyst",

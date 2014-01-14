@@ -51,7 +51,7 @@ And constructed with the following guidelines:
 
 Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
 
-https://github.com/cartalyst/condition/issues
+https://github.com/cartalyst/conditions/issues
 
 Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
 

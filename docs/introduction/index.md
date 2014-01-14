@@ -13,24 +13,26 @@ Have a [read through the Installation Guide]({url}/introduction/installation).
 
 ## Quick Example
 
-	// 17.5% tax condition
+	// Create a new Condition
 	$condition = new Condition(array(
-		'name' => 'VAT (17.5%)',
-		'type' => 'tax',
+		'name'   => 'VAT (17.5%)',
+		'type'   => 'tax',
 		'target' => 'subtotal',
 	));
 
 	$condition->setActions(array(
-		array('value' => '17.5%')
+		array(
+			'value' => '17.5%',
+		),
 	));
 
-	$collection = new Collection(
-		'name' => 'an item',
+	$collection = new Collection(array(
+		'name'     => 'Example item',
 		'subtotal' => 200,
-	);
+	));
 
 	$condition->apply($collection); // 235
 
 	$condition->result(); // 35
 
-> **Note:** You can apply conditions on any Illuminate Collection
+> **Note:** You can apply conditions to any Illuminate Collection.

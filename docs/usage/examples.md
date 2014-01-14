@@ -3,20 +3,22 @@
 ## Apply 10% Discount if subtotal is larger than 200
 
 	$collection = new Collection(array(
-		'name' => 'Item',
+		'name'     => 'Item',
 		'subtotal' => 400,
 	));
 
 	$condition = new Condition(array(
-		'target' => 'subtotal'
+		'target' => 'subtotal',
 	));
 
 	$condition->setRules(array(
-		'subtotal > 200'
+		'subtotal > 200',
 	));
 
 	$condition->setActions(array(
-		array('value' => '-10%')
+		array(
+			'value' => '-10%',
+		),
 	));
 
 	$condition->apply($collection); // 360
@@ -26,16 +28,18 @@
 ## Apply 12.5% Tax without rules
 
 	$collection = new Collection(array(
-		'name' => 'Item',
+		'name'     => 'Item',
 		'subtotal' => 400,
 	));
 
 	$condition = new Condition(array(
-		'target' => 'subtotal'
+		'target' => 'subtotal',
 	));
 
 	$condition->setActions(array(
-		array('value' => '12.5%')
+		array(
+			'value' => '12.5%',
+		),
 	));
 
 	$condition->apply($collection); // 450

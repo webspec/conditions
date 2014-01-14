@@ -44,7 +44,9 @@ Now you are able to require the `vendor/autoload.php` file to PSR-0 autoload the
 	));
 
 	$condition->setActions(array(
-		array('value' => '-10.00'),
+		array(
+			'value' => '-10.00'
+		),
 	));
 
 	$collection = new Collection(array(

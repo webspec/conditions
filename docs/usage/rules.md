@@ -23,11 +23,11 @@ The condition above will only apply if both rules are met.
 
 ## Comparison Operators {#comparison-operators}
 
-Operator              | Example	          |
---------------------- | ----------------- |
-=   		          | 'name = item'	  |
-!=   		          | 'name != item1'	  |
-<   		          | 'price < 20'	  |
-<=	        	      | 'price <= 10'	  |
->	        	      | 'quantity > 2'	  |
->=	        	      | 'quantity >= 5'	  |
+Operator  | Example
+--------- | ----------------
+=         | 'name = item
+!=        | 'name != item1'
+<         | 'price < 20'
+<=        | 'price <= 10'
+>         | 'quantity > 2'
+>=        | 'quantity >= 5'

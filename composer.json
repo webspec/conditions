@@ -1,7 +1,13 @@
 {
 	"name": "cartalyst/conditions",
-	"description": "",
-	"keywords": [],
+	"description": "Conditions package that allows you to apply different types of conditions on Illuminate Collections.",
+	"keywords": [
+		"php",
+		"cartalyst",
+		"laravel"
+		"collection",
+		"condition"
+	],
 	"license": "BSD-3-Clause",
 	"authors": [
 		{

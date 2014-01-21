@@ -45,10 +45,8 @@ Actions can contain a reference to a multiplier field
 	));
 
 	$condition->setActions(array(
-		array(
-			'value'      => '20%',
-			'multiplier' => 'quantity',
-		),
+		'value'      => '20%',
+		'multiplier' => 'quantity',
 	));
 
 The example above will multiply the condition result by the quantity.

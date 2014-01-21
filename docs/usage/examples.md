@@ -16,9 +16,7 @@
 	));
 
 	$condition->setActions(array(
-		array(
-			'value' => '-10%',
-		),
+		'value' => '-10%',
 	));
 
 	$condition->apply($collection); // 360
@@ -37,9 +35,7 @@
 	));
 
 	$condition->setActions(array(
-		array(
-			'value' => '12.5%',
-		),
+		'value' => '12.5%',
 	));
 
 	$condition->apply($collection); // 450

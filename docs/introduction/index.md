@@ -21,9 +21,7 @@ Have a [read through the Installation Guide]({url}/introduction/installation).
 	));
 
 	$condition->setActions(array(
-		array(
-			'value' => '17.5%',
-		),
+		'value' => '17.5%',
 	));
 
 	$collection = new Collection(array(

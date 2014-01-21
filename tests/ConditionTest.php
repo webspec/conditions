@@ -166,10 +166,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->condition->setActions(array(
-			array(
-				'multiplier' => 'quantity',
-				'value'      => '10.00',
-			),
+			'multiplier' => 'quantity',
+			'value'      => '10.00',
 		));
 
 		$testCollection = new Collection(array(
@@ -244,11 +242,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	public function testCanApplySubtractActions()
 	{
 		$this->condition->setActions(array(
-			// 12.5% Discount
-			array(
-				'multiplier' => 'quantity',
-				'value'      => '-12.50%',
-			),
+			'multiplier' => 'quantity',
+			'value'      => '-12.50%',
 		));
 
 		$testCollection = new Collection(array(
@@ -265,11 +260,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	public function testCanApplyMultiplyActions()
 	{
 		$this->condition->setActions(array(
-			// 12.5% Discount
-			array(
-				'multiplier' => 'quantity',
-				'value' => '*12.50%',
-			),
+			'multiplier' => 'quantity',
+			'value' => '*12.50%',
 		));
 
 		$testCollection = new Collection(array(
@@ -313,17 +305,13 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	public function testWithoutRules()
 	{
 		$this->condition->setActions(array(
-			array(
-				'value' => '10.00',
-			),
+			'value' => '10.00',
 		));
 
-		$testCollection = new Collection(
-			array(
-				'price' => 20.00,
-				'name'  => 'test',
-			)
-		);
+		$testCollection = new Collection(array(
+			'price' => 20.00,
+			'name'  => 'test',
+		));
 
 		$this->assertEquals($this->condition->apply($testCollection), 30.00);
 

@@ -59,33 +59,6 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function testCanSetRules()
-	{
-		$condition = m::mock('Condition');
-		$condition->shouldReceive('setRules')->once();
-
-		$condition->setRules();
-	}
-
-
-	public function testCanSetActions()
-	{
-		$condition = m::mock('Condition');
-		$condition->shouldReceive('setActions')->once();
-
-		$condition->setActions();
-	}
-
-
-	public function testCanApplyCondition()
-	{
-		$condition = m::mock('Condition');
-		$condition->shouldReceive('apply')->once();
-
-		$condition->apply();
-	}
-
-
 	public function testApplyACondition()
 	{
 		$this->condition->setRules(array(
@@ -261,7 +234,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	{
 		$this->condition->setActions(array(
 			'multiplier' => 'quantity',
-			'value' => '*12.50%',
+			'value'      => '*12.50%',
 		));
 
 		$testCollection = new Collection(array(

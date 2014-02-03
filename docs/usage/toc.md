@@ -1,6 +1,6 @@
 ## Usage
 
-- [Actions]({url}/usage/actions)
+- [Actions]({url}/usage)
 	- [Define actions](#define-actions)
 	- [Accumulative actions](#accumulative-actions)
 	- [Multiplier](#multiplier)

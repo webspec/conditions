@@ -5,9 +5,7 @@ Actions define the behavior the condition will apply on the collection.
 ## Define actions {#define-actions}
 
 	$condition->setActions(array(
-		array(
-			'value' => '-10%',
-		),
+		'value' => '-10%',
 	));
 
 The action above will deduct 10 percent of the target property.

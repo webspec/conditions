@@ -1,12 +1,14 @@
 # Installation
 
-The best way to install the Conditions package is quickly and easily done with [Composer](http://getcomposer.org).
+The best and easy way to install the Converter package is with [Composer](http://getcomposer.org).
 
-Open your `composer.json` and add the following to the `require` array
+## Preparation
+
+Open your `composer.json` and add the following to the `require` array:
 
 	"cartalyst/conditions": "1.0.*"
 
-Add the following lines after the `require` array on your `composer.json` file
+Add the following lines after the `require` array on your `composer.json` file:
 
 	"repositories": [
 		{
@@ -17,7 +19,7 @@ Add the following lines after the `require` array on your `composer.json` file
 
 > **Note:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
 
-### Install the dependencies
+## Install the dependencies
 
 Run Composer to install or update the new requirement.
 
@@ -27,7 +29,7 @@ or
 
 	php composer update
 
-Now you are able to require the `vendor/autoload.php` file to PSR-0 autoload the package.
+Now you are able to require the `vendor/autoload.php` file to PSR-4 autoload the package.
 
 ## Example
 
@@ -44,9 +46,7 @@ Now you are able to require the `vendor/autoload.php` file to PSR-0 autoload the
 	));
 
 	$condition->setActions(array(
-		array(
-			'value' => '-10.00',
-		),
+		'value' => '-10.00',
 	));
 
 	$collection = new Collection(array(

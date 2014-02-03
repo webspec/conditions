@@ -2,7 +2,7 @@
 
 ## Apply 10% Discount if subtotal is larger than 200
 
-	$collection = new Collection(array(
+	$collection = new Illuminate\Support\Collection(array(
 		'name'     => 'Item',
 		'subtotal' => 400,
 	));
@@ -25,7 +25,7 @@
 
 ## Apply 12.5% Tax without rules
 
-	$collection = new Collection(array(
+	$collection = new Illuminate\Support\Collection(array(
 		'name'     => 'Item',
 		'subtotal' => 400,
 	));

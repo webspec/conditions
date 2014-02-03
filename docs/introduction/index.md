@@ -2,35 +2,41 @@
 
 A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
 
-The package follows the FIG standard PSR-0 to ensure a high level of
-interoperability between shared PHP code and is fully unit-tested.
+The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested with 100% code coverage.
 
 ## Getting started
 
-The package requires at least PHP version 5.3.
+The package requires PHP 5.3+.
 
 Have a [read through the Installation Guide]({url}/introduction/installation).
 
 ## Quick Example
 
-	// Create a new Condition
+### Instantiate our Collection
+
+	$collection = new Illuminate\Support\Collection(array(
+		'name'     => 'Example item',
+		'subtotal' => 200,
+	));
+
+> **Note:** You can apply Conditions to any Illuminate Collection.
+
+### Create a new Condition
+
 	$condition = new Condition(array(
 		'name'   => 'VAT (17.5%)',
 		'type'   => 'tax',
 		'target' => 'subtotal',
 	));
 
+### Set the Actions
+
 	$condition->setActions(array(
 		'value' => '17.5%',
 	));
 
-	$collection = new Collection(array(
-		'name'     => 'Example item',
-		'subtotal' => 200,
-	));
+### Apply the Condition to our Collection
 
 	$condition->apply($collection); // 235
 
 	$condition->result(); // 35
-
-> **Note:** You can apply conditions to any Illuminate Collection.

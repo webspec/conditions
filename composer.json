@@ -39,8 +39,8 @@
 		"phpunit/phpunit": "3.7.*"
 	},
 	"autoload": {
-		"psr-0": {
-			"Cartalyst\\Conditions": "src/"
+		"psr-4": {
+			"Cartalyst\\Conditions\\": "src/"
 		}
 	},
 	"extra": {

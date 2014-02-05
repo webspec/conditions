@@ -300,6 +300,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 
 		$this->condition->setRules(array(
 			'weight >= 5',
+			'tons != 4',
 		));
 
 		$this->condition->setActions(array(

@@ -48,3 +48,25 @@ Actions can contain a reference to a multiplier field
 	));
 
 The example above will multiply the condition result by the quantity.
+
+## Max {#max}
+
+Actions can contain a max property that will prevent the condition from reaching beyond that limit.
+
+	$collection = new Collection(array(
+		'name'     => 'An item',
+		'price'    => 100.00,
+	));
+
+	$condition = new Condition(array(
+		'target' => 'price',
+	));
+
+	$condition->setActions(array(
+		'value' => '20%',
+		'max'   => 10,
+	));
+
+	$condition->apply($collection); // 110
+
+	$condition->result(); // 10

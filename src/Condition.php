@@ -167,6 +167,8 @@ class Condition extends Collection {
 
 		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
 
+		$max = $action->get('max') ?: 0;
+
 		// Match operator
 		preg_match('/[+\-\*\/]/', $operation, $operator);
 		$operator = implode($operator);
@@ -182,7 +184,7 @@ class Condition extends Collection {
 		$value = implode($percentage) ? ($target * ($value) / 100) : $value;
 
 		// Calculate values
-		return $this->calculate($target, $operator, $value) * $multiplier;
+		return $this->calculate($target, $operator, $value, $max) * $multiplier;
 	}
 
 	/**
@@ -217,16 +219,17 @@ class Condition extends Collection {
 	 * @param  string  $value
 	 * @return float
 	 */
-	protected function calculate($target, $operator, $value)
+	protected function calculate($target, $operator, $value, $max = 0)
 	{
 		switch ($operator)
 		{
 			case '+':
-			default:  return $target + $value;
-
-			case '*': return $target * $value;
-
-			case '-': return $target - $value;
+			default:
+				return $max ? $target + $max > $target + $value ? $target + $value : $target + $max : $target + $value;
+			case '*':
+				return $target * $value;
+			case '-':
+				return $max ? $target + $max < $target - $value ? $target - $value : $target + $max : $target - $value;
 		}
 	}
 

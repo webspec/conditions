@@ -4,6 +4,7 @@
 	- [Define actions](#define-actions)
 	- [Accumulative actions](#accumulative-actions)
 	- [Multiplier](#multiplier)
+	- [Max](#max)
 - [Rules]({url}/usage/rules)
 	- [Define rules](#define-rules)
 	- [Multiple rules](#multiple-rules)

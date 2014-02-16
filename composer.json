@@ -28,6 +28,11 @@
 			"name": "Dan Syme",
 			"email": "dan.syme@cartalyst.com",
 			"role": "Project Lead"
+		},
+		{
+			"name": "Suhayb Wardany",
+			"email": "su.wardany@cartalyst.com",
+			"role": "Developer"
 		}
 	],
 	"require": {
@@ -35,8 +40,8 @@
 		"illuminate/support": "~4"
 	},
 	"require-dev": {
-		"mockery/mockery": "0.8.*",
-		"phpunit/phpunit": "3.7.*"
+		"mockery/mockery": "0.9.*",
+		"phpunit/phpunit": "4.0.*"
 	},
 	"autoload": {
 		"psr-4": {

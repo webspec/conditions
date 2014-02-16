@@ -63,6 +63,38 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @test
 	 */
+	public function it_can_apply_rules()
+	{
+		$this->condition->setRules(array(
+			'price <= 20',
+		));
+
+		$this->assertEquals(count($this->condition->getRules()), 1);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_apply_actions()
+	{
+		$this->condition->setActions(array(
+			array(
+				'value' => '5.00',
+			),
+			array(
+				'value' => '5.00',
+			),
+			array(
+				'value' => '5.00%',
+			),
+		));
+
+		$this->assertEquals(count($this->condition->getActions()), 3);
+	}
+
+	/**
+	 * @test
+	 */
 	public function it_can_apply_conditions()
 	{
 		$this->condition->setRules(array(

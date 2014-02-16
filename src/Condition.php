@@ -30,11 +30,21 @@ class Condition extends Collection {
 	protected $result;
 
 	/**
-	 * Holds the condition subtotal
+	 * Holds the condition subtotal.
 	 *
 	 * @var float
 	 */
 	protected $subtotal;
+
+	/**
+	 * Returns the condition rules.
+	 *
+	 * @return array
+	 */
+	public function getRules()
+	{
+		return $this->get('rules');
+	}
 
 	/**
 	 * Set the condition rules.
@@ -45,6 +55,16 @@ class Condition extends Collection {
 	public function setRules($rules)
 	{
 		$this->put('rules', $rules);
+	}
+
+	/**
+	 * Returns the condition actions.
+	 *
+	 * @return array
+	 */
+	public function getActions()
+	{
+		return $this->get('actions');
 	}
 
 	/**
@@ -93,8 +113,9 @@ class Condition extends Collection {
 			{
 				$result = $this->apply(new Collection($value));
 
-				$results[$key]['total'] = $result ?: false;
-				$results[$key]['result'] = $result? $this->result() : false;
+				array_set($results, "{$key}.total", $result ?: false);
+
+				array_set($results, "{$key}.result", $result ? $this->result() : false);
 			}
 
 			return $results;
@@ -121,7 +142,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Return net result.
+	 * Returns net result.
 	 *
 	 * @return float
 	 */
@@ -225,10 +246,15 @@ class Condition extends Collection {
 		{
 			case '+':
 			default:
+
 				return $max ? $target + $max > $target + $value ? $target + $value : $target + $max : $target + $value;
+
 			case '*':
+
 				return $target * $value;
+
 			case '-':
+
 				return $max ? $target + $max < $target - $value ? $target - $value : $target + $max : $target - $value;
 		}
 	}

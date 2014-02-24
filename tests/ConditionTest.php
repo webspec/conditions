@@ -432,6 +432,50 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @test
 	 */
+	public function it_can_calculate_reverse_percentage_values()
+	{
+		$this->condition->setActions(array(
+			'value' => '10.00%',
+			'inclusive' => true,
+		));
+
+		$testCollection = new Collection(array(
+			'price' => 440.00,
+			'name'  => 'test',
+		));
+
+		// Apply condition
+		$this->condition->apply($testCollection);
+
+		// Inclusive 10%
+		$this->assertEquals($this->condition->result(), 40);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_calculate_reverse_values()
+	{
+		$this->condition->setActions(array(
+			'value' => '-10.00',
+			'inclusive' => true,
+		));
+
+		$testCollection = new Collection(array(
+			'price' => 440.00,
+			'name'  => 'test',
+		));
+
+		// Apply condition
+		$this->condition->apply($testCollection);
+
+		// Inclusive 10%
+		$this->assertEquals($this->condition->result(), -10);
+	}
+
+	/**
+	 * @test
+	 */
 	public function it_can_handle_a_negative_max_value()
 	{
 		$this->condition->setActions(array(

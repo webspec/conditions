@@ -201,8 +201,16 @@ class Condition extends Collection {
 		// Match percentage
 		preg_match('/[%]/', $operation, $percentage);
 
+		// Inclusive
+		if ($inclusive = $action->get('inclusive'))
+		{
+			$ratio = 1 + ($value / 100);
+
+			$value = implode($percentage) ? $target - ($target / $ratio) : $value;
+		}
+
 		// Apply percentage if specified
-		$value = implode($percentage) ? ($target * ($value) / 100) : $value;
+		$value = implode($percentage) && ! $inclusive ? ($target * ($value) / 100) : $value;
 
 		// Calculate values
 		return $this->calculate($target, $operator, $value, $max) * $multiplier;

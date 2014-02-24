@@ -70,3 +70,25 @@ Actions can contain a max property that will prevent the condition from reaching
 	$condition->apply($collection); // 110
 
 	$condition->result(); // 10
+
+## Inclusve {#inclusive}
+
+Actions can contain an inclusive property that will reverse calculate the action value.
+
+	$collection = new Collection(array(
+		'name'     => 'An item',
+		'price'    => 100.00,
+	));
+
+	$condition = new Condition(array(
+		'target' => 'price',
+	));
+
+	$condition->setActions(array(
+		'value'     => '10%',
+		'inclusive' => true,
+	));
+
+	$condition->apply($collection);
+
+	$condition->result(); // 9.090909091

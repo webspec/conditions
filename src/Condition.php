@@ -18,6 +18,7 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
 use Illuminate\Support\Collection;
 
 class Condition extends Collection {
@@ -35,6 +36,13 @@ class Condition extends Collection {
 	 * @var float
 	 */
 	protected $subtotal;
+
+	/**
+	 * Holds the condition callback.
+	 *
+	 * @var  \Closure
+	 */
+	protected $callback;
 
 	/**
 	 * Returns the condition rules.
@@ -70,11 +78,17 @@ class Condition extends Collection {
 	/**
 	 * Set the condition actions.
 	 *
-	 * @param  array  $actions
+	 * @param  array          $actions
+	 * @param  \Closure|null  $callback
 	 * @return void
 	 */
-	public function setActions($actions)
+	public function setActions($actions, Closure $callback = null)
 	{
+		if ($callback)
+		{
+			$this->callback = $callback;
+		}
+
 		if ($this->isMulti($actions))
 		{
 			foreach ($actions as $action)
@@ -88,6 +102,11 @@ class Condition extends Collection {
 		$_actions = $this->get('actions', array());
 
 		$_actions[] = new Collection($actions);
+
+		if ($callback)
+		{
+			$this->callback = $callback;
+		}
 
 		$this->put('actions', $_actions);
 	}
@@ -118,6 +137,11 @@ class Condition extends Collection {
 				array_set($results, "{$key}.result", $result ? $this->result() : false);
 			}
 
+			if ($this->callback && $result)
+			{
+				call_user_func($this->callback);
+			}
+
 			return $results;
 		}
 
@@ -136,6 +160,11 @@ class Condition extends Collection {
 				// Set result
 				$this->result = $result;
 			}
+		}
+
+		if ($this->callback && $this->result)
+		{
+			call_user_func($this->callback);
 		}
 
 		return $this->result ?: false;

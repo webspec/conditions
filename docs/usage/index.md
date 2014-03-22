@@ -28,6 +28,28 @@ The example above will add 17.5% first, then add 5% to the result of the previou
 
 > **Note** The example above is not equal to passing 22.5%
 
+## Callback {#callback}
+
+You can specify a callback on setActions that will run upon successfully validating the condition.
+
+	$collection = new Collection(array(
+		'name'     => 'An item',
+		'price'    => 100.00,
+		'quantity' => 5,
+	));
+
+	$condition = new Condition(array(
+		'target' => 'price',
+	));
+
+	$condition->setActions(array(
+		'value'      => '20%',
+		'multiplier' => 'quantity',
+	), function()
+	{
+		// Code here will run when the condition is applied ( only if valid )
+	});
+
 ## Multiplier {#multiplier}
 
 Actions can contain a reference to a multiplier field

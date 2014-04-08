@@ -14,26 +14,26 @@ Have a [read through the Installation Guide]({url}/introduction/installation).
 
 ### Instantiate our Collection
 
-	$collection = new Illuminate\Support\Collection(array(
+	$collection = new Illuminate\Support\Collection([
 		'name'     => 'Example item',
 		'subtotal' => 200,
-	));
+	]);
 
 > **Note:** You can apply Conditions to any Illuminate Collection.
 
 ### Create a new Condition
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'name'   => 'VAT (17.5%)',
 		'type'   => 'tax',
 		'target' => 'subtotal',
-	));
+	]);
 
 ### Set the Actions
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value' => '17.5%',
-	));
+	]);
 
 ### Apply the Condition to our Collection
 

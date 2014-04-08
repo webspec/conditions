@@ -41,17 +41,17 @@ Now you are able to require the `vendor/autoload.php` file to autoload the packa
 	use Illuminate\Support\Collection;
 
 	// Instantiate a new Condition
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'target' => 'price',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value' => '-10.00',
-	));
+	]);
 
-	$collection = new Collection(array(
+	$collection = new Collection([
 		'price' => 200,
-	));
+	]);
 
 	// Condition total
 	$total = $condition->apply($collection); // 190

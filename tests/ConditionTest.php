@@ -37,9 +37,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function setUp()
 	{
-		$this->condition = new Condition(array(
+		$this->condition = new Condition([
 			'target' => 'price',
-		));
+		]);
 	}
 
 	/**
@@ -65,9 +65,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_rules()
 	{
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'price <= 20',
-		));
+		]);
 
 		$this->assertEquals(count($this->condition->getRules()), 1);
 	}
@@ -77,17 +77,17 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_actions()
 	{
-		$this->condition->setActions(array(
-			array(
+		$this->condition->setActions([
+			[
 				'value' => '5.00',
-			),
-			array(
+			],
+			[
 				'value' => '5.00',
-			),
-			array(
+			],
+			[
 				'value' => '5.00%',
-			),
-		));
+			],
+		]);
 
 		$this->assertEquals(count($this->condition->getActions()), 3);
 	}
@@ -97,25 +97,25 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_conditions()
 	{
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'price <= 20',
-		));
+		]);
 
-		$this->condition->setActions(array(
-			array(
+		$this->condition->setActions([
+			[
 				'value' => '5.00',
-			),
-			array(
+			],
+			[
 				'value' => '5.00',
-			),
-			array(
+			],
+			[
 				'value' => '5.00%',
-			),
-		));
+			],
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 20.00,
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 31.50);
 
@@ -127,17 +127,17 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_percentage()
 	{
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'price <= 20.00',
-		));
+		]);
 
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'value' => '17.50%',
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 20.00,
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 23.50);
 
@@ -149,22 +149,22 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_multiple_actions()
 	{
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'price <= 20.00',
-		));
+		]);
 
-		$this->condition->setActions(array(
-			array(
+		$this->condition->setActions([
+			[
 				'value' => '10.00',
-			),
-			array(
+			],
+			[
 				'value' => '10.00%',
-			),
-		));
+			],
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 20.00,
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 33.00);
 
@@ -176,19 +176,19 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_a_multiplier()
 	{
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'price <= 20.00',
-		));
+		]);
 
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'multiplier' => 'quantity',
 			'value'      => '10.00',
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price'    => 20.00,
 			'quantity' => 5,
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 150.00);
 
@@ -200,24 +200,24 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_multiple_rules_and_multiple_actions()
 	{
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'name = test',
 			'price <= 20.00',
-		));
+		]);
 
-		$this->condition->setActions(array(
-			array(
+		$this->condition->setActions([
+			[
 				'value' => '10.00',
-			),
-			array(
+			],
+			[
 				'value' => '10.00%',
-			),
-		));
+			],
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 20.00,
 			'name'  => 'test',
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 33.00);
 
@@ -229,28 +229,28 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_percentage_and_regular_arithmetic()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			// Add 12.5% Tax
-			array(
+			[
 				'multiplier' => 'quantity',
 				'value'      => '12.50%',
-			),
+			],
 
 			// Add 10% service charge
-			array(
+			[
 				'value' => '10.00%',
-			),
+			],
 
 			// Add 5.00 to the total
-			array(
+			[
 				'value' => '5.00',
-			),
-		));
+			],
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price'    => 25.00,
 			'quantity' => 5,
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection, 25.00),  159.6875);
 
@@ -262,15 +262,15 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_subtraction_actions()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'multiplier' => 'quantity',
 			'value'      => '-12.50%',
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price'    => 25.00,
 			'quantity' => 5,
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection, 25.00), 109.375);
 
@@ -282,15 +282,15 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_multiplication()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'multiplier' => 'quantity',
 			'value'      => '*12.50%',
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price'    => 25.00,
 			'quantity' => 5,
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection, 25.00), 390.625);
 
@@ -302,24 +302,24 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_does_not_apply_if_no_rules_match()
 	{
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'name = test',
 			'price < 20.00',
-		));
+		]);
 
-		$this->condition->setActions(array(
-			array(
+		$this->condition->setActions([
+			[
 				'value' => '10.00',
-			),
-			array(
+			],
+			[
 				'value' => '10.00%',
-			),
-		));
+			],
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'name'  => 'test',
 			'price' => 20.00,
-		));
+		]);
 
 		$this->assertFalse($this->condition->apply($testCollection));
 
@@ -331,14 +331,14 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_without_rules()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'value' => '10.00',
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 20.00,
 			'name'  => 'test',
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 30.00);
 
@@ -350,36 +350,36 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_apply_on_any_property()
 	{
-		$this->condition = new Condition(array(
+		$this->condition = new Condition([
 			'target' => 'weight',
-		));
+		]);
 
-		$this->condition->setRules(array(
+		$this->condition->setRules([
 			'weight >= 5',
 			'tons != 4',
-		));
+		]);
 
-		$this->condition->setActions(array(
-			array(
+		$this->condition->setActions([
+			[
 				'target'     => 'weight',
 				'multiplier' => 'tons',
 				'value'      => '10.00',
-			),
-			array(
+			],
+			[
 				'value' => '10.00%',
-			),
-		));
+			],
+		]);
 
-		$testCollection = new Collection(array(
-			array(
+		$testCollection = new Collection([
+			[
 				'weight' => 20.00,
 				'tons'   => 5.00,
-			),
-			array(
+			],
+			[
 				'weight' => 2.00,
 				'tons'   => 5.00,
-			),
-		));
+			],
+		]);
 
 		$item1 = $testCollection->first();
 
@@ -397,16 +397,16 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		// Not matching
 		$this->assertFalse($results[1]['total']);
 
-		$this->assertEquals($results, array(
-			array(
+		$this->assertEquals($results, [
+			[
 				'total'  => 165,
 				'result' => 145,
-			),
-			array(
+			],
+			[
 				'total'  => false,
 				'result' => false,
-			),
-		));
+			],
+		]);
 	}
 
 	/**
@@ -414,15 +414,15 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_handle_a_max_value()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'value' => '10.00%',
 			'max'   => 20.00,
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 800.00,
 			'name'  => 'test',
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 820);
 
@@ -434,15 +434,15 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_calculate_reverse_percentage_values()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'value' => '10.00%',
 			'inclusive' => true,
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 440.00,
 			'name'  => 'test',
-		));
+		]);
 
 		// Apply condition
 		$this->condition->apply($testCollection);
@@ -456,15 +456,15 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_calculate_reverse_values()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'value' => '-10.00',
 			'inclusive' => true,
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 440.00,
 			'name'  => 'test',
-		));
+		]);
 
 		// Apply condition
 		$this->condition->apply($testCollection);
@@ -478,15 +478,15 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_handle_a_negative_max_value()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'value' => '-10.00%',
 			'max'   => -20.00,
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 400.00,
 			'name'  => 'test',
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 380);
 
@@ -498,15 +498,15 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_ignores_max_value_if_not_reached()
 	{
-		$this->condition->setActions(array(
+		$this->condition->setActions([
 			'value' => '10.00%',
 			'max'   => 200.00,
-		));
+		]);
 
-		$testCollection = new Collection(array(
+		$testCollection = new Collection([
 			'price' => 800.00,
 			'name'  => 'test',
-		));
+		]);
 
 		$this->assertEquals($this->condition->apply($testCollection), 880);
 

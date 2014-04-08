@@ -99,7 +99,7 @@ class Condition extends Collection {
 			return;
 		}
 
-		$_actions = $this->get('actions', array());
+		$_actions = $this->get('actions', []);
 
 		$_actions[] = new Collection($actions);
 
@@ -190,7 +190,7 @@ class Condition extends Collection {
 	{
 		$valid = true;
 
-		foreach ($this->get('rules', array()) as $rule)
+		foreach ($this->get('rules', []) as $rule)
 		{
 			if ( ! $this->validateRule($collection, $rule))
 			{

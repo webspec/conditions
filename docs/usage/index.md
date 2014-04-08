@@ -4,9 +4,9 @@ Actions define the behavior the condition will apply on the collection.
 
 ## Define actions {#define-actions}
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value' => '-10%',
-	));
+	]);
 
 The action above will deduct 10 percent of the target property.
 
@@ -15,14 +15,14 @@ The action above will deduct 10 percent of the target property.
 You can define multiple actions to be applied on one collection, simply pass another array with your desired action.
 Defining multiple actions on one condition will accumulate based on the target property.
 
-	$condition->setActions(array(
-		array(
+	$condition->setActions([
+		[
 			'value' => '17.5%',
 		),
-		array(
+		[
 			'value' => '5%',
 		),
-	));
+	]);
 
 The example above will add 17.5% first, then add 5% to the result of the previous action.
 
@@ -32,17 +32,17 @@ The example above will add 17.5% first, then add 5% to the result of the previou
 
 You can specify a callback on setActions that will run upon successfully validating the condition.
 
-	$collection = new Collection(array(
+	$collection = new Collection([
 		'name'     => 'An item',
 		'price'    => 100.00,
 		'quantity' => 5,
-	));
+	]);
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'target' => 'price',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value'      => '20%',
 		'multiplier' => 'quantity',
 	), function()
@@ -54,20 +54,20 @@ You can specify a callback on setActions that will run upon successfully validat
 
 Actions can contain a reference to a multiplier field
 
-	$collection = new Collection(array(
+	$collection = new Collection([
 		'name'     => 'An item',
 		'price'    => 100.00,
 		'quantity' => 5,
-	));
+	]);
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'target' => 'price',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value'      => '20%',
 		'multiplier' => 'quantity',
-	));
+	]);
 
 The example above will multiply the condition result by the quantity.
 
@@ -75,19 +75,19 @@ The example above will multiply the condition result by the quantity.
 
 Actions can contain a max property that will prevent the condition from reaching beyond that limit.
 
-	$collection = new Collection(array(
+	$collection = new Collection([
 		'name'     => 'An item',
 		'price'    => 100.00,
-	));
+	]);
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'target' => 'price',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value' => '20%',
 		'max'   => 10,
-	));
+	]);
 
 	$condition->apply($collection); // 110
 
@@ -97,19 +97,19 @@ Actions can contain a max property that will prevent the condition from reaching
 
 Actions can contain an inclusive property that will reverse calculate the action value.
 
-	$collection = new Collection(array(
+	$collection = new Collection([
 		'name'     => 'An item',
 		'price'    => 100.00,
-	));
+	]);
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'target' => 'price',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value'     => '10%',
 		'inclusive' => true,
-	));
+	]);
 
 	$condition->apply($collection);
 

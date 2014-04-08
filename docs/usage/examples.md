@@ -2,22 +2,22 @@
 
 ## Apply 10% Discount if subtotal is larger than 200
 
-	$collection = new Illuminate\Support\Collection(array(
+	$collection = new Illuminate\Support\Collection([
 		'name'     => 'Item',
 		'subtotal' => 400,
-	));
+	]);
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'target' => 'subtotal',
-	));
+	]);
 
-	$condition->setRules(array(
+	$condition->setRules([
 		'subtotal > 200',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value' => '-10%',
-	));
+	]);
 
 	$condition->apply($collection); // 360
 
@@ -25,18 +25,18 @@
 
 ## Apply 12.5% Tax without rules
 
-	$collection = new Illuminate\Support\Collection(array(
+	$collection = new Illuminate\Support\Collection([
 		'name'     => 'Item',
 		'subtotal' => 400,
-	));
+	]);
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'target' => 'subtotal',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 		'value' => '12.5%',
-	));
+	]);
 
 	$condition->apply($collection); // 450
 

@@ -4,9 +4,9 @@ Rules validate the collection before applying the condition, it returns false if
 
 ## Define rules {#define-rules}
 
-	$condition->setRules(array(
+	$condition->setRules([
 		'price < 200',
-	));
+	]);
 
 The condition above will only apply if the price property is smaller than 200.
 
@@ -14,10 +14,10 @@ The condition above will only apply if the price property is smaller than 200.
 
 You can define multiple rules to be validated on a collection, condition is only applied if all rules are valid.
 
-	$condition->setRules(array(
+	$condition->setRules([
 		'price > 200',
 		'quantity > 10',
-	));
+	]);
 
 The condition above will only apply if both rules are met.
 

@@ -17,7 +17,7 @@ History and future capabilities.
 - ```Condition::getRules()``` User can return the applied rules.
 - ```Condition::setRules($rules)``` User can set rules.
 - ```Condition::getActions()``` User can return the applied actions.
-- ```Condition::setActions($actions)``` User can set actions.
+- ```Condition::setActions($actions, Closure $callback)``` User can set actions.
 - ```Condition::apply(Collection $collection, $target)``` User can apply the conditions to the given collection.
 - ```Condition::validate(Collection $collection)``` User can validate the rules against the given collection.
 

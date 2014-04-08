@@ -29,7 +29,7 @@ or
 
 	php composer update
 
-Now you are able to require the `vendor/autoload.php` file to PSR-4 autoload the package.
+Now you are able to require the `vendor/autoload.php` file to autoload the package.
 
 ## Example
 

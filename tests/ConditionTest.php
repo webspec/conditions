@@ -513,4 +513,147 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->condition->result(), 80);
 	}
 
+
+	/**
+	 * @test
+	 */
+	public function it_can_handle_callback_on_a_single_action()
+	{
+		$mock = m::mock('callbackMock');
+
+		$mock->shouldReceive('callback')->once();
+
+		$this->condition->setActions(
+			array(
+				'value'    => '10.00%',
+			),
+			function() use($mock)
+			{
+				$mock->callback();
+			}
+		);
+
+		$testCollection = new Collection(array(
+			'price' => 800.00,
+			'name'  => 'test',
+		));
+
+		$this->assertEquals($this->condition->apply($testCollection), 880);
+
+		$this->assertEquals($this->condition->result(), 80);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_handle_callback_on_multi_actions()
+	{
+		$mock = m::mock('callbackMock');
+
+		$mock->shouldReceive('callback')->twice();
+
+		$this->condition->setActions(array(
+			array(
+				'value' => '10.00%',
+			),
+			array(
+				'value' => '15.00%',
+			)
+		), function() use($mock)
+		{
+			$mock->callback();
+			$mock->callback();
+		});
+
+		$testCollection = new Collection(array(
+			'price' => 800.00,
+			'name'  => 'test',
+		));
+
+		$this->assertEquals($this->condition->apply($testCollection), 1012);
+
+		$this->assertEquals($this->condition->result(), 212);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_ignores_callback_on_invalid_conditions()
+	{
+		$mock = m::mock('callbackMock');
+
+		$this->condition->setActions(array(
+			array(
+				'value' => '10.00%',
+			),
+			array(
+				'value' => '15.00%',
+			)
+		), function() use($mock)
+		{
+			$mock->callback();
+		});
+
+		$this->condition->setRules(array(
+			'price < 200',
+		));
+
+		$testCollection = new Collection(array(
+			'price' => 800.00,
+			'name'  => 'test',
+		));
+
+		$this->assertEquals($this->condition->apply($testCollection), false);
+
+		$this->assertEquals($this->condition->result(), 0);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_handle_callback_on_multi_collection_conditions()
+	{
+		$mock = m::mock('callbackMock');
+
+		$this->condition->setActions([
+			[
+				'value' => '10.00%',
+			],
+			[
+				'value' => '15.00%',
+			]
+		], function() use($mock)
+		{
+			$mock->callback();
+		});
+
+		$this->condition->setRules([
+			'price < 200',
+		]);
+
+		$testCollection = new Collection([
+			[
+				'weight' => 20.00,
+				'tons'   => 5.00,
+			],
+			[
+				'weight' => 2.00,
+				'tons'   => 5.00,
+			],
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), [
+			[
+				'total' => false,
+				'result' => false,
+			],
+			[
+				'total' => false,
+				'result' => false,
+			],
+		]);
+
+		$this->assertEquals($this->condition->result(), 0);
+	}
+
 }

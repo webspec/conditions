@@ -40,30 +40,16 @@ class Condition extends Collection {
 	/**
 	 * Holds the condition callback.
 	 *
-	 * @var  \Closure
+	 * @var \Closure
 	 */
 	protected $callback;
 
 	/**
-	 * Returns the condition rules.
+	 * Holds the validation callback.
 	 *
-	 * @return array
+	 * @var \Closure
 	 */
-	public function getRules()
-	{
-		return $this->get('rules');
-	}
-
-	/**
-	 * Set the condition rules.
-	 *
-	 * @param  array  $rules
-	 * @return void
-	 */
-	public function setRules($rules)
-	{
-		$this->put('rules', $rules);
-	}
+	protected $validationClosure;
 
 	/**
 	 * Returns the condition actions.
@@ -76,10 +62,10 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Set the condition actions.
+	 * Sets the condition actions.
 	 *
-	 * @param  array          $actions
-	 * @param  \Closure|null  $callback
+	 * @param  array  $actions
+	 * @param  \Closure  $callback
 	 * @return void
 	 */
 	public function setActions($actions, Closure $callback = null)
@@ -103,75 +89,39 @@ class Condition extends Collection {
 
 		$_actions[] = new Collection($actions);
 
-		if ($callback)
-		{
-			$this->callback = $callback;
-		}
-
 		$this->put('actions', $_actions);
 	}
 
 	/**
-	 * Apply the conditions to the given collection.
+	 * Returns the condition rules.
 	 *
-	 * @param  \Illuminate\Support\Collection  $collection
-	 * @param  float  $target
-	 * @return float
+	 * @return array
 	 */
-	public function apply(Collection $collection, $target = 0)
+	public function getRules()
 	{
-		// Reset result
-		$this->result = 0;
-
-		// Override target if provided
-		$target = $target ?: $collection->get($this->get('target'));
-
-		if ($this->isMulti($collection->all()))
-		{
-			foreach ($collection as $key => $value)
-			{
-				$result = $this->apply(new Collection($value));
-
-				array_set($results, "{$key}.total", $result ?: false);
-
-				array_set($results, "{$key}.result", $result ? $this->result() : false);
-			}
-
-			if ($this->callback && $result)
-			{
-				call_user_func($this->callback);
-			}
-
-			return $results;
-		}
-
-		if ($this->validate($collection))
-		{
-			$this->subtotal = $target;
-
-			foreach ($this->get('actions') as $action)
-			{
-				// If result was previously set, use that
-				$target = $this->result ?: $target;
-
-				// Apply condition
-				$result = $this->applyAction($collection, $action, $target);
-
-				// Set result
-				$this->result = $result;
-			}
-		}
-
-		if ($this->callback && $this->result)
-		{
-			call_user_func($this->callback);
-		}
-
-		return $this->result ?: false;
+		return $this->get('rules');
 	}
 
 	/**
-	 * Returns net result.
+	 * Sets the condition rules.
+	 *
+	 * @param  mixed  $rules
+	 * @return void
+	 */
+	public function setRules($rules)
+	{
+		if ($rules instanceof Closure)
+		{
+			$this->validationClosure = $rules;
+
+			return;
+		}
+
+		$this->put('rules', $rules);
+	}
+
+	/**
+	 * Returns the total condition value.
 	 *
 	 * @return float
 	 */
@@ -181,26 +131,65 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Validate a set of rules.
+	 * Apply the conditions to the given collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
-	 * @return bool
+	 * @param  float  $target
+	 * @return float|false
 	 */
-	public function validate(Collection $collection)
+	public function apply(Collection $collection, $target = 0)
 	{
-		$valid = true;
+		$this->result = 0;
 
-		foreach ($this->get('rules', []) as $rule)
+		$target = $target ?: $collection->get($this->get('target'));
+
+		if ($this->validate($collection, $this->validationClosure))
 		{
-			if ( ! $this->validateRule($collection, $rule))
-			{
-				$valid = false;
+			$this->subtotal = $target;
 
-				break;
+			foreach ($this->get('actions') as $action)
+			{
+				$target = $this->result ?: $target;
+
+				$result = $this->applyAction($collection, $action, $target);
+
+				$this->result = $result;
+			}
+
+			if ($this->callback instanceof Closure)
+			{
+				call_user_func($this->callback);
 			}
 		}
 
-		return $valid;
+		return $this->result ?: false;
+	}
+
+	/**
+	 * Validate a set of rules.
+	 *
+	 * @param  \Illuminate\Support\Collection  $collection
+	 * @param  \Closure  $closure
+	 * @return bool
+	 */
+	public function validate(Collection $collection, Closure $closure = null)
+	{
+		if ($closure)
+		{
+			return call_user_func($closure, $collection);
+		}
+
+		$rules = $this->get('rules', []);
+
+		foreach ($rules as $rule)
+		{
+			if ( ! $this->validateRule($collection, $rule))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -213,35 +202,21 @@ class Condition extends Collection {
 	 */
 	protected function applyAction(Collection $collection, Collection $action, $target)
 	{
-		$operation = $action->get('value');
-
+		$operation  = $action->get('value');
 		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
+		$max        = $action->get('max') ?: 0;
 
-		$max = $action->get('max') ?: 0;
+		list($operator, $percentage, $value) = $this->parseAction($operation);
 
-		// Match operator
-		preg_match('/[+\-\*\/]/', $operation, $operator);
-		$operator = implode($operator);
-
-		// Match value
-		preg_match('/[0-9\.]+/', $operation, $value);
-		$value = implode($value);
-
-		// Match percentage
-		preg_match('/[%]/', $operation, $percentage);
-
-		// Inclusive
 		if ($inclusive = $action->get('inclusive'))
 		{
 			$ratio = 1 + ($value / 100);
 
-			$value = implode($percentage) ? $target - ($target / $ratio) : $value;
+			$value = $percentage ? $target - ($target / $ratio) : $value;
 		}
 
-		// Apply percentage if specified
-		$value = implode($percentage) && ! $inclusive ? ($target * ($value) / 100) : $value;
+		$value = $percentage && ! $inclusive ? ($target * ($value) / 100) : $value;
 
-		// Calculate values
 		return $this->calculate($target, $operator, $value, $max) * $multiplier;
 	}
 
@@ -254,45 +229,54 @@ class Condition extends Collection {
 	 */
 	protected function validateRule(Collection $collection, $rule)
 	{
-		// Match operator
 		preg_match('/[=\<\>\!]+/', $rule, $operator);
-		$operator = implode($operator) ?: null;
 
-		// Values
-		$values = array_map('trim', preg_split('/[=\<\>\!]+/', $rule));
+		$operator = head($operator) ?: null;
+		$values   = array_map('trim', preg_split('/[=\<\>\!]+/', $rule));
 
-		if ($this->operatorCheck($collection->get($values[0]), $operator, $values[1]))
-		{
-			return true;
-		}
-
-		return false;
+		return $this->operatorCheck($collection->get($values[0]), $operator, $values[1]) ?: false;
 	}
 
 	/**
 	 * Performs arithmetic calculations.
 	 *
-	 * @param  string  $operator
 	 * @param  string  $target
+	 * @param  string  $operator
 	 * @param  string  $value
+	 * @param  int  $max
 	 * @return float
 	 */
 	protected function calculate($target, $operator, $value, $max = 0)
 	{
 		switch ($operator)
 		{
-			case '+':
 			default:
+			case '+':
 
-				return $max ? $target + $max > $target + $value ? $target + $value : $target + $max : $target + $value;
+				if ($max)
+				{
+					return ($target + $max) > ($target + $value) ? ($target + $value) : ($target + $max);
+				}
+
+				return $target + $value;
 
 			case '*':
+
+				if ($max)
+				{
+					return ($target + $max) > ($target * $value) ? ($target * $value) : ($target + $max);
+				}
 
 				return $target * $value;
 
 			case '-':
 
-				return $max ? $target + $max < $target - $value ? $target - $value : $target + $max : $target - $value;
+				if ($max)
+				{
+					return ($target + $max) < ($target - $value) ? ($target - $value) : ($target + $max);
+				}
+
+				return $target - $value;
 		}
 	}
 
@@ -308,19 +292,43 @@ class Condition extends Collection {
 	{
 		switch ($operator)
 		{
-			case '=':
-			default:   return $target == $value;
-
-			case '<':  return $target < $value;
+			default:
+			case '=':  return $target == $value;
 
 			case '<=': return $target <= $value;
 
-			case '>':  return $target > $value;
-
 			case '>=': return $target >= $value;
+
+			case '<':  return $target < $value;
+
+			case '>':  return $target > $value;
 
 			case '!=': return $target != $value;
 		}
+	}
+
+	/**
+	 * Parse action.
+	 *
+	 * @param  string  $value
+	 * @return mixed
+	 */
+	protected function parseAction($value)
+	{
+		$operatorRegex   = '/[+\-\*\/]/';
+		$valueRegex      = '/[0-9\.]+/';
+		$percentageRegex = '/[%]/';
+
+		$percentage = strpos($value, '%');
+
+		preg_match($operatorRegex, $value, $operator);
+		preg_match($valueRegex, $value, $values);
+
+		return [
+			head($operator),
+			$percentage,
+			head($values),
+		];
 	}
 
 	/**

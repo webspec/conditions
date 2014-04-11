@@ -52,6 +52,34 @@ class Condition extends Collection {
 	protected $validationClosure;
 
 	/**
+	 * Returns the condition rules.
+	 *
+	 * @return array
+	 */
+	public function getRules()
+	{
+		return $this->get('rules');
+	}
+
+	/**
+	 * Sets the condition rules.
+	 *
+	 * @param  mixed  $rules
+	 * @return void
+	 */
+	public function setRules($rules)
+	{
+		if ($rules instanceof Closure)
+		{
+			$this->validationClosure = $rules;
+
+			return;
+		}
+
+		$this->put('rules', $rules);
+	}
+
+	/**
 	 * Returns the condition actions.
 	 *
 	 * @return array
@@ -90,34 +118,6 @@ class Condition extends Collection {
 		$_actions[] = new Collection($actions);
 
 		$this->put('actions', $_actions);
-	}
-
-	/**
-	 * Returns the condition rules.
-	 *
-	 * @return array
-	 */
-	public function getRules()
-	{
-		return $this->get('rules');
-	}
-
-	/**
-	 * Sets the condition rules.
-	 *
-	 * @param  mixed  $rules
-	 * @return void
-	 */
-	public function setRules($rules)
-	{
-		if ($rules instanceof Closure)
-		{
-			$this->validationClosure = $rules;
-
-			return;
-		}
-
-		$this->put('rules', $rules);
 	}
 
 	/**
@@ -190,6 +190,21 @@ class Condition extends Collection {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Resets the condition.
+	 *
+	 * @return void
+	 */
+	public function reset()
+	{
+		$this->result = 0;
+		$this->subtotal = 0;
+		$this->validationClosure = null;
+		$this->callback = null;
+		$this->put('actions', []);
+		$this->put('rules', []);
 	}
 
 	/**

@@ -9,5 +9,6 @@
 - [Rules]({url}/usage/rules)
 	- [Define rules](#define-rules)
 	- [Multiple rules](#multiple-rules)
+	- [Closure rules](#closure-rules)
 	- [Comparison Operators](#comparison-operators)
 - [Examples]({url}/usage/examples)

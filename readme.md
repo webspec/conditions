@@ -15,15 +15,16 @@ History and future capabilities.
 #### xx-Jan-14 - v1.0.0
 
 - ```Condition::getRules()``` User can return the applied rules.
-- ```Condition::setRules($rules)``` User can set rules.
+- ```Condition::setRules($rules|Closure $closure)``` User can set validation rules or closure.
 - ```Condition::getActions()``` User can return the applied actions.
-- ```Condition::setActions($actions, Closure $callback)``` User can set actions.
+- ```Condition::setActions($actions, Closure $callback)``` User can set actions and callback.
 - ```Condition::apply(Collection $collection, $target)``` User can apply the conditions to the given collection.
 - ```Condition::validate(Collection $collection)``` User can validate the rules against the given collection.
+- ```Condition::reset()``` User can reset conditions.
 
 ## Requirements
 
-- PHP >=5.3
+- PHP >=5.4
 
 ## Installation
 

@@ -6,7 +6,7 @@ The package follows the FIG standard PSR-4 to ensure a high level of interoperab
 
 ## Getting started
 
-The package requires PHP 5.3+.
+The package requires PHP 5.4+.
 
 Have a [read through the Installation Guide]({url}/introduction/installation).
 

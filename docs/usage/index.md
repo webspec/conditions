@@ -47,7 +47,7 @@ You can specify a callback on setActions that will run upon successfully validat
 		'multiplier' => 'quantity',
 	), function()
 	{
-		// Code here will run when the condition is applied ( only if valid )
+		// Code here will run when the condition is applied ( only if successfully validated )
 	});
 
 ## Multiplier {#multiplier}

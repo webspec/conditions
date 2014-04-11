@@ -21,6 +21,17 @@ You can define multiple rules to be validated on a collection, condition is only
 
 The condition above will only apply if both rules are met.
 
+## Closure Rules {#closure-rules}
+
+You can set a closure as a validation rule on the condition.
+
+	$promotion = true;
+
+	$condition->setRules(function($collection) use ($promotion)
+	{
+		return $promotion && $collection->get('price') > 100;
+	});
+
 ## Comparison Operators {#comparison-operators}
 
 Operator  | Example

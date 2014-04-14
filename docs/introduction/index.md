@@ -2,7 +2,7 @@
 
 A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
 
-The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested with 100% code coverage.
+The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
 
 ## Getting started
 
@@ -19,7 +19,7 @@ Have a [read through the Installation Guide]({url}/introduction/installation).
 		'subtotal' => 200,
 	]);
 
-> **Note:** You can apply Conditions to any Illuminate Collection.
+> **Note:** You can apply Conditions on any Illuminate Collection.
 
 ### Create a new Condition
 

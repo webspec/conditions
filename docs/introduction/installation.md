@@ -1,6 +1,6 @@
 # Installation
 
-The best and easy way to install the Converter package is with [Composer](http://getcomposer.org).
+The best and easiest way to install the Converter package is with [Composer](http://getcomposer.org).
 
 ## Preparation
 

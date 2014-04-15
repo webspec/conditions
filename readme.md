@@ -1,4 +1,4 @@
-# Conditions v1.0.0
+# Conditions
 
 A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
 
@@ -14,13 +14,13 @@ History and future capabilities.
 
 #### xx-Jan-14 - v1.0.0
 
-- ```Condition::getRules()``` User can return the applied rules.
-- ```Condition::setRules($rules|Closure $closure)``` User can set validation rules or closure.
-- ```Condition::getActions()``` User can return the applied actions.
-- ```Condition::setActions($actions, Closure $callback)``` User can set actions and callback.
-- ```Condition::apply(Collection $collection, $target)``` User can apply the conditions to the given collection.
-- ```Condition::validate(Collection $collection)``` User can validate the rules against the given collection.
-- ```Condition::reset()``` User can reset conditions.
+- ```Condition::getRules()``` Returns the applied rules.
+- ```Condition::setRules($rules|Closure $closure)``` Set validation rules or closure.
+- ```Condition::getActions()``` Returns the applied actions.
+- ```Condition::setActions($actions, Closure $callback)``` Set actions and callback.
+- ```Condition::apply(Collection $collection, $target)``` Apply the conditions to the given collection.
+- ```Condition::validate(Collection $collection)``` Validate the rules against the given collection.
+- ```Condition::reset()``` Reset conditions.
 
 ## Requirements
 

@@ -43,29 +43,6 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Creates a collection with the given data.
-	 *
-	 * @param  float  $price
-	 * @param  int  $quantity
-	 * @param  array  $additionalData
-	 * @return \Illuminate\Support\Collection
-	 */
-	protected function createCollection($price, $quantity = 0, $additionalData = [])
-	{
-		$data = [
-			'price'    => $price,
-			'quantity' => $quantity,
-		];
-
-		foreach ($additionalData as $key => $value)
-		{
-			$data[$key] = $value;
-		}
-
-		return new Collection($data);
-	}
-
-	/**
 	 * Close mockery.
 	 *
 	 * @return void
@@ -494,6 +471,29 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->condition->apply($testCollection), false);
 		$this->assertEquals($this->condition->result(), 0);
+	}
+
+	/**
+	 * Creates a collection with the given data.
+	 *
+	 * @param  float  $price
+	 * @param  int  $quantity
+	 * @param  array  $additionalData
+	 * @return \Illuminate\Support\Collection
+	 */
+	protected function createCollection($price, $quantity = 0, $additionalData = [])
+	{
+		$data = [
+			'price'    => $price,
+			'quantity' => $quantity,
+		];
+
+		foreach ($additionalData as $key => $value)
+		{
+			$data[$key] = $value;
+		}
+
+		return new Collection($data);
 	}
 
 }

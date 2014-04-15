@@ -200,10 +200,15 @@ class Condition extends Collection {
 	public function reset()
 	{
 		$this->result = 0;
+
 		$this->subtotal = 0;
+
 		$this->validationClosure = null;
+
 		$this->callback = null;
+
 		$this->put('actions', []);
+
 		$this->put('rules', []);
 	}
 
@@ -247,7 +252,8 @@ class Condition extends Collection {
 		preg_match('/[=\<\>\!]+/', $rule, $operator);
 
 		$operator = head($operator) ?: null;
-		$values   = array_map('trim', preg_split('/[=\<\>\!]+/', $rule));
+
+		$values = array_map('trim', preg_split('/[=\<\>\!]+/', $rule));
 
 		return $this->operatorCheck($collection->get($values[0]), $operator, $values[1]) ?: false;
 	}
@@ -326,18 +332,15 @@ class Condition extends Collection {
 	 * Parse action.
 	 *
 	 * @param  string  $value
-	 * @return mixed
+	 * @return array
 	 */
 	protected function parseAction($value)
 	{
-		$operatorRegex   = '/[+\-\*\/]/';
-		$valueRegex      = '/[0-9\.]+/';
-		$percentageRegex = '/[%]/';
-
 		$percentage = strpos($value, '%');
 
-		preg_match($operatorRegex, $value, $operator);
-		preg_match($valueRegex, $value, $values);
+		preg_match('/[+\-\*\/]/', $value, $operator);
+
+		preg_match('/[0-9\.]+/', $value, $values);
 
 		return [
 			head($operator),
@@ -347,16 +350,14 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Checks if the provided array is a multidimensional array.
+	 * Checks if the given array is a multidimensional array.
 	 *
 	 * @param  array  $array
 	 * @return bool
 	 */
 	protected function isMulti($array)
 	{
-		$array = array_shift($array);
-
-		return is_array($array);
+		return is_array(array_shift($array));
 	}
 
 }

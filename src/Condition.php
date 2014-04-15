@@ -20,6 +20,7 @@
 
 use Closure;
 use Illuminate\Support\Collection;
+use Illuminate\Support\SerializableClosure;
 
 class Condition extends Collection {
 
@@ -69,7 +70,7 @@ class Condition extends Collection {
 	 */
 	public function setRules($rules)
 	{
-		if ($rules instanceof Closure)
+		if ($rules instanceof Closure || $rules instanceof SerializableClosure)
 		{
 			$this->validationClosure = $rules;
 
@@ -96,7 +97,7 @@ class Condition extends Collection {
 	 * @param  \Closure  $callback
 	 * @return void
 	 */
-	public function setActions($actions, Closure $callback = null)
+	public function setActions($actions, $callback = null)
 	{
 		if ($callback)
 		{
@@ -139,7 +140,8 @@ class Condition extends Collection {
 	 */
 	public function apply(Collection $collection, $target = 0)
 	{
-		$this->result = 0;
+		$this->result   = 0;
+		$this->subtotal = 0;
 
 		$target = $target ?: $collection->get($this->get('target'));
 
@@ -156,7 +158,7 @@ class Condition extends Collection {
 				$this->result = $result;
 			}
 
-			if ($this->callback instanceof Closure)
+			if ($this->callback instanceof Closure || $this->callback instanceof SerializableClosure)
 			{
 				call_user_func($this->callback);
 			}
@@ -172,7 +174,7 @@ class Condition extends Collection {
 	 * @param  \Closure  $closure
 	 * @return bool
 	 */
-	public function validate(Collection $collection, Closure $closure = null)
+	public function validate(Collection $collection, $closure = null)
 	{
 		if ($closure)
 		{

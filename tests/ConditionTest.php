@@ -65,7 +65,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'price <= 20',
 		]);
 
-		$this->assertEquals(count($this->condition->getRules()), 1);
+		$this->assertCount(1, $this->condition->getRules());
 	}
 
 	/** @test */
@@ -83,7 +83,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->assertEquals(count($this->condition->getActions()), 3);
+		$this->assertCount(3, $this->condition->getActions());
 	}
 
 	/** @test */

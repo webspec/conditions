@@ -1,6 +1,6 @@
 {
 	"name": "cartalyst/conditions",
-	"description": "A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.",
+	"description": "A modern and framework agnostic conditions package that allows you to apply conditions on Illuminate Collections.",
 	"keywords": [
 		"php",
 		"cartalyst",
@@ -40,6 +40,7 @@
 		"illuminate/support": "~4.1"
 	},
 	"require-dev": {
+		"jeremeamia/superclosure": "~1.0",
 		"mockery/mockery": "~0.9",
 		"phpunit/phpunit": "~4.0"
 	},

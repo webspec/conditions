@@ -1,6 +1,6 @@
 # Conditions
 
-A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
+A modern framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
 
 The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested with 100% code coverage.
 
@@ -12,15 +12,16 @@ History and future capabilities.
 
 ### Complete
 
-#### xx-Jan-14 - v1.0.0
+#### 10-May-14 - v1.0.0
 
 - ```Condition::getRules()``` Returns the applied rules.
-- ```Condition::setRules($rules|Closure $closure)``` Set validation rules or closure.
+- ```Condition::setRules($rules|$closure)``` Set validation rules or closure.
 - ```Condition::getActions()``` Returns the applied actions.
-- ```Condition::setActions($actions, Closure $callback)``` Set actions and callback.
-- ```Condition::apply(Collection $collection, $target)``` Apply the conditions to the given collection.
-- ```Condition::validate(Collection $collection)``` Validate the rules against the given collection.
-- ```Condition::reset()``` Reset conditions.
+- ```Condition::setActions($actions, $callback|null)``` Set actions and callback.
+- ```Condition::apply(Collection $collection, $target)``` Applies the condition on the given collection.
+- ```Condition::result(Collection $collection|null)``` Applies the condition on the given collection and returns the difference or returns the difference if the condition is already applied.
+- ```Condition::validate(Collection $collection, $closure|null)``` Validate the rules against the given collection.
+- ```Condition::reset()``` Reset condition.
 
 ## Requirements
 
@@ -30,7 +31,7 @@ History and future capabilities.
 
 Conditions is installable with Composer. Read further information on how to install.
 
-[Installation Guide](http://cartalyst.com/manual/conditions/introduction/installation)
+[Installation Guide](http://cartalyst.com/manual/conditions#installation)
 
 ## Documentation
 

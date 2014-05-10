@@ -40,14 +40,14 @@ class Condition extends Collection {
 	/**
 	 * Holds the condition callback.
 	 *
-	 * @var \Closure
+	 * @var \Closure|\Illuminate\Support\SerializableClosure
 	 */
 	protected $callback;
 
 	/**
 	 * Holds the validation callback.
 	 *
-	 * @var \Closure
+	 * @var \Closure|\Illuminate\Support\SerializableClosure
 	 */
 	protected $validationClosure;
 
@@ -93,7 +93,7 @@ class Condition extends Collection {
 	 * Sets the condition actions.
 	 *
 	 * @param  array  $actions
-	 * @param  \Closure  $callback
+	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $callback
 	 * @return void
 	 */
 	public function setActions($actions, $callback = null)
@@ -123,10 +123,16 @@ class Condition extends Collection {
 	/**
 	 * Returns the total condition value.
 	 *
+	 * @param  \Illuminate\Support\Collection  $collection
 	 * @return float
 	 */
-	public function result()
+	public function result(Collection $collection = null)
 	{
+		if ($collection)
+		{
+			$this->apply($collection);
+		}
+
 		return $this->result - $this->subtotal;
 	}
 
@@ -170,7 +176,7 @@ class Condition extends Collection {
 	 * Validate a set of rules.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
-	 * @param  \Closure  $closure
+	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $closure
 	 * @return bool
 	 */
 	public function validate(Collection $collection, $closure = null)

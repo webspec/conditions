@@ -121,22 +121,6 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Returns the total condition value.
-	 *
-	 * @param  \Illuminate\Support\Collection  $collection
-	 * @return float
-	 */
-	public function result(Collection $collection = null)
-	{
-		if ($collection)
-		{
-			$this->apply($collection);
-		}
-
-		return $this->result - $this->subtotal;
-	}
-
-	/**
 	 * Apply the conditions to the given collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
@@ -170,6 +154,22 @@ class Condition extends Collection {
 		}
 
 		return $this->result ?: false;
+	}
+
+	/**
+	 * Returns the total condition value.
+	 *
+	 * @param  \Illuminate\Support\Collection  $collection
+	 * @return float
+	 */
+	public function result(Collection $collection = null)
+	{
+		if ($collection)
+		{
+			$this->apply($collection);
+		}
+
+		return $this->result - $this->subtotal;
 	}
 
 	/**

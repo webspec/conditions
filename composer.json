@@ -44,6 +44,9 @@
 		"mockery/mockery": "~0.9",
 		"phpunit/phpunit": "~4.0"
 	},
+	"suggest": {
+		"jeremeamia/superclosure": "Wraps a PHP Closure to make it Serializable"
+	},
 	"autoload": {
 		"psr-4": {
 			"Cartalyst\\Conditions\\": "src/"

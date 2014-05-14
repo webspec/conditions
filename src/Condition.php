@@ -142,9 +142,7 @@ class Condition extends Collection {
 			{
 				$target = $this->result ?: $target;
 
-				$result = $this->applyAction($collection, $action, $target);
-
-				$this->result = $result;
+				$this->result = $this->applyAction($collection, $action, $target);
 			}
 
 			if ($this->callback instanceof Closure || $this->callback instanceof SerializableClosure)

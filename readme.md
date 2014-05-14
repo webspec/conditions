@@ -2,7 +2,7 @@
 
 A modern framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
 
-The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested with 100% code coverage.
+The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
 
@@ -15,13 +15,13 @@ History and future capabilities.
 #### 10-May-14 - v1.0.0
 
 - ```Condition::getRules()``` Returns the applied rules.
-- ```Condition::setRules($rules|$closure)``` Set validation rules or closure.
+- ```Condition::setRules($rules|$closure)``` Sets validation rules or closure.
 - ```Condition::getActions()``` Returns the applied actions.
-- ```Condition::setActions($actions, $callback|null)``` Set actions and callback.
+- ```Condition::setActions($actions, $callback|null)``` Sets actions and callback.
 - ```Condition::apply(Collection $collection, $target)``` Applies the condition on the given collection.
 - ```Condition::result(Collection $collection|null)``` Applies the condition on the given collection and returns the difference or returns the difference if the condition is already applied.
-- ```Condition::validate(Collection $collection, $closure|null)``` Validate the rules against the given collection.
-- ```Condition::reset()``` Reset condition.
+- ```Condition::validate(Collection $collection, $closure|null)``` Validates the rules against the given collection.
+- ```Condition::reset()``` Resets the condition.
 
 ## Requirements
 
@@ -31,13 +31,13 @@ History and future capabilities.
 
 Conditions is installable with Composer. Read further information on how to install.
 
-[Installation Guide](http://cartalyst.com/manual/conditions#installation)
+[Installation Guide](https://cartalyst.com/manual/conditions#installation)
 
 ## Documentation
 
 Refer to the following guide on how to use the Conditions package.
 
-[Documentation](http://cartalyst.com/manual/conditions)
+[Documentation](https://cartalyst.com/manual/conditions)
 
 ## Versioning
 

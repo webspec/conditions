@@ -1,6 +1,6 @@
 # Conditions
 
-A modern framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
+A framework agnostic conditions package that allows you to apply conditions on Illuminate Collections.
 
 The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
 

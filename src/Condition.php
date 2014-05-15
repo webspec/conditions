@@ -129,7 +129,8 @@ class Condition extends Collection {
 	 */
 	public function apply(Collection $collection, $target = 0)
 	{
-		$this->result   = 0;
+		$this->result = 0;
+
 		$this->subtotal = 0;
 
 		$target = $target ?: $collection->get($this->get('target'));
@@ -174,14 +175,14 @@ class Condition extends Collection {
 	 * Validate a set of rules.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
-	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $closure
+	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $callback
 	 * @return bool
 	 */
-	public function validate(Collection $collection, $closure = null)
+	public function validate(Collection $collection, $callback = null)
 	{
-		if ($closure)
+		if ($callback instanceof Closure || $callback instanceof SerializableClosure)
 		{
-			return call_user_func($closure, $collection);
+			return call_user_func($callback, $collection);
 		}
 
 		$rules = $this->get('rules', []);
@@ -208,13 +209,13 @@ class Condition extends Collection {
 
 		$this->subtotal = 0;
 
-		$this->validationClosure = null;
-
 		$this->callback = null;
 
-		$this->put('actions', []);
+		$this->validationClosure = null;
 
 		$this->put('rules', []);
+
+		$this->put('actions', []);
 	}
 
 	/**
@@ -227,9 +228,11 @@ class Condition extends Collection {
 	 */
 	protected function applyAction(Collection $collection, Collection $action, $target)
 	{
-		$operation  = $action->get('value');
+		$max = $action->get('max') ?: 0;
+
+		$operation = $action->get('value');
+
 		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
-		$max        = $action->get('max') ?: 0;
 
 		list($operator, $percentage, $value) = $this->parseAction($operation);
 
@@ -240,7 +243,7 @@ class Condition extends Collection {
 			$value = $percentage ? $target - ($target / $ratio) : $value;
 		}
 
-		$value = $percentage && ! $inclusive ? ($target * ($value) / 100) : $value;
+		$value = ($percentage && ! $inclusive) ? ($target * ($value) / 100) : $value;
 
 		return $this->calculate($target, $operator, $value, $max) * $multiplier;
 	}

@@ -15,12 +15,12 @@ History and future capabilities.
 #### 10-May-14 - v1.0.0
 
 - ```Condition::getRules()``` Returns the applied rules.
-- ```Condition::setRules($rules|$closure)``` Sets validation rules or closure.
+- ```Condition::setRules($rules)``` Sets an array of condition rules or a Closure.
 - ```Condition::getActions()``` Returns the applied actions.
 - ```Condition::setActions($actions, $callback|null)``` Sets actions and callback.
 - ```Condition::apply(Collection $collection, $target)``` Applies the condition on the given collection.
 - ```Condition::result(Collection $collection|null)``` Applies the condition on the given collection and returns the difference or returns the difference if the condition is already applied.
-- ```Condition::validate(Collection $collection, $closure|null)``` Validates the rules against the given collection.
+- ```Condition::validate(Collection $collection, $callback|null)``` Validates the rules against the given collection.
 - ```Condition::reset()``` Resets the condition.
 
 ## Requirements

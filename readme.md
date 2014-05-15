@@ -1,10 +1,10 @@
 # Conditions
 
-A framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
+A modern framework agnostic conditions package that allows you to apply different types of conditions on Illuminate Collections.
 
-The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested with 100% code coverage.
+The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
 
-Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
+Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
 
 ## Package Story
 
@@ -12,15 +12,16 @@ History and future capabilities.
 
 ### Complete
 
-#### xx-Jan-14 - v1.0.0
+#### 10-May-14 - v1.0.0
 
 - ```Condition::getRules()``` Returns the applied rules.
-- ```Condition::setRules($rules|Closure $closure)``` Set validation rules or closure.
+- ```Condition::setRules($rules|$closure)``` Sets validation rules or closure.
 - ```Condition::getActions()``` Returns the applied actions.
-- ```Condition::setActions($actions, Closure $callback)``` Set actions and callback.
-- ```Condition::apply(Collection $collection, $target)``` Apply the conditions to the given collection.
-- ```Condition::validate(Collection $collection)``` Validate the rules against the given collection.
-- ```Condition::reset()``` Reset conditions.
+- ```Condition::setActions($actions, $callback|null)``` Sets actions and callback.
+- ```Condition::apply(Collection $collection, $target)``` Applies the condition on the given collection.
+- ```Condition::result(Collection $collection|null)``` Applies the condition on the given collection and returns the difference or returns the difference if the condition is already applied.
+- ```Condition::validate(Collection $collection, $closure|null)``` Validates the rules against the given collection.
+- ```Condition::reset()``` Resets the condition.
 
 ## Requirements
 
@@ -30,13 +31,13 @@ History and future capabilities.
 
 Conditions is installable with Composer. Read further information on how to install.
 
-[Installation Guide](http://cartalyst.com/manual/conditions/introduction/installation)
+[Installation Guide](https://cartalyst.com/manual/conditions#installation)
 
 ## Documentation
 
 Refer to the following guide on how to use the Conditions package.
 
-[Documentation](http://cartalyst.com/manual/conditions)
+[Documentation](https://cartalyst.com/manual/conditions)
 
 ## Versioning
 
@@ -52,11 +53,13 @@ And constructed with the following guidelines:
 * New additions without breaking backward compatibility bumps the minor (and resets the patch)
 * Bug fixes and misc changes bumps the patch
 
+## Contributing
+
+Please read the [Contributing](contributing.md) guidelines.
+
 ## Support
 
-Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
-
-https://github.com/cartalyst/conditions/issues
+Have a bug? Please create an [issue](https://github.com/cartalyst/conditions/issues) here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
 
 Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
 
@@ -64,3 +67,5 @@ Join us for a chat on IRC.
 
 Server: irc.freenode.net
 Channel: #cartalyst
+
+Email: help@cartalyst.com

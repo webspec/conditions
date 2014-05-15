@@ -4,16 +4,15 @@
  *
  * NOTICE OF LICENSE
  *
- * Licensed under the 3-clause BSD License.
+ * Licensed under the Cartalyst PSL License.
  *
- * This source file is subject to the 3-clause BSD License that is
- * bundled with this package in the LICENSE file.  It is also available at
- * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
+ * This source file is subject to the Cartalyst PSL License that is
+ * bundled with this package in the license.txt file.
  *
  * @package    Conditions
  * @version    1.0.0
  * @author     Cartalyst LLC
- * @license    BSD License (3-clause)
+ * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
@@ -474,6 +473,46 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_validate_serializable_rules_closure()
+	{
+		$testCollection = $this->createCollection(800, 10);
+
+		// Valid condition
+		$promotion = true;
+
+		$closure = new \Illuminate\Support\SerializableClosure(function($collection) use($promotion)
+		{
+			return $collection->get('quantity') > 5 && $promotion;
+		});
+
+		$this->condition->setRules($closure);
+
+		$this->condition->setActions([
+			'value' => '10%',
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), 880);
+		$this->assertEquals($this->condition->result(), 80);
+
+		$this->condition->reset();
+
+		$closure = new \Illuminate\Support\SerializableClosure(function($collection)
+		{
+			return $collection->get('price') * 10 > 10000;
+		});
+
+		// Invalid condition
+		$this->condition->setRules($closure);
+
+		$this->condition->setActions([
+			'value' => '10%',
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), false);
+		$this->assertEquals($this->condition->result(), 0);
+	}
+
+	/** @test */
 	public function it_will_reset_subtotal_on_failure()
 	{
 		$testCollection = $this->createCollection(800, 10);
@@ -505,6 +544,30 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->condition->apply($testCollection), false);
 		$this->assertEquals($this->condition->result(), 0);
+	}
+
+	/** @test */
+	public function it_will_apply_condition_if_a_collection_is_passed()
+	{
+		$testCollection = $this->createCollection(800, 10);
+
+		$this->condition->setActions([
+			'value' => '10%',
+		]);
+
+		$this->assertEquals($this->condition->result($testCollection), 80);
+
+		// Invalid condition
+		$this->condition->setRules(function($collection)
+		{
+			return $collection->get('price') * 10 > 10000;
+		});
+
+		$this->condition->setActions([
+			'value' => '10%',
+		]);
+
+		$this->assertEquals($this->condition->result($testCollection), 0);
 	}
 
 	/**

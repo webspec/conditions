@@ -4,16 +4,15 @@
  *
  * NOTICE OF LICENSE
  *
- * Licensed under the 3-clause BSD License.
+ * Licensed under the Cartalyst PSL License.
  *
- * This source file is subject to the 3-clause BSD License that is
- * bundled with this package in the LICENSE file.  It is also available at
- * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
+ * This source file is subject to the Cartalyst PSL License that is
+ * bundled with this package in the license.txt file.
  *
  * @package    Conditions
  * @version    1.0.0
  * @author     Cartalyst LLC
- * @license    BSD License (3-clause)
+ * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
@@ -41,14 +40,14 @@ class Condition extends Collection {
 	/**
 	 * Holds the condition callback.
 	 *
-	 * @var \Closure
+	 * @var \Closure|\Illuminate\Support\SerializableClosure
 	 */
 	protected $callback;
 
 	/**
 	 * Holds the validation callback.
 	 *
-	 * @var \Closure
+	 * @var \Closure|\Illuminate\Support\SerializableClosure
 	 */
 	protected $validationClosure;
 
@@ -94,7 +93,7 @@ class Condition extends Collection {
 	 * Sets the condition actions.
 	 *
 	 * @param  array  $actions
-	 * @param  \Closure  $callback
+	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $callback
 	 * @return void
 	 */
 	public function setActions($actions, $callback = null)
@@ -122,16 +121,6 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Returns the total condition value.
-	 *
-	 * @return float
-	 */
-	public function result()
-	{
-		return $this->result - $this->subtotal;
-	}
-
-	/**
 	 * Apply the conditions to the given collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
@@ -153,9 +142,7 @@ class Condition extends Collection {
 			{
 				$target = $this->result ?: $target;
 
-				$result = $this->applyAction($collection, $action, $target);
-
-				$this->result = $result;
+				$this->result = $this->applyAction($collection, $action, $target);
 			}
 
 			if ($this->callback instanceof Closure || $this->callback instanceof SerializableClosure)
@@ -168,10 +155,26 @@ class Condition extends Collection {
 	}
 
 	/**
+	 * Returns the total condition value.
+	 *
+	 * @param  \Illuminate\Support\Collection  $collection
+	 * @return float
+	 */
+	public function result(Collection $collection = null)
+	{
+		if ($collection)
+		{
+			$this->apply($collection);
+		}
+
+		return $this->result - $this->subtotal;
+	}
+
+	/**
 	 * Validate a set of rules.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
-	 * @param  \Closure  $closure
+	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $closure
 	 * @return bool
 	 */
 	public function validate(Collection $collection, $closure = null)

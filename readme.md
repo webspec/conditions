@@ -1,5 +1,7 @@
 # Conditions
 
+[![Build Status](http://ci.cartalyst.com/build-status/svg/8)](http://ci.cartalyst.com/build-status/view/8)
+
 A framework agnostic conditions package that allows you to apply conditions on Illuminate Collections.
 
 The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.

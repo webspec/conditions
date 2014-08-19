@@ -234,7 +234,7 @@ class Condition extends Collection {
 
 		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
 
-		list($operator, $percentage, $value) = $this->parseAction($operation);
+		list($operator, $percentage, $value) = $this->parseAction($operation, $collection);
 
 		if ($inclusive = $action->get('inclusive'))
 		{
@@ -339,11 +339,17 @@ class Condition extends Collection {
 	/**
 	 * Parse action.
 	 *
-	 * @param  string  $value
+	 * @param  string|\Closure|\Illuminate\Support\SerializableClosure  $value
+	 * @param  \Illuminate\Support\Collection  $collection
 	 * @return array
 	 */
-	protected function parseAction($value)
+	protected function parseAction($value, Collection $collection)
 	{
+		if ($value instanceof Closure || $value instanceof SerializableClosure)
+		{
+			$value = call_user_func($value, $collection);
+		}
+
 		$percentage = strpos($value, '%');
 
 		preg_match('/[+\-\*\/]/', $value, $operator);

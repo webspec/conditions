@@ -131,6 +131,26 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_apply_callback_actions()
+	{
+		$testCollection = $this->createCollection(15);
+
+		$this->condition->setRules([
+			'price <= 20',
+		]);
+
+		$this->condition->setActions([
+			'value' => function(Collection $collection)
+			{
+				return '-' . floor($collection->get('price') / 2);
+			},
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), 8);
+		$this->assertEquals($this->condition->result(), -7);
+	}
+
+	/** @test */
 	public function it_can_apply_percentage_actions()
 	{
 		$testCollection = $this->createCollection(20);

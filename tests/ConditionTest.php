@@ -457,6 +457,63 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_run_a_callback_on_insucessful_validation()
+	{
+		$testCollection = $this->createCollection(800);
+
+		$mock = m::mock('callbackMock');
+
+		$mock->shouldReceive('callback')->once()->with('valid1');
+		$mock->shouldReceive('callback')->once()->with('invalid2');
+
+		// Valid condition
+		$this->condition->setActions([
+			[
+				'value' => '10%',
+			],
+		]);
+
+		$this->condition->whenValid(function() use ($mock)
+		{
+			$mock->callback('valid1');
+		});
+
+		$this->condition->whenInvalid(function() use ($mock)
+		{
+			$mock->callback('invalid1');
+		});
+
+		$this->assertEquals($this->condition->apply($testCollection), 880);
+		$this->assertEquals($this->condition->result(), 80);
+
+		$this->condition->reset();
+
+		// Invalid condition
+		$this->condition->setRules([
+			'price > 900',
+		]);
+
+		$this->condition->setActions([
+			[
+				'value' => '10%',
+			],
+		]);
+
+		$this->condition->whenValid(function() use ($mock)
+		{
+			$mock->callback('valid2');
+		});
+
+		$this->condition->whenInvalid(function() use ($mock)
+		{
+			$mock->callback('invalid2');
+		});
+
+		$this->assertEquals($this->condition->apply($testCollection), false);
+		$this->assertEquals($this->condition->result(), 0);
+	}
+
+	/** @test */
 	public function it_can_validate_rules_closure()
 	{
 		$testCollection = $this->createCollection(800, 10);

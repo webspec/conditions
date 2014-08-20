@@ -334,6 +334,8 @@ class Condition extends Collection {
 			case '*': return $max ? min($target + $max, $target * $value) : $target * $value;
 
 			case '-': return $max ? max($target + $max, $target - $value) : $target - $value;
+
+			case '/': return $max ? max($target + $max, $target / $value) : $target / $value;
 		}
 	}
 

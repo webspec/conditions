@@ -283,6 +283,29 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_apply_division()
+	{
+		$testCollection = $this->createCollection(24);
+
+		$this->condition->setActions([
+			'value' => '/3',
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), 8);
+		$this->assertEquals($this->condition->result(), -16);
+
+		$this->condition->reset();
+
+		// Percentage division
+		$this->condition->setActions([
+			'value' => '/50%',
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), 2);
+		$this->assertEquals($this->condition->result(), -22);
+	}
+
+	/** @test */
 	public function it_does_not_apply_if_validation_fails()
 	{
 		$testCollection = $this->createCollection(20);
@@ -367,6 +390,17 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->condition->apply($testCollection), 270);
 		$this->assertEquals($this->condition->result(), 20);
+
+		$this->condition->reset();
+
+		// Division max
+		$this->condition->setActions([
+			'value' => '/2',
+			'max'   => -100,
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), 150);
+		$this->assertEquals($this->condition->result(), -100);
 
 		$this->condition->reset();
 

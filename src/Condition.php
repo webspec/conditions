@@ -38,14 +38,14 @@ class Condition extends Collection {
 	protected $subtotal;
 
 	/**
-	 * Holds the condition valid callback.
+	 * Holds the valid condition callback.
 	 *
 	 * @var \Closure|\Illuminate\Support\SerializableClosure
 	 */
-	protected $callback;
+	protected $validCallback;
 
 	/**
-	 * Holds the condition invalid callback.
+	 * Holds the invalid condition callback.
 	 *
 	 * @var \Closure|\Illuminate\Support\SerializableClosure
 	 */
@@ -72,18 +72,20 @@ class Condition extends Collection {
 	 * Sets the condition rules.
 	 *
 	 * @param  mixed  $rules
-	 * @return void
+	 * @return $this
 	 */
 	public function setRules($rules)
 	{
 		if ($this->isClosure($rules))
 		{
 			$this->validationClosure = $rules;
-
-			return;
+		}
+		else
+		{
+			$this->put('rules', $rules);
 		}
 
-		$this->put('rules', $rules);
+		return $this;
 	}
 
 	/**
@@ -101,7 +103,7 @@ class Condition extends Collection {
 	 *
 	 * @param  array  $actions
 	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $callback
-	 * @return void
+	 * @return $this
 	 */
 	public function setActions($actions, $callback = null)
 	{
@@ -113,36 +115,40 @@ class Condition extends Collection {
 			{
 				$this->setActions($action);
 			}
+		}
+		else
+		{
+			$_actions = $this->get('actions', []);
 
-			return;
+			$_actions[] = new Collection($actions);
+
+			$this->put('actions', $_actions);
 		}
 
-		$_actions = $this->get('actions', []);
-
-		$_actions[] = new Collection($actions);
-
-		$this->put('actions', $_actions);
+		return $this;
 	}
 
 	/**
-	 * Set the condition valid callback.
+	 * Sets the condition valid callback.
 	 *
 	 * @param \Closure|\Illuminate\Support\SerializableClosure  $callback
-	 * @return void
+	 * @return $this
 	 */
 	public function whenValid($callback)
 	{
 		if ($this->isClosure($callback))
 		{
-			$this->callback = $callback;
+			$this->validCallback = $callback;
 		}
+
+		return $this;
 	}
 
 	/**
-	 * Set the condition invalid callback.
+	 * Sets the condition invalid callback.
 	 *
 	 * @param \Closure|\Illuminate\Support\SerializableClosure  $callback
-	 * @return void
+	 * @return $this
 	 */
 	public function whenInvalid($callback)
 	{
@@ -150,6 +156,8 @@ class Condition extends Collection {
 		{
 			$this->invalidCallback = $callback;
 		}
+
+		return $this;
 	}
 
 	/**
@@ -178,9 +186,9 @@ class Condition extends Collection {
 				$this->result = $this->applyAction($collection, $action, $target);
 			}
 
-			if ($this->isClosure($this->callback))
+			if ($this->isClosure($this->validCallback))
 			{
-				call_user_func($this->callback);
+				call_user_func($this->validCallback);
 			}
 		}
 		else
@@ -248,7 +256,7 @@ class Condition extends Collection {
 
 		$this->subtotal = 0;
 
-		$this->callback = null;
+		$this->validCallback = null;
 
 		$this->invalidCallback = null;
 

@@ -375,7 +375,7 @@ class Condition extends Collection {
 	 */
 	protected function parseAction($value, Collection $collection)
 	{
-		if ($value instanceof Closure || $value instanceof SerializableClosure)
+		if ($this->isClosure($value))
 		{
 			$value = call_user_func($value, $collection);
 		}

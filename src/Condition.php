@@ -129,7 +129,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Sets the condition valid callback.
+	 * Sets the valid condition callback.
 	 *
 	 * @param \Closure|\Illuminate\Support\SerializableClosure  $callback
 	 * @return $this
@@ -145,7 +145,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Sets the condition invalid callback.
+	 * Sets the invalid condition callback.
 	 *
 	 * @param \Closure|\Illuminate\Support\SerializableClosure  $callback
 	 * @return $this
@@ -394,7 +394,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Checks if the given object is either a closure.
+	 * Checks if the given object is a closure.
 	 *
 	 * @param  mixed  $object
 	 * @return boolean

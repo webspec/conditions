@@ -329,32 +329,11 @@ class Condition extends Collection {
 		switch ($operator)
 		{
 			default:
-			case '+':
+			case '+': return $max ? min($target + $max, $target + $value) : $target + $value;
 
-				if ($max)
-				{
-					return ($target + $max) > ($target + $value) ? ($target + $value) : ($target + $max);
-				}
+			case '*': return $max ? min($target + $max, $target * $value) : $target * $value;
 
-				return $target + $value;
-
-			case '*':
-
-				if ($max)
-				{
-					return ($target + $max) > ($target * $value) ? ($target * $value) : ($target + $max);
-				}
-
-				return $target * $value;
-
-			case '-':
-
-				if ($max)
-				{
-					return ($target + $max) < ($target - $value) ? ($target - $value) : ($target + $max);
-				}
-
-				return $target - $value;
+			case '-': return $max ? max($target + $max, $target - $value) : $target - $value;
 		}
 	}
 

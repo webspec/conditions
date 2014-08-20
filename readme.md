@@ -12,6 +12,13 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
+#### 22-Aug-14 - v1.1.0
+
+- Action values can have callbacks now.
+- Two new methods were added `whenValid()` and `whenInvalid()`, which makes it easier to do manipulation when the condition is valid or invalid through a callback.
+- The `calculate()` method was simplified.
+- Added the ability to use a division for calculations.
+
 #### 10-May-14 - v1.0.0
 
 - ```Condition::getRules()``` Returns the applied rules.

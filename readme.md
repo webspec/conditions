@@ -8,9 +8,7 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 ## Package Story
 
-History and future capabilities.
-
-### Complete
+Package history and capabilities.
 
 #### 10-May-14 - v1.0.0
 

@@ -161,7 +161,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Apply the conditions to the given collection.
+	 * Applies the conditions to the given collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  float  $target
@@ -219,7 +219,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Validate a set of rules.
+	 * Validates a set of rules against the collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $callback
@@ -268,7 +268,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Apply an action to the given collection.
+	 * Applies an action to the given collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  \Illuminate\Support\Collection  $action
@@ -298,7 +298,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Validate a single rule.
+	 * Validates a single rule against the collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  string  $rule
@@ -386,7 +386,7 @@ class Condition extends Collection {
 	}
 
 	/**
-	 * Parse action.
+	 * Parses the action.
 	 *
 	 * @param  string|\Closure|\Illuminate\Support\SerializableClosure  $value
 	 * @param  \Illuminate\Support\Collection  $collection

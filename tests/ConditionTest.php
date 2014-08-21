@@ -507,12 +507,12 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->condition->whenValid(function() use ($mock)
+		$this->condition->whenValid(function(Collection $collection) use ($mock)
 		{
 			$mock->callback('valid1');
 		});
 
-		$this->condition->whenInvalid(function() use ($mock)
+		$this->condition->whenInvalid(function(Collection $collection) use ($mock)
 		{
 			$mock->callback('invalid1');
 		});
@@ -533,12 +533,12 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->condition->whenValid(function() use ($mock)
+		$this->condition->whenValid(function(Collection $collection) use ($mock)
 		{
 			$mock->callback('valid2');
 		});
 
-		$this->condition->whenInvalid(function() use ($mock)
+		$this->condition->whenInvalid(function(Collection $collection) use ($mock)
 		{
 			$mock->callback('invalid2');
 		});

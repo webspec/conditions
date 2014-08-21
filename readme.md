@@ -14,10 +14,10 @@ Package history and capabilities.
 
 #### 22-Aug-14 - v1.1.0
 
-- Action values can have callbacks now.
-- Two new methods were added `whenValid()` and `whenInvalid()`, which makes it easier to do manipulation when the condition is valid or invalid through a callback.
-- The `calculate()` method was simplified.
-- Added the ability to use a division for calculations.
+- Action values can be defined through callbacks.
+- Two new methods added `whenValid($closure)` and `whenInvalid($closure)`, the closure will only be executed if the corresponding state is met on appliance.
+- The `calculate()` method simplified.
+- Added the ability to use division on action values.
 
 #### 10-May-14 - v1.0.0
 

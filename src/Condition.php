@@ -188,14 +188,14 @@ class Condition extends Collection {
 
 			if ($this->isClosure($this->validCallback))
 			{
-				call_user_func($this->validCallback);
+				call_user_func($this->validCallback, $collection);
 			}
 		}
 		else
 		{
 			if ($this->isClosure($this->invalidCallback))
 			{
-				call_user_func($this->invalidCallback);
+				call_user_func($this->invalidCallback, $collection);
 			}
 		}
 

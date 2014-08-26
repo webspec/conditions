@@ -283,7 +283,7 @@ class Condition extends Collection {
 
 		$multiplier = $action->get('multiplier') ? $collection->get($action->get('multiplier')) : 1;
 
-		list($operator, $percentage, $value) = $this->parseAction($operation, $collection);
+		list($operator, $percentage, $value) = $this->parseAction($operation, $collection, $target);
 
 		if ($inclusive = $action->get('inclusive'))
 		{
@@ -371,13 +371,14 @@ class Condition extends Collection {
 	 *
 	 * @param  string|\Closure|\Illuminate\Support\SerializableClosure  $value
 	 * @param  \Illuminate\Support\Collection  $collection
+	 * @param  float  $target
 	 * @return array
 	 */
-	protected function parseAction($value, Collection $collection)
+	protected function parseAction($value, Collection $collection, $target)
 	{
 		if ($this->isClosure($value))
 		{
-			$value = call_user_func($value, $collection);
+			$value = call_user_func($value, $collection, $target);
 		}
 
 		$percentage = strpos($value, '%');

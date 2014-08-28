@@ -52,13 +52,6 @@ class Condition extends Collection {
 	protected $invalidCallback;
 
 	/**
-	 * Holds the validation callback.
-	 *
-	 * @var \Closure|\Illuminate\Support\SerializableClosure
-	 */
-	protected $validationClosure;
-
-	/**
 	 * Returns the condition rules.
 	 *
 	 * @return array
@@ -76,14 +69,12 @@ class Condition extends Collection {
 	 */
 	public function setRules($rules)
 	{
-		if ($this->isClosure($rules))
+		if ( ! is_array($rules))
 		{
-			$this->validationClosure = $rules;
+			$rules = [$rules];
 		}
-		else
-		{
-			$this->put('rules', $rules);
-		}
+
+		$this->put('rules', $rules);
 
 		return $this;
 	}
@@ -175,7 +166,7 @@ class Condition extends Collection {
 
 		$target = $target ?: $collection->get($this->get('target'));
 
-		if ($this->validate($collection, $this->validationClosure))
+		if ($this->validate($collection))
 		{
 			$this->subtotal = $target;
 
@@ -260,8 +251,6 @@ class Condition extends Collection {
 
 		$this->invalidCallback = null;
 
-		$this->validationClosure = null;
-
 		$this->put('rules', []);
 
 		$this->put('actions', []);
@@ -301,11 +290,16 @@ class Condition extends Collection {
 	 * Validates a single rule against the collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
-	 * @param  string  $rule
+	 * @param  string|\Closure|\Illuminate\Support\SerializableClosure  $rule
 	 * @return bool
 	 */
 	protected function validateRule(Collection $collection, $rule)
 	{
+		if ($this->isClosure($rule))
+		{
+			return call_user_func($rule, $collection);
+		}
+
 		preg_match('/[=\<\>\!]+/', $rule, $operator);
 
 		$operator = head($operator) ?: null;

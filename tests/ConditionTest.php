@@ -140,9 +140,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		]);
 
 		$this->condition->setActions([
-			'value' => function(Collection $collection)
+			'value' => function(Collection $collection, $price)
 			{
-				return '-' . floor($collection->get('price') / 2);
+				return '-' . floor($price / 2);
 			},
 		]);
 

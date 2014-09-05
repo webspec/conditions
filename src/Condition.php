@@ -166,7 +166,7 @@ class Condition extends Collection {
 
 		$target = $target ?: $collection->get($this->get('target'));
 
-		if ($this->validate($collection))
+		if ($this->validate($collection, $target))
 		{
 			$this->subtotal = $target;
 
@@ -213,21 +213,21 @@ class Condition extends Collection {
 	 * Validates a set of rules against the collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
-	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $callback
+	 * @param  float  $target
 	 * @return bool
 	 */
-	public function validate(Collection $collection, $callback = null)
+	public function validate(Collection $collection, $target = null)
 	{
-		if ($this->isClosure($callback))
+		if (is_null($target))
 		{
-			return call_user_func($callback, $collection);
+			$target = $collection->get($this->get('target'));
 		}
 
 		$rules = $this->get('rules', []);
 
 		foreach ($rules as $rule)
 		{
-			if ( ! $this->validateRule($collection, $rule))
+			if ( ! $this->validateRule($collection, $rule, $target))
 			{
 				return false;
 			}
@@ -291,13 +291,14 @@ class Condition extends Collection {
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  string|\Closure|\Illuminate\Support\SerializableClosure  $rule
+	 * @param  float  $target
 	 * @return bool
 	 */
-	protected function validateRule(Collection $collection, $rule)
+	protected function validateRule(Collection $collection, $rule, $target)
 	{
 		if ($this->isClosure($rule))
 		{
-			return call_user_func($rule, $collection);
+			return call_user_func($rule, $collection, $target);
 		}
 
 		preg_match('/[=\<\>\!]+/', $rule, $operator);

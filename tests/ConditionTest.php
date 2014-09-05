@@ -624,6 +624,33 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_passes_the_target_value_to_rules_closure()
+	{
+		$testCollection = $this->createCollection(60, 1);
+
+		$this->condition->setRules(function(Collection $collection, $price)
+		{
+			return $price > 50;
+		});
+
+		$this->condition->setActions([
+			'value' => '10%',
+		]);
+
+		$this->assertEquals($this->condition->apply($testCollection), 66);
+		$this->assertEquals($this->condition->result(), 6);
+
+		// Invalid condition
+		$this->condition->setRules(function(Collection $collection, $price)
+		{
+			return $price > 100;
+		});
+
+		$this->assertEquals($this->condition->apply($testCollection), false);
+		$this->assertEquals($this->condition->result(), 0);
+	}
+
+	/** @test */
 	public function it_will_reset_subtotal_on_failure()
 	{
 		$testCollection = $this->createCollection(800, 10);

@@ -12,12 +12,13 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
-#### 22-Aug-14 - v1.1.0
+#### 10-Sep-14 - v1.1.0
 
 - Action values can be defined through callbacks.
 - Two new methods added `whenValid($closure)` and `whenInvalid($closure)`, the closure will only be executed if the corresponding state is met on appliance.
-- The `calculate()` method simplified.
+- Simplified the `calculate()` method.
 - Added the ability to use division on action values.
+- Improved rules validation.
 
 #### 10-May-14 - v1.0.0
 

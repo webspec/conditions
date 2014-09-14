@@ -168,13 +168,11 @@ class Condition extends Collection {
 
 		if ($this->validate($collection, $target))
 		{
-			$this->subtotal = $target;
+			$this->subtotal = $this->result = $target;
 
-			foreach ($this->get('actions') as $action)
+			foreach ($this->get('actions', []) as $action)
 			{
-				$target = $this->result ?: $target;
-
-				$this->result = $this->applyAction($collection, $action, $target);
+				$this->result = $this->applyAction($collection, $action, $this->result);
 			}
 
 			if ($this->isClosure($this->validCallback))
@@ -190,7 +188,7 @@ class Condition extends Collection {
 			}
 		}
 
-		return $this->result ?: false;
+		return $this->result === $this->subtotal ? false : $this->result;
 	}
 
 	/**

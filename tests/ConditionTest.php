@@ -548,6 +548,33 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_run_a_valid_callback_with_no_actions()
+	{
+		$testCollection = $this->createCollection(800);
+
+		$mock = m::mock('callbackMock');
+
+		$mock->shouldReceive('callback')->once()->with('valid');
+
+		$this->condition->setRules([
+			'price > 500',
+		]);
+
+		$this->condition->whenValid(function(Collection $collection) use ($mock)
+		{
+			$mock->callback('valid');
+		});
+
+		$this->condition->whenInvalid(function(Collection $collection) use ($mock)
+		{
+			$mock->callback('invalid');
+		});
+
+		$this->assertEquals($this->condition->apply($testCollection), false);
+		$this->assertEquals($this->condition->result(), 0);
+	}
+
+	/** @test */
 	public function it_can_validate_rules_closure()
 	{
 		$testCollection = $this->createCollection(800, 10);

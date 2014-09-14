@@ -164,6 +164,8 @@ class Condition extends Collection {
 
 		$this->subtotal = 0;
 
+		$callback = $this->invalidCallback;
+
 		$target = $target ?: $collection->get($this->get('target'));
 
 		if ($this->validate($collection, $target))
@@ -175,17 +177,12 @@ class Condition extends Collection {
 				$this->result = $this->applyAction($collection, $action, $this->result);
 			}
 
-			if ($this->isClosure($this->validCallback))
-			{
-				call_user_func($this->validCallback, $collection);
-			}
+			$callback = $this->validCallback;
 		}
-		else
+
+		if ($this->isClosure($callback))
 		{
-			if ($this->isClosure($this->invalidCallback))
-			{
-				call_user_func($this->invalidCallback, $collection);
-			}
+			call_user_func($callback, $collection);
 		}
 
 		return $this->result === $this->subtotal ? false : $this->result;
@@ -216,14 +213,9 @@ class Condition extends Collection {
 	 */
 	public function validate(Collection $collection, $target = null)
 	{
-		if (is_null($target))
-		{
-			$target = $collection->get($this->get('target'));
-		}
+		$target = $target ?: $collection->get($this->get('target'));
 
-		$rules = $this->get('rules', []);
-
-		foreach ($rules as $rule)
+		foreach ($this->get('rules', []) as $rule)
 		{
 			if ( ! $this->validateRule($collection, $rule, $target))
 			{
@@ -374,17 +366,11 @@ class Condition extends Collection {
 			$value = call_user_func($value, $collection, $target);
 		}
 
-		$percentage = strpos($value, '%');
-
 		preg_match('/[+\-\*\/]/', $value, $operator);
 
 		preg_match('/[0-9\.]+/', $value, $values);
 
-		return [
-			head($operator),
-			$percentage,
-			head($values),
-		];
+		return [ head($operator), strpos($value, '%'), head($values) ];
 	}
 
 	/**

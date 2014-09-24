@@ -12,6 +12,15 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
+#### 23-Set-14 - v1.1.2
+
+- Loosen requirements to allow the usage on Laravel 5.0.
+
+#### 14-Set-14 - v1.1.1
+
+- Ability to apply conditions with no actions.
+- Minor code tweaks.
+
 #### 10-Sep-14 - v1.1.0
 
 - Action values can be defined through callbacks.
@@ -19,6 +28,10 @@ Package history and capabilities.
 - Simplified the `calculate()` method.
 - Added the ability to use division on action values.
 - Improved rules validation.
+
+#### 23-Set-14 - v1.0.1
+
+- Loosen requirements to allow the usage on Laravel 5.0.
 
 #### 10-May-14 - v1.0.0
 
@@ -31,21 +44,17 @@ Package history and capabilities.
 - ```Condition::validate(Collection $collection, $callback|null)``` Validates the rules against the given collection.
 - ```Condition::reset()``` Resets the condition.
 
-## Requirements
-
-- PHP >=5.4
-
 ## Installation
 
 Conditions is installable with Composer. Read further information on how to install.
 
-[Installation Guide](https://cartalyst.com/manual/conditions#installation)
+[Installation Guide](https://cartalyst.com/manual/conditions/1.1#installation)
 
 ## Documentation
 
 Refer to the following guide on how to use the Conditions package.
 
-[Documentation](https://cartalyst.com/manual/conditions)
+[Documentation](https://cartalyst.com/manual/conditions/1.1)
 
 ## Versioning
 

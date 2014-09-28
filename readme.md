@@ -10,7 +10,7 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
-#### 23-Set-14 - v1.0.1
+#### 23-Sep-14 - v1.0.1
 
 - Loosen requirements to allow the usage on Laravel 5.0.
 

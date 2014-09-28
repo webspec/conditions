@@ -12,11 +12,11 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
-#### 23-Set-14 - v1.1.2
+#### 23-Sep-14 - v1.1.2
 
 - Loosen requirements to allow the usage on Laravel 5.0.
 
-#### 14-Set-14 - v1.1.1
+#### 14-Sep-14 - v1.1.1
 
 - Ability to apply conditions with no actions.
 - Minor code tweaks.
@@ -29,7 +29,7 @@ Package history and capabilities.
 - Added the ability to use division on action values.
 - Improved rules validation.
 
-#### 23-Set-14 - v1.0.1
+#### 23-Sep-14 - v1.0.1
 
 - Loosen requirements to allow the usage on Laravel 5.0.
 

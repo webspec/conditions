@@ -160,18 +160,14 @@ class Condition extends Collection {
 	 */
 	public function apply(Collection $collection, $target = 0)
 	{
-		$this->result = 0;
+		$this->subtotal = $target ?: $collection->get($this->get('target'));
 
-		$this->subtotal = 0;
+		$this->result = $this->subtotal;
 
 		$callback = $this->invalidCallback;
 
-		$target = $target ?: $collection->get($this->get('target'));
-
-		if ($this->validate($collection, $target))
+		if ($this->validate($collection, $this->subtotal))
 		{
-			$this->subtotal = $this->result = $target;
-
 			foreach ($this->get('actions', []) as $action)
 			{
 				$this->result = $this->applyAction($collection, $action, $this->result);
@@ -182,7 +178,7 @@ class Condition extends Collection {
 
 		if ($this->isClosure($callback))
 		{
-			call_user_func($callback, $collection);
+			call_user_func($callback, $collection, $this->result);
 		}
 
 		return $this->result === $this->subtotal ? false : $this->result;

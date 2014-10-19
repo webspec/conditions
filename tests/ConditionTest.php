@@ -459,9 +459,11 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			[
 				'value' => '15%',
 			]
-		], function() use ($mock)
+		], function($collection, $subtotal) use ($mock)
 		{
 			$mock->callback();
+
+			$this->assertEquals($subtotal, 1012);
 		});
 
 		$this->assertEquals($this->condition->apply($testCollection), 1012);
@@ -507,12 +509,14 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->condition->whenValid(function(Collection $collection) use ($mock)
+		$this->condition->whenValid(function(Collection $collection, $subtotal) use ($mock)
 		{
 			$mock->callback('valid1');
+
+			$this->assertEquals($subtotal, 880);
 		});
 
-		$this->condition->whenInvalid(function(Collection $collection) use ($mock)
+		$this->condition->whenInvalid(function(Collection $collection, $subtotal) use ($mock)
 		{
 			$mock->callback('invalid1');
 		});
@@ -533,14 +537,16 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->condition->whenValid(function(Collection $collection) use ($mock)
+		$this->condition->whenValid(function(Collection $collection, $subtotal) use ($mock)
 		{
 			$mock->callback('valid2');
 		});
 
-		$this->condition->whenInvalid(function(Collection $collection) use ($mock)
+		$this->condition->whenInvalid(function(Collection $collection, $subtotal) use ($mock)
 		{
 			$mock->callback('invalid2');
+
+			$this->assertEquals($subtotal, 800);
 		});
 
 		$this->assertEquals($this->condition->apply($testCollection), false);

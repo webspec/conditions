@@ -12,6 +12,10 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
+#### 27-Oct-14 - v1.2.0
+
+- Ability to pass the subtotal into the validation callbacks.
+
 #### 23-Sep-14 - v1.1.2
 
 - Loosen requirements to allow the usage on Laravel 5.0.

@@ -443,7 +443,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
-	public function it_can_run_a_callback_on_sucessful_validation()
+	public function it_can_run_a_callback_on_successful_validation()
 	{
 		$testCollection = $this->createCollection(800);
 

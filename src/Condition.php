@@ -40,14 +40,14 @@ class Condition extends Collection {
 	/**
 	 * Holds the valid condition callback.
 	 *
-	 * @var \Closure|\Illuminate\Support\SerializableClosure
+	 * @var mixed
 	 */
 	protected $validCallback;
 
 	/**
 	 * Holds the invalid condition callback.
 	 *
-	 * @var \Closure|\Illuminate\Support\SerializableClosure
+	 * @var mixed
 	 */
 	protected $invalidCallback;
 
@@ -93,7 +93,7 @@ class Condition extends Collection {
 	 * Sets the condition actions.
 	 *
 	 * @param  array  $actions
-	 * @param  \Closure|\Illuminate\Support\SerializableClosure  $callback
+	 * @param  mixed  $callback
 	 * @return $this
 	 */
 	public function setActions($actions, $callback = null)
@@ -122,12 +122,12 @@ class Condition extends Collection {
 	/**
 	 * Sets the valid condition callback.
 	 *
-	 * @param \Closure|\Illuminate\Support\SerializableClosure  $callback
+	 * @param  mixed  $callback
 	 * @return $this
 	 */
 	public function whenValid($callback)
 	{
-		if ($this->isClosure($callback))
+		if ($this->isCallback($callback))
 		{
 			$this->validCallback = $callback;
 		}
@@ -138,12 +138,12 @@ class Condition extends Collection {
 	/**
 	 * Sets the invalid condition callback.
 	 *
-	 * @param \Closure|\Illuminate\Support\SerializableClosure  $callback
+	 * @param  mixed  $callback
 	 * @return $this
 	 */
 	public function whenInvalid($callback)
 	{
-		if ($this->isClosure($callback))
+		if ($this->isCallback($callback))
 		{
 			$this->invalidCallback = $callback;
 		}
@@ -176,9 +176,9 @@ class Condition extends Collection {
 			$callback = $this->validCallback;
 		}
 
-		if ($this->isClosure($callback))
+		if ($this->isCallback($callback))
 		{
-			call_user_func($callback, $collection, $this->result);
+			$this->fireCallback($callback, $collection, $this->result);
 		}
 
 		return $this->result === $this->subtotal ? false : $this->result;
@@ -276,15 +276,15 @@ class Condition extends Collection {
 	 * Validates a single rule against the collection.
 	 *
 	 * @param  \Illuminate\Support\Collection  $collection
-	 * @param  string|\Closure|\Illuminate\Support\SerializableClosure  $rule
+	 * @param  mixed  $rule
 	 * @param  float  $target
 	 * @return bool
 	 */
 	protected function validateRule(Collection $collection, $rule, $target)
 	{
-		if ($this->isClosure($rule))
+		if ($this->isCallback($rule))
 		{
-			return call_user_func($rule, $collection, $target);
+			return $this->fireCallback($rule, $collection, $target);
 		}
 
 		preg_match('/[=\<\>\!]+/', $rule, $operator);
@@ -350,16 +350,16 @@ class Condition extends Collection {
 	/**
 	 * Parses the action.
 	 *
-	 * @param  string|\Closure|\Illuminate\Support\SerializableClosure  $value
+	 * @param  mixed  $value
 	 * @param  \Illuminate\Support\Collection  $collection
 	 * @param  float  $target
 	 * @return array
 	 */
 	protected function parseAction($value, Collection $collection, $target)
 	{
-		if ($this->isClosure($value))
+		if ($this->isCallback($value))
 		{
-			$value = call_user_func($value, $collection, $target);
+			$value = $this->fireCallback($value, $collection, $target);
 		}
 
 		preg_match('/[+\-\*\/]/', $value, $operator);
@@ -375,9 +375,27 @@ class Condition extends Collection {
 	 * @param  mixed  $object
 	 * @return boolean
 	 */
-	protected function isClosure($object)
+	protected function isCallback($object)
 	{
-		return $object instanceof Closure || $object instanceof SerializableClosure;
+		$isClosure = $object instanceof Closure || $object instanceof SerializableClosure;
+
+		return $isClosure || $object instanceof Callback;
+	}
+
+	/**
+	 * Fires a callback with the given parameters.
+	 *
+	 * @param  mixed  $callback
+	 * @return mixed
+	 */
+	protected function fireCallback($callback)
+	{
+		if ($callback instanceof Callback)
+		{
+			$callback = [$callback, 'fire'];
+		}
+
+		call_user_func_array($callback, array_slice(func_get_args(), 1));
 	}
 
 	/**

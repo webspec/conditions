@@ -17,6 +17,8 @@
  * @link       http://cartalyst.com
  */
 
+use ArrayAccess;
+
 class Callback {
 
 	/**
@@ -51,7 +53,7 @@ class Callback {
 	 * Constructor.
 	 *
 	 * @param  string  $callback
-	 * @param  mixed $payload
+	 * @param  mixed  $payload
 	 * @return void
 	 */
 	public function __construct($callback, $payload = [])
@@ -65,7 +67,7 @@ class Callback {
 	 * Make a new Callback instance.
 	 *
 	 * @param  string  $callback
-	 * @param  mixed $payload
+	 * @param  mixed  $payload
 	 * @return static
 	 */
 	public static function make($class, $payload = [])
@@ -76,7 +78,8 @@ class Callback {
 	/**
 	 * Sets the container instance.
 	 *
-	 * @param ArrayAccess  $container
+	 * @param  ArrayAccess  $container
+	 * @return void
 	 */
 	public static function setContainer(ArrayAccess $container)
 	{
@@ -100,7 +103,8 @@ class Callback {
 	/**
 	 * Sets the callback class and method names.
 	 *
-	 * @param string $callback
+	 * @param  string  $callback
+	 * @return void
 	 */
 	protected function setCallback($callback)
 	{
@@ -118,9 +122,9 @@ class Callback {
 	 */
 	protected function resolve()
 	{
-		if ($this->container)
+		if (static::$container)
 		{
-			return $this->container[$this->class];
+			return static::$container[$this->class];
 		}
 
 		return new $this->class;

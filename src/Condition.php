@@ -373,7 +373,7 @@ class Condition extends Collection {
 	 * Checks if the given object is a closure.
 	 *
 	 * @param  mixed  $object
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isCallback($object)
 	{
@@ -395,7 +395,7 @@ class Condition extends Collection {
 			$callback = [$callback, 'fire'];
 		}
 
-		call_user_func_array($callback, array_slice(func_get_args(), 1));
+		return call_user_func_array($callback, array_slice(func_get_args(), 1));
 	}
 
 	/**

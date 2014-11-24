@@ -100,9 +100,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '5',
 		]);
 
-		$this->assertEquals($this->condition->validate($testCollection1), true);
-		$this->assertEquals($this->condition->validate($testCollection2), false);
-		$this->assertEquals($this->condition->validate($testCollection3), true);
+		$this->assertEquals(true, $this->condition->validate($testCollection1));
+		$this->assertEquals(false, $this->condition->validate($testCollection2));
+		$this->assertEquals(true, $this->condition->validate($testCollection3));
 	}
 
 	/** @test */
@@ -126,8 +126,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 31.50);
-		$this->assertEquals($this->condition->result(), 11.5);
+		$this->assertEquals(31.50, $this->condition->apply($testCollection));
+		$this->assertEquals(11.5, $this->condition->result());
 	}
 
 	/** @test */
@@ -146,8 +146,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			},
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 8);
-		$this->assertEquals($this->condition->result(), -7);
+		$this->assertEquals(8, $this->condition->apply($testCollection));
+		$this->assertEquals(-7, $this->condition->result());
 	}
 
 	/** @test */
@@ -163,8 +163,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '17.50%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 23.50);
-		$this->assertEquals($this->condition->result(), 3.5);
+		$this->assertEquals(23.50, $this->condition->apply($testCollection));
+		$this->assertEquals(3.5, $this->condition->result());
 	}
 
 	/** @test */
@@ -185,8 +185,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 33);
-		$this->assertEquals($this->condition->result(), 13);
+		$this->assertEquals(33, $this->condition->apply($testCollection));
+		$this->assertEquals(13, $this->condition->result());
 	}
 
 	/** @test */
@@ -203,8 +203,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value'      => '10',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 150);
-		$this->assertEquals($this->condition->result(), 130);
+		$this->assertEquals(150, $this->condition->apply($testCollection));
+		$this->assertEquals(130, $this->condition->result());
 	}
 
 	/** @test */
@@ -226,8 +226,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 33);
-		$this->assertEquals($this->condition->result(), 13);
+		$this->assertEquals(33, $this->condition->apply($testCollection));
+		$this->assertEquals(13, $this->condition->result());
 	}
 
 	/** @test */
@@ -251,8 +251,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			],
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection),  159.6875);
-		$this->assertEquals($this->condition->result(), 134.6875);
+		$this->assertEquals(159.6875, $this->condition->apply($testCollection));
+		$this->assertEquals(134.6875, $this->condition->result());
 	}
 
 	/** @test */
@@ -265,8 +265,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value'      => '-12.50%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 109.375);
-		$this->assertEquals($this->condition->result(), 84.375);
+		$this->assertEquals(109.375, $this->condition->apply($testCollection));
+		$this->assertEquals(84.375, $this->condition->result());
 	}
 
 	/** @test */
@@ -278,8 +278,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '*12.50%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 78.125);
-		$this->assertEquals($this->condition->result(), 53.125);
+		$this->assertEquals(78.125, $this->condition->apply($testCollection));
+		$this->assertEquals(53.125, $this->condition->result());
 	}
 
 	/** @test */
@@ -291,8 +291,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '/3',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 8);
-		$this->assertEquals($this->condition->result(), -16);
+		$this->assertEquals(8, $this->condition->apply($testCollection));
+		$this->assertEquals(-16, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -301,8 +301,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '/50%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 2);
-		$this->assertEquals($this->condition->result(), -22);
+		$this->assertEquals(2, $this->condition->apply($testCollection));
+		$this->assertEquals(-22, $this->condition->result());
 	}
 
 	/** @test */
@@ -325,7 +325,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		]);
 
 		$this->assertFalse($this->condition->apply($testCollection));
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -337,8 +337,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 30);
-		$this->assertEquals($this->condition->result(), 10);
+		$this->assertEquals(30, $this->condition->apply($testCollection));
+		$this->assertEquals(10, $this->condition->result());
 	}
 
 	/** @test */
@@ -351,8 +351,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value'      => '-12.50%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection, 25), 109.375);
-		$this->assertEquals($this->condition->result(), 84.375);
+		$this->assertEquals(109.375, $this->condition->apply($testCollection, 25));
+		$this->assertEquals(84.375, $this->condition->result());
 	}
 
 	/** @test */
@@ -366,8 +366,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'max'   => 20,
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 270);
-		$this->assertEquals($this->condition->result(), 20);
+		$this->assertEquals(270, $this->condition->apply($testCollection));
+		$this->assertEquals(20, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -377,8 +377,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'max'   => -20,
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 230);
-		$this->assertEquals($this->condition->result(), -20);
+		$this->assertEquals(230, $this->condition->apply($testCollection));
+		$this->assertEquals(-20, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -388,8 +388,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'max'   => 20,
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 270);
-		$this->assertEquals($this->condition->result(), 20);
+		$this->assertEquals(270, $this->condition->apply($testCollection));
+		$this->assertEquals(20, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -399,8 +399,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'max'   => -100,
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 150);
-		$this->assertEquals($this->condition->result(), -100);
+		$this->assertEquals(150, $this->condition->apply($testCollection));
+		$this->assertEquals(-100, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -410,8 +410,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'max'   => 200,
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 275);
-		$this->assertEquals($this->condition->result(), 25);
+		$this->assertEquals(275, $this->condition->apply($testCollection));
+		$this->assertEquals(25, $this->condition->result());
 	}
 
 	/** @test */
@@ -427,7 +427,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 
 		$this->condition->apply($testCollection);
 
-		$this->assertEquals($this->condition->result(), 40);
+		$this->assertEquals(40, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -439,7 +439,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 
 		$this->condition->apply($testCollection);
 
-		$this->assertEquals($this->condition->result(), -10);
+		$this->assertEquals(-10, $this->condition->result());
 	}
 
 	/** @test */
@@ -463,11 +463,11 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		{
 			$mock->callback();
 
-			$this->assertEquals($subtotal, 1012);
+			$this->assertEquals(1012, $subtotal);
 		});
 
-		$this->assertEquals($this->condition->apply($testCollection), 1012);
-		$this->assertEquals($this->condition->result(), 212);
+		$this->assertEquals(1012, $this->condition->apply($testCollection));
+		$this->assertEquals(212, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -488,8 +488,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			$mock->callback();
 		});
 
-		$this->assertEquals($this->condition->apply($testCollection), false);
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(false, $this->condition->apply($testCollection));
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -513,7 +513,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		{
 			$mock->callback('valid1');
 
-			$this->assertEquals($subtotal, 880);
+			$this->assertEquals(880, $subtotal);
 		});
 
 		$this->condition->whenInvalid(function(Collection $collection, $subtotal) use ($mock)
@@ -521,8 +521,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			$mock->callback('invalid1');
 		});
 
-		$this->assertEquals($this->condition->apply($testCollection), 880);
-		$this->assertEquals($this->condition->result(), 80);
+		$this->assertEquals(880, $this->condition->apply($testCollection));
+		$this->assertEquals(80, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -546,11 +546,11 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 		{
 			$mock->callback('invalid2');
 
-			$this->assertEquals($subtotal, 800);
+			$this->assertEquals(800, $subtotal);
 		});
 
-		$this->assertEquals($this->condition->apply($testCollection), false);
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(false, $this->condition->apply($testCollection));
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -576,8 +576,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			$mock->callback('invalid');
 		});
 
-		$this->assertEquals($this->condition->apply($testCollection), false);
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(false, $this->condition->apply($testCollection));
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -597,8 +597,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 880);
-		$this->assertEquals($this->condition->result(), 80);
+		$this->assertEquals(880, $this->condition->apply($testCollection));
+		$this->assertEquals(80, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -612,8 +612,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), false);
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(false, $this->condition->apply($testCollection));
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -635,8 +635,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 880);
-		$this->assertEquals($this->condition->result(), 80);
+		$this->assertEquals(880, $this->condition->apply($testCollection));
+		$this->assertEquals(80, $this->condition->result());
 
 		$this->condition->reset();
 
@@ -652,8 +652,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), false);
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(false, $this->condition->apply($testCollection));
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -670,8 +670,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 66);
-		$this->assertEquals($this->condition->result(), 6);
+		$this->assertEquals(66, $this->condition->apply($testCollection));
+		$this->assertEquals(6, $this->condition->result());
 
 		// Invalid condition
 		$this->condition->setRules(function(Collection $collection, $price)
@@ -679,8 +679,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			return $price > 100;
 		});
 
-		$this->assertEquals($this->condition->apply($testCollection), false);
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(false, $this->condition->apply($testCollection));
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -700,8 +700,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), 880);
-		$this->assertEquals($this->condition->result(), 80);
+		$this->assertEquals(880, $this->condition->apply($testCollection));
+		$this->assertEquals(80, $this->condition->result());
 
 		// Invalid condition
 		$this->condition->setRules(function($collection)
@@ -713,8 +713,8 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->apply($testCollection), false);
-		$this->assertEquals($this->condition->result(), 0);
+		$this->assertEquals(false, $this->condition->apply($testCollection));
+		$this->assertEquals(0, $this->condition->result());
 	}
 
 	/** @test */
@@ -726,7 +726,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->result($testCollection), 80);
+		$this->assertEquals(80, $this->condition->result($testCollection));
 
 		// Invalid condition
 		$this->condition->setRules(function($collection)
@@ -738,7 +738,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase {
 			'value' => '10%',
 		]);
 
-		$this->assertEquals($this->condition->result($testCollection), 0);
+		$this->assertEquals(0, $this->condition->result($testCollection));
 	}
 
 	/**

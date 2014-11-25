@@ -42,7 +42,8 @@
 	"require-dev": {
 		"jeremeamia/superclosure": "~1.0",
 		"mockery/mockery": "~0.9",
-		"phpunit/phpunit": "~4.0"
+		"phpunit/phpunit": "~4.0",
+		"illuminate/container": "~4.0"
 	},
 	"suggest": {
 		"jeremeamia/superclosure": "Wraps a PHP Closure to make it Serializable"

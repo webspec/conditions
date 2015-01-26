@@ -70,9 +70,9 @@ class Callback {
 	 * @param  mixed  $payload
 	 * @return static
 	 */
-	public static function make($class, $payload = [])
+	public static function make($callback, $payload = [])
 	{
-		return new static($class, $payload);
+		return new static($callback, $payload);
 	}
 
 	/**
@@ -87,11 +87,11 @@ class Callback {
 	}
 
 	/**
-	 * Fire the callback with the given parmeters.
+	 * Fire the callback with the given parameters.
 	 *
 	 * @return mixed
 	 */
-	public function fire()
+	public function __invoke()
 	{
 		$params = func_get_args();
 

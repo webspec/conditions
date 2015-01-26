@@ -178,7 +178,7 @@ class Condition extends Collection {
 
 		if ($this->isCallback($callback))
 		{
-			$this->fireCallback($callback, $collection, $this->result);
+			$callback($collection, $this->result);
 		}
 
 		return $this->result === $this->subtotal ? false : $this->result;
@@ -284,7 +284,7 @@ class Condition extends Collection {
 	{
 		if ($this->isCallback($rule))
 		{
-			return $this->fireCallback($rule, $collection, $target);
+			return $rule($collection, $target);
 		}
 
 		preg_match('/[=\<\>\!]+/', $rule, $operator);
@@ -359,7 +359,7 @@ class Condition extends Collection {
 	{
 		if ($this->isCallback($value))
 		{
-			$value = $this->fireCallback($value, $collection, $target);
+			$value = $value($collection, $target);
 		}
 
 		preg_match('/[+\-\*\/]/', $value, $operator);
@@ -380,22 +380,6 @@ class Condition extends Collection {
 		$isClosure = $object instanceof Closure || $object instanceof SerializableClosure;
 
 		return $isClosure || $object instanceof Callback;
-	}
-
-	/**
-	 * Fires a callback with the given parameters.
-	 *
-	 * @param  mixed  $callback
-	 * @return mixed
-	 */
-	protected function fireCallback($callback)
-	{
-		if ($callback instanceof Callback)
-		{
-			$callback = [$callback, 'fire'];
-		}
-
-		return call_user_func_array($callback, array_slice(func_get_args(), 1));
 	}
 
 	/**

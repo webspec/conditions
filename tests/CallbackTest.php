@@ -73,7 +73,7 @@ class CallbackTest extends PHPUnit_Framework_TestCase {
 
 		$callback = Callback::make('Cartalyst\Conditions\Tests\TestCallback');
 
-		$this->assertEquals(20, $callback->fire());
+		$this->assertEquals(20, $callback());
 	}
 
 	/**

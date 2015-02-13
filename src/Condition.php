@@ -72,7 +72,7 @@ class Condition extends Collection
      */
     public function setRules($rules)
     {
-        if (! is_array($rules)) {
+        if ( ! is_array($rules)) {
             $rules = [$rules];
         }
 
@@ -204,7 +204,7 @@ class Condition extends Collection
         $target = $target ?: $collection->get($this->get('target'));
 
         foreach ($this->get('rules', []) as $rule) {
-            if (! $this->validateRule($collection, $rule, $target)) {
+            if ( ! $this->validateRule($collection, $rule, $target)) {
                 return false;
             }
         }

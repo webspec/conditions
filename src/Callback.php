@@ -25,7 +25,7 @@ class Callback
     /**
      * Holds the container instance.
      *
-     * @var ArrayAccess
+     * @var \ArrayAccess
      */
     protected static $container;
 
@@ -79,7 +79,7 @@ class Callback
     /**
      * Sets the container instance.
      *
-     * @param  ArrayAccess  $container
+     * @param  \ArrayAccess  $container
      * @return void
      */
     public static function setContainer(ArrayAccess $container)

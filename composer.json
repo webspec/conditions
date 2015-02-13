@@ -1,62 +1,62 @@
 {
-	"name": "cartalyst/conditions",
-	"description": "A framework agnostic conditions package that allows you to apply conditions on Illuminate Collections.",
-	"keywords": [
-		"php",
-		"cartalyst",
-		"laravel",
-		"collection",
-		"condition"
-	],
-	"license": "proprietary",
-	"authors": [
-		{
-			"name": "Cartalyst LLC",
-			"email": "help@cartalyst.com"
-		},
-		{
-			"name": "Ben Corlett",
-			"email": "ben.corlett@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Bruno Gaspar",
-			"email": "bruno.gaspar@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Dan Syme",
-			"email": "dan.syme@cartalyst.com",
-			"role": "Project Lead"
-		},
-		{
-			"name": "Suhayb Wardany",
-			"email": "su.wardany@cartalyst.com",
-			"role": "Developer"
-		}
-	],
-	"require": {
-		"php": ">=5.4.0",
-		"illuminate/support": "~4.1|~5.0"
-	},
-	"require-dev": {
-		"jeremeamia/superclosure": "~1.0",
-		"mockery/mockery": "~0.9",
-		"phpunit/phpunit": "~4.0"
-	},
-	"suggest": {
-		"jeremeamia/superclosure": "Wraps a PHP Closure to make it Serializable"
-	},
-	"autoload": {
-		"psr-4": {
-			"Cartalyst\\Conditions\\": "src/"
-		}
-	},
-	"extra": {
-		"component": "package",
-		"branch-alias": {
-			"dev-master": "1.1.x-dev"
-		}
-	},
-	"minimum-stability": "dev"
+    "name": "cartalyst/conditions",
+    "description": "A framework agnostic conditions package that allows you to apply conditions on Illuminate Collections.",
+    "keywords": [
+        "php",
+        "cartalyst",
+        "laravel",
+        "collection",
+        "condition"
+    ],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Cartalyst LLC",
+            "email": "help@cartalyst.com"
+        },
+        {
+            "name": "Ben Corlett",
+            "email": "ben.corlett@cartalyst.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Bruno Gaspar",
+            "email": "bruno.gaspar@cartalyst.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Dan Syme",
+            "email": "dan.syme@cartalyst.com",
+            "role": "Project Lead"
+        },
+        {
+            "name": "Suhayb Wardany",
+            "email": "su.wardany@cartalyst.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "~4.1|~5.0"
+    },
+    "require-dev": {
+        "jeremeamia/superclosure": "~1.0",
+        "mockery/mockery": "~0.9",
+        "phpunit/phpunit": "~4.0"
+    },
+    "suggest": {
+        "jeremeamia/superclosure": "Wraps a PHP Closure to make it Serializable"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cartalyst\\Conditions\\": "src/"
+        }
+    },
+    "extra": {
+        "component": "package",
+        "branch-alias": {
+            "dev-master": "1.1.x-dev"
+        }
+    },
+    "minimum-stability": "dev"
 }

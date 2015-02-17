@@ -54,7 +54,7 @@ class CallbackTest extends PHPUnit_Framework_TestCase
         $testCollection = new Collection(['price' => 800, 'quantity' => 10]);
 
         $this->condition->setActions([
-            'value' => Callback::make('Cartalyst\Conditions\Tests\TestCallback', ['foo']),
+            'value' => Callback::make([new TestCallback, 'fire'], ['foo']),
         ]);
 
         $this->assertEquals(20, $this->condition->result($testCollection));

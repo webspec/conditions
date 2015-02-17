@@ -14,19 +14,19 @@ Reader-friendly Documentation can be found here. [Conditions Manual](https://car
 
 Raw files can be found via this projects docs/version branch.
 
-- [1.0](https://github.com/cartalyst/conditions/tree/docs/1.0)
-- [1.1](https://github.com/cartalyst/conditions/tree/docs/1.1)
-- [1.2](https://github.com/cartalyst/conditions/tree/docs/1.2)
 - [2.0](https://github.com/cartalyst/conditions/tree/docs/2.0)
+- [1.2](https://github.com/cartalyst/conditions/tree/docs/1.2)
+- [1.1](https://github.com/cartalyst/conditions/tree/docs/1.1)
+- [1.0](https://github.com/cartalyst/conditions/tree/docs/1.0)
 
 ## Changelog
 
 Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
-- [1.0](CHANGELOG.md) - 2014-05-10
-- [1.1](CHANGELOG.md) - 2014-09-10
-- [1.2](CHANGELOG.md) - 2014-10-27
 - [2.0](CHANGELOG.md) - TBA
+- [1.2](CHANGELOG.md) - 2014-10-27
+- [1.1](CHANGELOG.md) - 2014-09-10
+- [1.0](CHANGELOG.md) - 2014-05-10
 
 ## Support
 

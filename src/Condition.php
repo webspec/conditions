@@ -125,7 +125,7 @@ class Condition extends Collection
      */
     public function whenValid($callback)
     {
-        if ($this->isCallback($callback)) {
+        if ($this->isCallable($callback)) {
             $this->validCallback = $callback;
         }
 
@@ -140,7 +140,7 @@ class Condition extends Collection
      */
     public function whenInvalid($callback)
     {
-        if ($this->isCallback($callback)) {
+        if ($this->isCallable($callback)) {
             $this->invalidCallback = $callback;
         }
 
@@ -170,7 +170,7 @@ class Condition extends Collection
             $callback = $this->validCallback;
         }
 
-        if ($this->isCallback($callback)) {
+        if ($this->isCallable($callback)) {
             $callback($collection, $this->result);
         }
 
@@ -271,7 +271,7 @@ class Condition extends Collection
      */
     protected function validateRule(Collection $collection, $rule, $target)
     {
-        if ($this->isCallback($rule)) {
+        if ($this->isCallable($rule)) {
             return $rule($collection, $target);
         }
 
@@ -343,7 +343,7 @@ class Condition extends Collection
      */
     protected function parseAction($value, Collection $collection, $target)
     {
-        if ($this->isCallback($value)) {
+        if ($this->isCallable($value)) {
             $value = $value($collection, $target);
         }
 
@@ -355,12 +355,12 @@ class Condition extends Collection
     }
 
     /**
-     * Checks if the given object is a closure.
+     * Checks if the given object is callable.
      *
      * @param  mixed  $object
      * @return bool
      */
-    protected function isCallback($object)
+    protected function isCallable($object)
     {
         $isClosure = $object instanceof Closure || $object instanceof SerializableClosure;
 

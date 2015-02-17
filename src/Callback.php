@@ -53,7 +53,7 @@ class Callback
     /**
      * Constructor.
      *
-     * @param  string  $callback
+     * @param  string|array  $callback
      * @param  mixed  $payload
      * @return void
      */
@@ -104,16 +104,22 @@ class Callback
     /**
      * Sets the callback class and method names.
      *
-     * @param  string  $callback
+     * @param  string|array  $callback
      * @return void
      */
     protected function setCallback($callback)
     {
-        $fragments = explode('@', $callback);
+        if (is_array($callback)) {
+            $this->class = get_class($callback[0]);
 
-        $this->class = $fragments[0];
+            $this->method = $callback[1];
+        } else {
+            $fragments = explode('@', $callback);
 
-        $this->method = isset($fragments[1]) ? $fragments[1] : 'fire';
+            $this->class = $fragments[0];
+
+            $this->method = isset($fragments[1]) ? $fragments[1] : 'fire';
+        }
     }
 
     /**

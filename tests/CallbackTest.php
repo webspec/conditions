@@ -49,23 +49,57 @@ class CallbackTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_use_callback_class_instances()
+    public function it_can_instantiate_a_callback_class_with_a_string()
     {
-        $testCollection = new Collection(['price' => 800, 'quantity' => 10]);
+        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
 
         $this->condition->setActions([
-            'value' => Callback::make([new TestCallback, 'fire'], ['foo']),
+            'value' => Callback::make('Cartalyst\Conditions\Tests\TestCallback', [ 'foo' ]),
         ]);
 
         $this->assertEquals(20, $this->condition->result($testCollection));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
+    public function it_can_instantiate_a_callback_class_with_an_object()
+    {
+        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
+
+        $this->condition->setActions([
+            'value' => Callback::make(new TestCallback, [ 'foo' ]),
+        ]);
+
+        $this->assertEquals(20, $this->condition->result($testCollection));
+    }
+
+    /** @test */
+    public function it_can_instantiate_a_callback_class_with_an_array()
+    {
+        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
+
+        $this->condition->setActions([
+            'value' => Callback::make([ new TestCallback, 'fire' ], [ 'foo' ]),
+        ]);
+
+        $this->assertEquals(20, $this->condition->result($testCollection));
+    }
+
+    /** @test */
+    public function it_can_instantiate_a_callback_class_with_an_array_without_a_fire_method()
+    {
+        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
+
+        $this->condition->setActions([
+            'value' => Callback::make([ new TestCallback ], [ 'foo' ]),
+        ]);
+
+        $this->assertEquals(20, $this->condition->result($testCollection));
+    }
+
+    /** @test */
     public function it_can_resolve_callbacks_out_of_containers()
     {
-        $testCollection = new Collection(['price' => 800, 'quantity' => 10]);
+        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
 
         $testCallback = new TestCallback();
 
@@ -85,7 +119,7 @@ class CallbackTest extends PHPUnit_Framework_TestCase
      */
     public function it_can_run_a_callback_class_action_on_successful_validation()
     {
-        $testCollection = new Collection(['price' => 800]);
+        $testCollection = new Collection([ 'price' => 800 ]);
 
         $mock = m::mock('callbackMock');
 

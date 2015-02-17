@@ -98,7 +98,7 @@ class Callback
 
         $params[] = $this->payload;
 
-        return call_user_func_array([$this->resolve(), $this->method], $params);
+        return call_user_func_array([ $this->resolve(), $this->method ], $params);
     }
 
     /**
@@ -109,10 +109,14 @@ class Callback
      */
     protected function setCallback($callback)
     {
-        if (is_array($callback)) {
+        if (is_object($callback)) {
+            $this->class = get_class($callback);
+
+            $this->method = 'fire';
+        } elseif (is_array($callback)) {
             $this->class = get_class($callback[0]);
 
-            $this->method = $callback[1];
+            $this->method = isset($callback[1]) ? $callback[1] : 'fire';
         } else {
             $fragments = explode('@', $callback);
 

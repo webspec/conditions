@@ -73,6 +73,16 @@ class CallbackTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_can_call_a_callback_statically()
+    {
+        $callback1 = Callback::make('Cartalyst\Conditions\Tests\TestCallbackStatic::fire');
+        $callback2 = Callback::make(['Cartalyst\Conditions\Tests\TestCallbackStatic', 'fire']);
+
+        $this->assertEquals(25, $callback1());
+        $this->assertEquals(25, $callback2());
+    }
+
+    /** @test */
     public function it_can_instantiate_a_callback_class_with_an_array()
     {
         $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
@@ -170,6 +180,19 @@ class TestCallback
     public function fire()
     {
         return 20;
+    }
+}
+
+class TestCallbackStatic
+{
+    private function __construct()
+    {
+        //
+    }
+
+    public static function fire()
+    {
+        return 25;
     }
 }
 

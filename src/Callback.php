@@ -97,7 +97,7 @@ class Callback
     }
 
     /**
-     * Fire the callback with the given parameters.
+     * Fires the callback with the given parameters.
      *
      * @return mixed
      */
@@ -175,10 +175,9 @@ class Callback
     }
 
     /**
-     * Gets the callback resolved instance or class name.
+     * Returns the resolved callback instance or class name.
      *
      * @return string|object
-     * @return void
      */
     protected function resolve()
     {

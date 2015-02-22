@@ -73,7 +73,7 @@ class Condition extends Collection
     public function setRules($rules)
     {
         if ( ! is_array($rules)) {
-            $rules = [$rules];
+            $rules = [ $rules ];
         }
 
         $this->put('rules', $rules);

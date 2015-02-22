@@ -44,6 +44,13 @@ class Callback
     protected $method;
 
     /**
+     * Whether the callback method should be called statically.
+     *
+     * @var bool
+     */
+    protected $static = false;
+
+    /**
      * Holds the callback's payload.
      *
      * @var mixed
@@ -104,35 +111,79 @@ class Callback
     /**
      * Sets the callback class and method names.
      *
-     * @param  string|array  $callback
+     * @param  object|string|array  $callback
      * @return void
      */
     protected function setCallback($callback)
     {
         if (is_object($callback)) {
-            $this->class = get_class($callback);
-
-            $this->method = 'fire';
-        } elseif (is_array($callback)) {
-            $this->class = get_class($callback[0]);
-
-            $this->method = isset($callback[1]) ? $callback[1] : 'fire';
-        } else {
-            $fragments = explode('@', $callback);
-
-            $this->class = $fragments[0];
-
-            $this->method = isset($fragments[1]) ? $fragments[1] : 'fire';
+            return $this->setObjectCallback($callback);
         }
+
+        if (is_array($callback)) {
+            return $this->setArrayCallback($callback);
+        }
+
+        return $this->setStringCallback($callback);
     }
 
     /**
-     * Resolves the callback class name to a concrete instance.
+     * Sets the callback class and method names via an object.
      *
-     * @return mixed
+     * @param  object  $callback
+     * @return void
+     */
+    protected function setObjectCallback($callback)
+    {
+        $this->class = get_class($callback);
+
+        $this->method = 'fire';
+    }
+
+    /**
+     * Sets the callback class and method names via an array.
+     *
+     * @param  array  $callback
+     * @return void
+     */
+    protected function setArrayCallback(array $callback)
+    {
+        $this->static = is_string($callback[0]);
+
+        $this->class = $this->static ? $callback[0] : get_class($callback[0]);
+
+        $this->method = isset($callback[1]) ? $callback[1] : 'fire';
+    }
+
+    /**
+     * Sets the callback class and method names via a string.
+     *
+     * @param  string  $callback
+     * @return void
+     */
+    protected function setStringCallback($callback)
+    {
+        $this->static = strpos($callback, '::') !== false;
+
+        $fragments = preg_split('/@|::/', $callback);
+
+        $this->class = $fragments[0];
+
+        $this->method = isset($fragments[1]) ? $fragments[1] : 'fire';
+    }
+
+    /**
+     * Gets the callback resolved instance or class name.
+     *
+     * @return string|object
+     * @return void
      */
     protected function resolve()
     {
+        if ($this->static) {
+            return $this->class;
+        }
+
         if (static::$container) {
             return static::$container[$this->class];
         }

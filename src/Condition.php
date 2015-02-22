@@ -98,7 +98,7 @@ class Condition extends Collection
      * @param  mixed  $callback
      * @return $this
      */
-    public function setActions($actions, $callback = null)
+    public function setActions(array $actions, $callback = null)
     {
         $this->whenValid($callback);
 

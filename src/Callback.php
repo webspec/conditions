@@ -46,18 +46,18 @@ class Callback
     protected $method;
 
     /**
-     * Whether the callback method should be called statically.
-     *
-     * @var bool
-     */
-    protected $static = false;
-
-    /**
      * Holds the callback's payload.
      *
      * @var mixed
      */
     protected $payload;
+
+    /**
+     * Whether the callback method should be called statically.
+     *
+     * @var bool
+     */
+    protected $static = false;
 
     /**
      * Constructor.
@@ -83,6 +83,16 @@ class Callback
     public static function make($callback, $payload = [])
     {
         return new static($callback, $payload);
+    }
+
+    /**
+     * Returns the container instance.
+     *
+     * @return \ArrayAccess
+     */
+    public static function getContainer()
+    {
+        return static::$container;
     }
 
     /**

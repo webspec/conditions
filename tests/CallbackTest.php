@@ -116,6 +116,8 @@ class CallbackTest extends PHPUnit_Framework_TestCase
 
         $callback = Callback::make('Cartalyst\Conditions\Tests\TestCallback');
 
+        $this->assertInstanceOf('Illuminate\Container\Container', Callback::getContainer());
+
         $this->assertEquals(20, $callback());
     }
 

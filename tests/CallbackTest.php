@@ -192,12 +192,12 @@ class TestCallbackStatic
 
 class PercentageCallback
 {
-    public function ten($collection, $value)
+    public function ten($payload, $collection, $value)
     {
         return $value * 10 / 100;
     }
 
-    public function fifteen($collection, $value)
+    public function fifteen($payload, $collection, $value)
     {
         return $value * 15 / 100;
     }

@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Conditions;
+<?php
 
 /**
  * Part of the Conditions package.
@@ -17,6 +17,8 @@
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
+
+namespace Cartalyst\Conditions;
 
 use ArrayAccess;
 

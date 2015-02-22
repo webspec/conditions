@@ -39,9 +39,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->condition = new Condition([
-            'target' => 'price',
-        ]);
+        $this->condition = new Condition([ 'target' => 'price' ]);
     }
 
     /**
@@ -63,9 +61,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_set_rules()
     {
-        $this->condition->setRules([
-            'price <= 20',
-        ]);
+        $this->condition->setRules([ 'price <= 20' ]);
 
         $this->assertCount(1, $this->condition->getRules());
     }
@@ -95,17 +91,13 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $testCollection2 = $this->createCollection(25);
         $testCollection3 = $this->createCollection(1);
 
-        $this->condition->setRules([
-            'price <= 20',
-        ]);
+        $this->condition->setRules([ 'price <= 20' ]);
 
-        $this->condition->setActions([
-            'value' => '5',
-        ]);
+        $this->condition->setActions([ 'value' => '5' ]);
 
-        $this->assertEquals(true, $this->condition->validate($testCollection1));
-        $this->assertEquals(false, $this->condition->validate($testCollection2));
-        $this->assertEquals(true, $this->condition->validate($testCollection3));
+        $this->assertTrue($this->condition->validate($testCollection1));
+        $this->assertFalse($this->condition->validate($testCollection2));
+        $this->assertTrue($this->condition->validate($testCollection3));
     }
 
     /** @test */
@@ -113,9 +105,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(20);
 
-        $this->condition->setRules([
-            'price <= 20',
-        ]);
+        $this->condition->setRules([ 'price <= 20' ]);
 
         $this->condition->setActions([
             [
@@ -138,9 +128,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(15);
 
-        $this->condition->setRules([
-            'price <= 20',
-        ]);
+        $this->condition->setRules([ 'price <= 20' ]);
 
         $this->condition->setActions([
             'value' => function (Collection $collection, $price) {
@@ -157,13 +145,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(20);
 
-        $this->condition->setRules([
-            'price >= 20',
-        ]);
+        $this->condition->setRules([ 'price >= 20' ]);
 
-        $this->condition->setActions([
-            'value' => '17.50%',
-        ]);
+        $this->condition->setActions([ 'value' => '17.50%' ]);
 
         $this->assertEquals(23.50, $this->condition->apply($testCollection));
         $this->assertEquals(3.5, $this->condition->result());
@@ -174,9 +158,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(20);
 
-        $this->condition->setRules([
-            'price != 10',
-        ]);
+        $this->condition->setRules([ 'price != 10' ]);
 
         $this->condition->setActions([
             [
@@ -196,9 +178,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(20, 5);
 
-        $this->condition->setRules([
-            'price <= 20',
-        ]);
+        $this->condition->setRules([ 'price <= 20' ]);
 
         $this->condition->setActions([
             'multiplier' => 'quantity',
@@ -214,10 +194,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(20, 0, ['name' => 'test']);
 
-        $this->condition->setRules([
-            'name = test',
-            'price <= 20',
-        ]);
+        $this->condition->setRules([ 'name = test', 'price <= 20' ]);
 
         $this->condition->setActions([
             [
@@ -276,9 +253,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(25);
 
-        $this->condition->setActions([
-            'value' => '*12.50%',
-        ]);
+        $this->condition->setActions([ 'value' => '*12.50%' ]);
 
         $this->assertEquals(78.125, $this->condition->apply($testCollection));
         $this->assertEquals(53.125, $this->condition->result());
@@ -289,9 +264,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(24);
 
-        $this->condition->setActions([
-            'value' => '/3',
-        ]);
+        $this->condition->setActions([ 'value' => '/3' ]);
 
         $this->assertEquals(8, $this->condition->apply($testCollection));
         $this->assertEquals(-16, $this->condition->result());
@@ -299,9 +272,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Percentage division
-        $this->condition->setActions([
-            'value' => '/50%',
-        ]);
+        $this->condition->setActions([ 'value' => '/50%' ]);
 
         $this->assertEquals(2, $this->condition->apply($testCollection));
         $this->assertEquals(-22, $this->condition->result());
@@ -312,10 +283,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(20);
 
-        $this->condition->setRules([
-            'name = test',
-            'price < 20',
-        ]);
+        $this->condition->setRules([ 'name = test', 'price < 20' ]);
 
         $this->condition->setActions([
             [
@@ -335,9 +303,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(20);
 
-        $this->condition->setActions([
-            'value' => '10',
-        ]);
+        $this->condition->setActions([ 'value' => '10' ]);
 
         $this->assertEquals(30, $this->condition->apply($testCollection));
         $this->assertEquals(10, $this->condition->result());
@@ -363,10 +329,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $testCollection = $this->createCollection(250);
 
         // Percentage max
-        $this->condition->setActions([
-            'value' => '10%',
-            'max'   => 20,
-        ]);
+        $this->condition->setActions([ 'value' => '10%', 'max' => 20 ]);
 
         $this->assertEquals(270, $this->condition->apply($testCollection));
         $this->assertEquals(20, $this->condition->result());
@@ -374,10 +337,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Negative max
-        $this->condition->setActions([
-            'value' => '-10%',
-            'max'   => -20,
-        ]);
+        $this->condition->setActions([ 'value' => '-10%', 'max' => -20 ]);
 
         $this->assertEquals(230, $this->condition->apply($testCollection));
         $this->assertEquals(-20, $this->condition->result());
@@ -385,10 +345,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Multiplication max
-        $this->condition->setActions([
-            'value' => '*25.50%',
-            'max'   => 20,
-        ]);
+        $this->condition->setActions([ 'value' => '*25.50%', 'max' => 20 ]);
 
         $this->assertEquals(270, $this->condition->apply($testCollection));
         $this->assertEquals(20, $this->condition->result());
@@ -396,10 +353,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Division max
-        $this->condition->setActions([
-            'value' => '/2',
-            'max'   => -100,
-        ]);
+        $this->condition->setActions([ 'value' => '/2', 'max' => -100 ]);
 
         $this->assertEquals(150, $this->condition->apply($testCollection));
         $this->assertEquals(-100, $this->condition->result());
@@ -407,10 +361,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Ignore max if not reached
-        $this->condition->setActions([
-            'value' => '10%',
-            'max'   => 200,
-        ]);
+        $this->condition->setActions([ 'value' => '10%', 'max' => 200 ]);
 
         $this->assertEquals(275, $this->condition->apply($testCollection));
         $this->assertEquals(25, $this->condition->result());
@@ -473,9 +424,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Invalid condition
-        $this->condition->setRules([
-            'price > 900',
-        ]);
+        $this->condition->setRules([ 'price > 900' ]);
 
         $this->condition->setActions([
             [
@@ -488,7 +437,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             $mock->callback();
         });
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 
@@ -525,9 +474,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Invalid condition
-        $this->condition->setRules([
-            'price > 900',
-        ]);
+        $this->condition->setRules([ 'price > 900' ]);
 
         $this->condition->setActions([
             [
@@ -545,7 +492,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(800, $subtotal);
         });
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 
@@ -558,9 +505,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
 
         $mock->shouldReceive('callback')->once()->with('valid');
 
-        $this->condition->setRules([
-            'price > 500',
-        ]);
+        $this->condition->setRules([ 'price > 500' ]);
 
         $this->condition->whenValid(function (Collection $collection) use ($mock) {
             $mock->callback('valid');
@@ -570,7 +515,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             $mock->callback('invalid');
         });
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 
@@ -586,9 +531,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             return $collection->get('quantity') > 5 && $promotion;
         });
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
         $this->assertEquals(880, $this->condition->apply($testCollection));
         $this->assertEquals(80, $this->condition->result());
@@ -600,11 +543,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             return $collection->get('price') * 10 > 10000;
         });
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 
@@ -622,9 +563,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
 
         $this->condition->setRules($closure);
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
         $this->assertEquals(880, $this->condition->apply($testCollection));
         $this->assertEquals(80, $this->condition->result());
@@ -638,11 +577,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase
         // Invalid condition
         $this->condition->setRules($closure);
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 
@@ -655,9 +592,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             return $price > 50;
         });
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
         $this->assertEquals(66, $this->condition->apply($testCollection));
         $this->assertEquals(6, $this->condition->result());
@@ -667,7 +602,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             return $price > 100;
         });
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 
@@ -683,9 +618,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             return $collection->get('quantity') > 5 && $promotion;
         });
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
         $this->assertEquals(880, $this->condition->apply($testCollection));
         $this->assertEquals(80, $this->condition->result());
@@ -695,11 +628,9 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             return $collection->get('price') * 10 > 10000;
         });
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 
@@ -708,9 +639,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
     {
         $testCollection = $this->createCollection(800, 10);
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
         $this->assertEquals(80, $this->condition->result($testCollection));
 
@@ -719,9 +648,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
             return $collection->get('price') * 10 > 10000;
         });
 
-        $this->condition->setActions([
-            'value' => '10%',
-        ]);
+        $this->condition->setActions([ 'value' => '10%' ]);
 
         $this->assertEquals(0, $this->condition->result($testCollection));
     }
@@ -736,10 +663,7 @@ class ConditionTest extends PHPUnit_Framework_TestCase
      */
     protected function createCollection($price, $quantity = 0, $additionalData = [])
     {
-        $data = [
-            'price'    => $price,
-            'quantity' => $quantity,
-        ];
+        $data = [ 'price' => $price, 'quantity' => $quantity ];
 
         foreach ($additionalData as $key => $value) {
             $data[$key] = $value;

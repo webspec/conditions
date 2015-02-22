@@ -76,9 +76,9 @@ class CallbackTest extends PHPUnit_Framework_TestCase
     public function it_can_call_a_callback_statically()
     {
         $callback1 = Callback::make('Cartalyst\Conditions\Tests\TestCallbackStatic::fire');
-        $callback2 = Callback::make(['Cartalyst\Conditions\Tests\TestCallbackStatic', 'fire']);
-
         $this->assertEquals(25, $callback1());
+
+        $callback2 = Callback::make([ 'Cartalyst\Conditions\Tests\TestCallbackStatic', 'fire' ]);
         $this->assertEquals(25, $callback2());
     }
 
@@ -109,12 +109,8 @@ class CallbackTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_resolve_callbacks_out_of_containers()
     {
-        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
-
-        $testCallback = new TestCallback();
-
         $container = new \Illuminate\Container\Container;
-        $container->offsetSet('Cartalyst\Conditions\Tests\TestCallback', $testCallback);
+        $container->offsetSet('Cartalyst\Conditions\Tests\TestCallback', new TestCallback);
 
         Callback::setContainer($container);
 
@@ -155,9 +151,7 @@ class CallbackTest extends PHPUnit_Framework_TestCase
         $this->condition->reset();
 
         // Invalid condition
-        $this->condition->setRules([
-            'price > 900',
-        ]);
+        $this->condition->setRules([ 'price > 900' ]);
 
         $this->condition->setActions([
             [
@@ -170,7 +164,7 @@ class CallbackTest extends PHPUnit_Framework_TestCase
             $mock->callback();
         });
 
-        $this->assertEquals(false, $this->condition->apply($testCollection));
+        $this->assertFalse($this->condition->apply($testCollection));
         $this->assertEquals(0, $this->condition->result());
     }
 }

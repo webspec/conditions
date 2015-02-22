@@ -15,11 +15,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 `ADDED`
 
-- Conditions now extends a Cartalyst Collection.
+- Added support for Callback classes to be used instead of only closures when defining actions.
 
 `UPDATED`
 
 - Updated Super Closure dependency to 2.0.
+- Conditions now extends a Cartalyst Collection.
 
 `REMOVED`
 

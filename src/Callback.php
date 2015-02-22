@@ -105,7 +105,7 @@ class Callback
     {
         $params = func_get_args();
 
-        $params[] = $this->payload;
+        array_unshift($params, $this->payload);
 
         return call_user_func_array([ $this->resolve(), $this->method ], $params);
     }

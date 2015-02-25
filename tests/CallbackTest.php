@@ -109,14 +109,14 @@ class CallbackTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_resolve_callbacks_out_of_containers()
     {
-        $container = new \Illuminate\Container\Container;
+        $container = new \Pimple\Container;
         $container->offsetSet('Cartalyst\Conditions\Tests\TestCallback', new TestCallback);
 
         Callback::setContainer($container);
 
         $callback = Callback::make('Cartalyst\Conditions\Tests\TestCallback');
 
-        $this->assertInstanceOf('Illuminate\Container\Container', Callback::getContainer());
+        $this->assertInstanceOf('Pimple\Container', Callback::getContainer());
 
         $this->assertEquals(20, $callback());
     }

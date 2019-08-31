@@ -12,22 +12,8 @@
     "authors": [
         {
             "name": "Cartalyst LLC",
-            "email": "help@cartalyst.com"
-        },
-        {
-            "name": "Bruno Gaspar",
-            "email": "bruno.gaspar@cartalyst.com",
-            "role": "Developer"
-        },
-        {
-            "name": "Dan Syme",
-            "email": "dan.syme@cartalyst.com",
-            "role": "Project Lead"
-        },
-        {
-            "name": "Suhayb Wardany",
-            "email": "su.wardany@cartalyst.com",
-            "role": "Developer"
+            "email": "help@cartalyst.com",
+            "homepage": "https://cartalyst.com"
         }
     ],
     "require": {
@@ -44,6 +30,16 @@
         "psr-4": {
             "Cartalyst\\Conditions\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cartalyst\\Conditions\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "extra": {
         "component": "package",

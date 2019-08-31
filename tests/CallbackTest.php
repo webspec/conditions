@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Conditions package.
  *
  * NOTICE OF LICENSE
@@ -21,17 +21,17 @@
 namespace Cartalyst\Conditions\Tests;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Cartalyst\Conditions\Callback;
 use Cartalyst\Conditions\Condition;
 use Cartalyst\Collections\Collection;
 
-class CallbackTest extends PHPUnit_Framework_TestCase
+class CallbackTest extends TestCase
 {
     /**
-     * Setup resources and dependencies
+     * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->condition = new Condition([
             'target' => 'price',
@@ -39,11 +39,9 @@ class CallbackTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Close mockery.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -51,66 +49,66 @@ class CallbackTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_instantiate_a_callback_class_with_a_string()
     {
-        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
+        $testCollection = new Collection(['price' => 800, 'quantity' => 10]);
 
         $this->condition->setActions([
-            'value' => Callback::make('Cartalyst\Conditions\Tests\TestCallback', [ 'foo' ]),
+            'value' => Callback::make('Cartalyst\Conditions\Tests\TestCallback', ['foo']),
         ]);
 
-        $this->assertEquals(20, $this->condition->result($testCollection));
+        $this->assertSame(20.0, $this->condition->result($testCollection));
     }
 
     /** @test */
     public function it_can_instantiate_a_callback_class_with_an_object()
     {
-        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
+        $testCollection = new Collection(['price' => 800, 'quantity' => 10]);
 
         $this->condition->setActions([
-            'value' => Callback::make(new TestCallback, [ 'foo' ]),
+            'value' => Callback::make(new TestCallback(), ['foo']),
         ]);
 
-        $this->assertEquals(20, $this->condition->result($testCollection));
+        $this->assertSame(20.0, $this->condition->result($testCollection));
     }
 
     /** @test */
     public function it_can_call_a_callback_statically()
     {
         $callback1 = Callback::make('Cartalyst\Conditions\Tests\TestCallbackStatic::fire');
-        $this->assertEquals(25, $callback1());
+        $this->assertSame(25, $callback1());
 
-        $callback2 = Callback::make([ 'Cartalyst\Conditions\Tests\TestCallbackStatic', 'fire' ]);
-        $this->assertEquals(25, $callback2());
+        $callback2 = Callback::make(['Cartalyst\Conditions\Tests\TestCallbackStatic', 'fire']);
+        $this->assertSame(25, $callback2());
     }
 
     /** @test */
     public function it_can_instantiate_a_callback_class_with_an_array()
     {
-        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
+        $testCollection = new Collection(['price' => 800, 'quantity' => 10]);
 
         $this->condition->setActions([
-            'value' => Callback::make([ new TestCallback, 'fire' ], [ 'foo' ]),
+            'value' => Callback::make([new TestCallback(), 'fire'], ['foo']),
         ]);
 
-        $this->assertEquals(20, $this->condition->result($testCollection));
+        $this->assertSame(20.0, $this->condition->result($testCollection));
     }
 
     /** @test */
     public function it_can_instantiate_a_callback_class_with_an_array_without_a_fire_method()
     {
-        $testCollection = new Collection([ 'price' => 800, 'quantity' => 10 ]);
+        $testCollection = new Collection(['price' => 800, 'quantity' => 10]);
 
         $this->condition->setActions([
-            'value' => Callback::make([ new TestCallback ], [ 'foo' ]),
+            'value' => Callback::make([new TestCallback()], ['foo']),
         ]);
 
-        $this->assertEquals(20, $this->condition->result($testCollection));
+        $this->assertSame(20.0, $this->condition->result($testCollection));
     }
 
     /** @test */
     public function it_can_resolve_callbacks_out_of_containers()
     {
-        $container = new \Pimple\Container;
-        $container->offsetSet('Cartalyst\Conditions\Tests\TestCallback', new TestCallback);
+        $container = new \Pimple\Container();
+        $container->offsetSet('Cartalyst\Conditions\Tests\TestCallback', new TestCallback());
 
         Callback::setContainer($container);
 
@@ -118,7 +116,7 @@ class CallbackTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Pimple\Container', Callback::getContainer());
 
-        $this->assertEquals(20, $callback());
+        $this->assertSame(20, $callback());
     }
 
     /**
@@ -127,7 +125,7 @@ class CallbackTest extends PHPUnit_Framework_TestCase
      */
     public function it_can_run_a_callback_class_action_on_successful_validation()
     {
-        $testCollection = new Collection([ 'price' => 800 ]);
+        $testCollection = new Collection(['price' => 800]);
 
         $mock = m::mock('callbackMock');
 
@@ -140,20 +138,20 @@ class CallbackTest extends PHPUnit_Framework_TestCase
             ],
             [
                 'value' => Callback::make('Cartalyst\Conditions\Tests\PercentageCallback@fifteen'),
-            ]
+            ],
         ], function ($collection, $subtotal) use ($mock) {
             $mock->callback();
 
-            $this->assertEquals(1012, $subtotal);
+            $this->assertSame(1012.0, $subtotal);
         });
 
-        $this->assertEquals(1012, $this->condition->apply($testCollection));
-        $this->assertEquals(212, $this->condition->result());
+        $this->assertSame(1012.0, $this->condition->apply($testCollection));
+        $this->assertSame(212.0, $this->condition->result());
 
         $this->condition->reset();
 
         // Invalid condition
-        $this->condition->setRules([ 'price > 900' ]);
+        $this->condition->setRules(['price > 900']);
 
         $this->condition->setActions([
             [
@@ -161,13 +159,13 @@ class CallbackTest extends PHPUnit_Framework_TestCase
             ],
             [
                 'value' => Callback::make('Cartalyst\Conditions\Tests\PercentageCallback@fifteen'),
-            ]
+            ],
         ], function () use ($mock) {
             $mock->callback();
         });
 
         $this->assertFalse($this->condition->apply($testCollection));
-        $this->assertEquals(0, $this->condition->result());
+        $this->assertSame(0.0, $this->condition->result());
     }
 }
 

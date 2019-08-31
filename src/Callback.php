@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Conditions package.
  *
  * NOTICE OF LICENSE
@@ -62,8 +62,9 @@ class Callback
     /**
      * Constructor.
      *
-     * @param  string|array  $callback
-     * @param  mixed  $payload
+     * @param array|object|string $callback
+     * @param mixed               $payload
+     *
      * @return void
      */
     public function __construct($callback, $payload = [])
@@ -76,11 +77,12 @@ class Callback
     /**
      * Make a new Callback instance.
      *
-     * @param  string  $callback
-     * @param  mixed  $payload
+     * @param array|object|string $callback
+     * @param mixed               $payload
+     *
      * @return static
      */
-    public static function make($callback, $payload = [])
+    public static function make($callback, $payload = []): self
     {
         return new static($callback, $payload);
     }
@@ -90,7 +92,7 @@ class Callback
      *
      * @return \ArrayAccess
      */
-    public static function getContainer()
+    public static function getContainer(): ArrayAccess
     {
         return static::$container;
     }
@@ -98,10 +100,11 @@ class Callback
     /**
      * Sets the container instance.
      *
-     * @param  \ArrayAccess  $container
+     * @param \ArrayAccess $container
+     *
      * @return void
      */
-    public static function setContainer(ArrayAccess $container)
+    public static function setContainer(ArrayAccess $container): void
     {
         static::$container = $container;
     }
@@ -117,14 +120,15 @@ class Callback
 
         array_unshift($params, $this->payload);
 
-        return call_user_func_array([ $this->resolve(), $this->method ], $params);
+        return call_user_func_array([$this->resolve(), $this->method], $params);
     }
 
     /**
      * Sets the callback class and method names.
      *
-     * @param  object|string|array  $callback
-     * @return void
+     * @param array|object|string $callback
+     *
+     * @return mixed
      */
     protected function setCallback($callback)
     {
@@ -142,10 +146,11 @@ class Callback
     /**
      * Sets the callback class and method names via an object.
      *
-     * @param  object  $callback
+     * @param object $callback
+     *
      * @return void
      */
-    protected function setObjectCallback($callback)
+    protected function setObjectCallback(object $callback): void
     {
         $this->class = get_class($callback);
 
@@ -155,25 +160,27 @@ class Callback
     /**
      * Sets the callback class and method names via an array.
      *
-     * @param  array  $callback
+     * @param array $callback
+     *
      * @return void
      */
-    protected function setArrayCallback(array $callback)
+    protected function setArrayCallback(array $callback): void
     {
         $this->static = is_string($callback[0]);
 
         $this->class = $this->static ? $callback[0] : get_class($callback[0]);
 
-        $this->method = isset($callback[1]) ? $callback[1] : 'fire';
+        $this->method = $callback[1] ?? 'fire';
     }
 
     /**
      * Sets the callback class and method names via a string.
      *
-     * @param  string  $callback
+     * @param string $callback
+     *
      * @return void
      */
-    protected function setStringCallback($callback)
+    protected function setStringCallback(string $callback): void
     {
         $this->static = strpos($callback, '::') !== false;
 
@@ -181,13 +188,13 @@ class Callback
 
         $this->class = $fragments[0];
 
-        $this->method = isset($fragments[1]) ? $fragments[1] : 'fire';
+        $this->method = $fragments[1] ?? 'fire';
     }
 
     /**
      * Returns the resolved callback instance or class name.
      *
-     * @return string|object
+     * @return object|string
      */
     protected function resolve()
     {
@@ -199,6 +206,6 @@ class Callback
             return static::$container[$this->class];
         }
 
-        return new $this->class;
+        return new $this->class();
     }
 }

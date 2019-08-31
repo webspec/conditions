@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Conditions package.
  *
  * NOTICE OF LICENSE
@@ -59,7 +59,7 @@ class Condition extends Collection
      *
      * @return array
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->get('rules');
     }
@@ -67,13 +67,14 @@ class Condition extends Collection
     /**
      * Sets the condition rules.
      *
-     * @param  mixed  $rules
+     * @param mixed $rules
+     *
      * @return $this
      */
-    public function setRules($rules)
+    public function setRules($rules): self
     {
-        if ( ! is_array($rules)) {
-            $rules = [ $rules ];
+        if (! is_array($rules)) {
+            $rules = [$rules];
         }
 
         $this->put('rules', $rules);
@@ -86,7 +87,7 @@ class Condition extends Collection
      *
      * @return array
      */
-    public function getActions()
+    public function getActions(): array
     {
         return $this->get('actions');
     }
@@ -94,11 +95,12 @@ class Condition extends Collection
     /**
      * Sets the condition actions.
      *
-     * @param  array  $actions
-     * @param  mixed  $callback
+     * @param array $actions
+     * @param mixed $callback
+     *
      * @return $this
      */
-    public function setActions(array $actions, $callback = null)
+    public function setActions(array $actions, $callback = null): self
     {
         $this->whenValid($callback);
 
@@ -120,10 +122,11 @@ class Condition extends Collection
     /**
      * Sets the valid condition callback.
      *
-     * @param  mixed  $callback
+     * @param mixed $callback
+     *
      * @return $this
      */
-    public function whenValid($callback)
+    public function whenValid($callback): self
     {
         if ($this->isCallable($callback)) {
             $this->validCallback = $callback;
@@ -135,10 +138,11 @@ class Condition extends Collection
     /**
      * Sets the invalid condition callback.
      *
-     * @param  mixed  $callback
+     * @param mixed $callback
+     *
      * @return $this
      */
-    public function whenInvalid($callback)
+    public function whenInvalid($callback): self
     {
         if ($this->isCallable($callback)) {
             $this->invalidCallback = $callback;
@@ -150,11 +154,12 @@ class Condition extends Collection
     /**
      * Applies the conditions to the given collection.
      *
-     * @param  \Cartalyst\Collections\Collection  $collection
-     * @param  float  $target
-     * @return float|false
+     * @param \Cartalyst\Collections\Collection $collection
+     * @param float                             $target
+     *
+     * @return false|float
      */
-    public function apply(Collection $collection, $target = 0)
+    public function apply(Collection $collection, float $target = 0)
     {
         $this->subtotal = $target ?: $collection->get($this->get('target'));
 
@@ -180,10 +185,11 @@ class Condition extends Collection
     /**
      * Returns the total condition value.
      *
-     * @param  \Cartalyst\Collections\Collection  $collection
+     * @param \Cartalyst\Collections\Collection|null $collection
+     *
      * @return float
      */
-    public function result(Collection $collection = null)
+    public function result(Collection $collection = null): float
     {
         if ($collection) {
             $this->apply($collection);
@@ -195,16 +201,17 @@ class Condition extends Collection
     /**
      * Validates a set of rules against the collection.
      *
-     * @param  \Cartalyst\Collections\Collection  $collection
-     * @param  float  $target
+     * @param \Cartalyst\Collections\Collection $collection
+     * @param float|null                        $target
+     *
      * @return bool
      */
-    public function validate(Collection $collection, $target = null)
+    public function validate(Collection $collection, ?float $target = null): bool
     {
         $target = $target ?: $collection->get($this->get('target'));
 
         foreach ($this->get('rules', []) as $rule) {
-            if ( ! $this->validateRule($collection, $rule, $target)) {
+            if (! $this->validateRule($collection, $rule, $target)) {
                 return false;
             }
         }
@@ -217,7 +224,7 @@ class Condition extends Collection
      *
      * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $this->result = 0;
 
@@ -235,12 +242,13 @@ class Condition extends Collection
     /**
      * Applies an action to the given collection.
      *
-     * @param  \Cartalyst\Collections\Collection  $collection
-     * @param  \Cartalyst\Collections\Collection  $action
-     * @param  float  $target
+     * @param \Cartalyst\Collections\Collection $collection
+     * @param \Cartalyst\Collections\Collection $action
+     * @param float                             $target
+     *
      * @return float
      */
-    protected function applyAction(Collection $collection, Collection $action, $target)
+    protected function applyAction(Collection $collection, Collection $action, float $target): float
     {
         $max = $action->get('max') ?: 0;
 
@@ -264,12 +272,13 @@ class Condition extends Collection
     /**
      * Validates a single rule against the collection.
      *
-     * @param  \Cartalyst\Collections\Collection  $collection
-     * @param  mixed  $rule
-     * @param  float  $target
+     * @param \Cartalyst\Collections\Collection $collection
+     * @param mixed                             $rule
+     * @param float                             $target
+     *
      * @return bool
      */
-    protected function validateRule(Collection $collection, $rule, $target)
+    protected function validateRule(Collection $collection, $rule, float $target): bool
     {
         if ($this->isCallable($rule)) {
             return $rule($collection, $target);
@@ -277,32 +286,30 @@ class Condition extends Collection
 
         preg_match('/[=\<\>\!]+/', $rule, $operator);
 
-        $operator = reset($operator) ?: null;
+        $operator = reset($operator) ?: '+';
 
         $values = array_map('trim', preg_split('/[=\<\>\!]+/', $rule));
 
-        return $this->operatorCheck($collection->get($values[0]), $operator, $values[1]) ?: false;
+        return $this->operatorCheck($collection->get($values[0], ''), $operator, $values[1]) ?: false;
     }
 
     /**
      * Performs arithmetic calculations.
      *
-     * @param  string  $target
-     * @param  string  $operator
-     * @param  string  $value
-     * @param  int  $max
+     * @param string $target
+     * @param string $operator
+     * @param string $value
+     * @param int    $max
+     *
      * @return float
      */
-    protected function calculate($target, $operator, $value, $max = 0)
+    protected function calculate(string $target, string $operator, string $value, int $max = 0): float
     {
         switch ($operator) {
             default:
             case '+': return $max ? min($target + $max, $target + $value) : $target + $value;
-
             case '*': return $max ? min($target + $max, $target * $value) : $target * $value;
-
             case '-': return $max ? max($target + $max, $target - $value) : $target - $value;
-
             case '/': return $max ? max($target + $max, $target / $value) : $target / $value;
         }
     }
@@ -310,25 +317,21 @@ class Condition extends Collection
     /**
      * Performs a comparison between the target and the value.
      *
-     * @param  string  $target
-     * @param  string  $operator
-     * @param  string  $value
+     * @param string $target
+     * @param string $operator
+     * @param string $value
+     *
      * @return bool
      */
-    protected function operatorCheck($target, $operator, $value)
+    protected function operatorCheck(string $target, string $operator, string $value): bool
     {
         switch ($operator) {
             default:
-            case '=':  return $target == $value;
-
+            case '=':  return $target === $value;
             case '<=': return $target <= $value;
-
             case '>=': return $target >= $value;
-
             case '<':  return $target < $value;
-
             case '>':  return $target > $value;
-
             case '!=': return $target != $value;
         }
     }
@@ -336,12 +339,13 @@ class Condition extends Collection
     /**
      * Parses the action.
      *
-     * @param  mixed  $value
-     * @param  \Cartalyst\Collections\Collection  $collection
-     * @param  float  $target
+     * @param mixed                             $value
+     * @param \Cartalyst\Collections\Collection $collection
+     * @param float                             $target
+     *
      * @return array
      */
-    protected function parseAction($value, Collection $collection, $target)
+    protected function parseAction($value, Collection $collection, float $target): array
     {
         if ($this->isCallable($value)) {
             $value = $value($collection, $target);
@@ -351,16 +355,17 @@ class Condition extends Collection
 
         preg_match('/[0-9\.]+/', $value, $values);
 
-        return [ reset($operator), strpos($value, '%'), reset($values) ];
+        return [reset($operator), strpos($value, '%'), reset($values)];
     }
 
     /**
      * Checks if the given object is callable.
      *
-     * @param  mixed  $object
+     * @param mixed $object
+     *
      * @return bool
      */
-    protected function isCallable($object)
+    protected function isCallable($object): bool
     {
         $isClosure = $object instanceof Closure || $object instanceof SerializableClosure;
 
@@ -370,10 +375,11 @@ class Condition extends Collection
     /**
      * Checks if the given array is a multidimensional array.
      *
-     * @param  array  $array
+     * @param array $array
+     *
      * @return bool
      */
-    protected function isMulti($array)
+    protected function isMulti(array $array): bool
     {
         return is_array(array_shift($array));
     }

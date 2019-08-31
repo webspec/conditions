@@ -38,4 +38,4 @@ This software is released under the [Cartalyst PSL](LICENSE) License.
 [link-docs]:   https://cartalyst.com/manual/conditions
 [link-travis]: https://travis-ci.com/cartalyst/conditions
 
-[icon-travis]: https://travis-ci.com/cartalyst/conditions.svg?branch=3.0
+[icon-travis]: https://travis-ci.com/cartalyst/conditions.svg?token=LAut3LMbmBFi3T9j45FH&branch=3.0

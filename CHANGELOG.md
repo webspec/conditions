@@ -1,5 +1,11 @@
 # Changelog
 
+### v4.0.1 - 2020-04-12
+
+`UPDATED`
+
+- Dependency to use `opis/closure` instead of `jeremeamia/superclosure` which is now abandoned
+
 ### v4.0.0 - 2020-03-03
 
 - Updated for Laravel 7.

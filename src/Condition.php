@@ -22,7 +22,7 @@ namespace Cartalyst\Conditions;
 
 use Closure;
 use Cartalyst\Collections\Collection;
-use SuperClosure\SerializableClosure;
+use Opis\Closure\SerializableClosure;
 
 class Condition extends Collection
 {

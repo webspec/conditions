@@ -19,7 +19,7 @@
     "require": {
         "php": "^7.2.5",
         "cartalyst/collections": "^1.0",
-        "jeremeamia/superclosure": "^2.0"
+        "opis/closure": "^3.5"
     },
     "require-dev": {
         "cartalyst/php-cs-fixer-config": "^1.0",

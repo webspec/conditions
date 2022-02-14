@@ -549,7 +549,7 @@ class ConditionTest extends TestCase
         // Valid condition
         $promotion = true;
 
-        $closure = new \Opis\Closure\SerializableClosure(function ($collection) use ($promotion) {
+        $closure = new \Laravel\SerializableClosure\SerializableClosure(function ($collection) use ($promotion) {
             return $collection->get('quantity') > 5 && $promotion;
         });
 
@@ -562,7 +562,7 @@ class ConditionTest extends TestCase
 
         $this->condition->reset();
 
-        $closure = new \Opis\Closure\SerializableClosure(function ($collection) {
+        $closure = new \Laravel\SerializableClosure\SerializableClosure(function ($collection) {
             return $collection->get('price') * 10 > 10000;
         });
 

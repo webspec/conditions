@@ -22,7 +22,7 @@ namespace Cartalyst\Conditions;
 
 use Closure;
 use Cartalyst\Collections\Collection;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class Condition extends Collection
 {

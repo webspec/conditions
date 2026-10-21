@@ -1,5 +1,11 @@
 # Changelog
 
+### Unreleased
+
+- Add Laravel 13 compatibility by allowing `laravel/serializable-closure` 2.x alongside 1.x.
+- Make the nullable collection parameter explicit for PHP 8.4 compatibility.
+- Update PHPUnit 10 configuration and add serialized closure regression tests.
+
 ### v6.0.0 - 2023-05-08
 
 - Add Laravel 10 support

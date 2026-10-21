@@ -189,7 +189,7 @@ class Condition extends Collection
      *
      * @return float
      */
-    public function result(Collection $collection = null): float
+    public function result(?Collection $collection = null): float
     {
         if ($collection) {
             $this->apply($collection);

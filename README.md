@@ -10,12 +10,14 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, ro
 
 Version | Laravel   | PHP Version
 ------- | --------- | ------------
-6.x     | 10.x      | >= 8.1
+6.x (fork) | 10.x - 13.x | >= 8.1*
 5.x     | 9.x       | >= 8.0
 4.x     | 7.x - 8.x | >= 7.2.5
 3.x     | 6.x       | >= 7.2
 2.x     | 5.3 - 5.8 | >= 5.4.0
 1.x     | 4.1 - 5.2 | >= 5.4.0
+
+\* Laravel 13 requires PHP 8.3 or later. This fork allows both versions 1 and 2 of `laravel/serializable-closure`, including the version required by Laravel 13.
 
 ## Documentation
 

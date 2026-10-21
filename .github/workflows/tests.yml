@@ -1,0 +1,31 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.1'
+            dependency: 'laravel/serializable-closure:^1.1'
+          - php: '8.1'
+            dependency: 'laravel/serializable-closure:^2.0'
+          - php: '8.3'
+            dependency: 'laravel/framework:^13.0'
+          - php: '8.4'
+            dependency: 'laravel/framework:^13.0'
+          - php: '8.5'
+            dependency: 'laravel/framework:^13.0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+      - run: composer require --dev "${{ matrix.dependency }}" --no-interaction --no-update
+      - run: composer update --no-interaction --prefer-dist
+      - run: composer test

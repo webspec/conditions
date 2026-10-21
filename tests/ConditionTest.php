@@ -24,6 +24,7 @@ use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Cartalyst\Conditions\Condition;
 use Cartalyst\Collections\Collection;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class ConditionTest extends TestCase
 {
@@ -130,6 +131,53 @@ class ConditionTest extends TestCase
 
         $this->assertSame(8.0, $this->condition->apply($testCollection));
         $this->assertSame(-7.0, $this->condition->result());
+    }
+
+    /** @test */
+    public function it_can_apply_serialized_rules_actions_and_valid_callbacks()
+    {
+        $minimum = 10;
+        $discount = 5;
+
+        $this->condition->setRules(new SerializableClosure(static function (Collection $collection, $target) use ($minimum) {
+            return $target >= $minimum && $collection->get('quantity') > 0;
+        }));
+
+        $this->condition->setActions([
+            'value' => new SerializableClosure(static function (Collection $collection, $target) use ($discount) {
+                return '-'.$discount * $collection->get('quantity');
+            }),
+        ], new SerializableClosure(static function (Collection $collection, $result) {
+            $collection->put('valid_result', $result);
+        }));
+
+        $condition = unserialize(serialize($this->condition));
+        $collection = $this->createCollection(20, 2);
+
+        $this->assertSame(10.0, $condition->apply($collection));
+        $this->assertSame(-10.0, $condition->result());
+        $this->assertSame(10.0, $collection->get('valid_result'));
+    }
+
+    /** @test */
+    public function it_can_run_serialized_invalid_callbacks()
+    {
+        $this->condition->setRules(new SerializableClosure(static function (Collection $collection, $target) {
+            return $target > 100;
+        }));
+
+        $this->condition->setActions(['value' => '-5']);
+
+        $this->condition->whenInvalid(new SerializableClosure(static function (Collection $collection, $result) {
+            $collection->put('invalid_result', $result);
+        }));
+
+        $condition = unserialize(serialize($this->condition));
+        $collection = $this->createCollection(20);
+
+        $this->assertFalse($condition->apply($collection));
+        $this->assertSame(0.0, $condition->result());
+        $this->assertSame(20, $collection->get('invalid_result'));
     }
 
     /** @test */
